@@ -292,3 +292,6 @@ Temp
 /JavelinView3/PortableViews/*
 
 !/JavelinView3/PortableViews/web.config
+/ColdCallsTracker/.vs
+/ColdCallsTracker/ColdCallsTracker/bin
+/ColdCallsTracker/ColdCallsTracker/obj
