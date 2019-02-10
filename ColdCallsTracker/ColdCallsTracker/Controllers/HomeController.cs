@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using ColdCallsTracker.Code.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AppControllerBase
     {
         public IActionResult Index()
         {
-            return View();
+            var allStates = this.Service.State.All();
+            return View(allStates);
         }
     }
 }

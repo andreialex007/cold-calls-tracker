@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ColdCallsTracker.Code.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +23,8 @@ namespace ColdCallsTracker
 
         public IConfiguration Configuration { get; }
 
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -30,8 +35,22 @@ namespace ColdCallsTracker
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            AppDbContext.ConnectionString = Configuration.GetConnectionString("MainConnnectionString");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            using (var db = new AppDbContext())
+            {
+                db.Database.Migrate();
+                if (!db.States.Any())
+                {
+                    db.States.Add(new State { Name = "Звонил" });
+                    db.States.Add(new State { Name = "Заинтересовались" });
+                    db.States.Add(new State { Name = "Отказали" });
+                    db.SaveChanges();
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
