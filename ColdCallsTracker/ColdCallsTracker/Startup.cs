@@ -45,7 +45,7 @@ namespace ColdCallsTracker
                 db.Database.Migrate();
                 if (!db.States.Any())
                 {
-                    db.States.Add(new State { Name = "Прозвон" });
+                    db.States.Add(new State { Name = "В процессе" });
                     db.States.Add(new State { Name = "Успех" });
                     db.States.Add(new State { Name = "Отказ" });
                     db.SaveChanges();
