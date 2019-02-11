@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ColdCallsTracker.Code.Data
+namespace ColdCallsTracker.Code.Data.Models
 {
     public class CallRecord
     {

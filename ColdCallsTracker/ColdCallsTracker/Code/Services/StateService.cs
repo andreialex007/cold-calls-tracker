@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ColdCallsTracker.Code.Data;
+using ColdCallsTracker.Code.Data.Models;
 
 namespace ColdCallsTracker.Code.Services
 {

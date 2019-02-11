@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ColdCallsTracker.Code;
+﻿using ColdCallsTracker.Code;
 using ColdCallsTracker.Code.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
@@ -11,10 +8,12 @@ namespace ColdCallsTracker.Controllers
     public class AppControllerBase : Controller
     {
         protected AppService Service { get; set; }
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public AppControllerBase()
+        public AppControllerBase(IHostingEnvironment hostingEnvironment)
         {
             Service = new AppService(new AppDbContext());
+            _hostingEnvironment = hostingEnvironment;
         }
 
         protected override void Dispose(bool disposing)

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ColdCallsTracker.Code.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColdCallsTracker.Code.Data
 {
