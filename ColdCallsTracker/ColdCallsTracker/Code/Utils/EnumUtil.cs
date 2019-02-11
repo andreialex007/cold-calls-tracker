@@ -20,14 +20,14 @@ namespace ColdCallsTracker.Code.Utils
             return attributes.Length > 0 ? attributes[0].Description : source.ToString();
         }
 
-        public static Dictionary<int, string> ToDictionary<TEnum>()
-        {
-            var dictionary = Enum.GetValues(typeof(TEnum))
-                .Cast<TEnum>()
-                .ToDictionary(
-                    x => x.CastTo<int>(),
-                    DescriptionAttr);
-            return dictionary;
-        }
+//        public static Dictionary<int, string> ToDictionary<TEnum>()
+//        {
+//            var dictionary = Enum.GetValues(typeof(TEnum))
+//                .Cast<TEnum>()
+//                .ToDictionary(
+//                    x => (int) x,
+//                    DescriptionAttr);
+//            return dictionary;
+//        }
     }
 }

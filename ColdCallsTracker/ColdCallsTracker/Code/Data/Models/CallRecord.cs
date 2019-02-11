@@ -2,9 +2,8 @@
 
 namespace ColdCallsTracker.Code.Data.Models
 {
-    public class CallRecord
-    {
-        public int Id { get; set; }
+    public class CallRecord : EntityBase
+    { 
         public string Content { get; set; }
         public DateTime Date { get; set; }
 

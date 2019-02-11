@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ColdCallsTracker.Code.Data.Models
 {
-    public class Company
+    public class Company : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string ActivityType { get; set; }
         public string WebSites { get; set; }
@@ -14,5 +14,8 @@ namespace ColdCallsTracker.Code.Data.Models
 
         public int? StateId { get; set; }
         public State State { get; set; }
+
+
+        
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ColdCallsTracker.Code.Data.Models
 {
-    public class Phone
+    public class Phone : EntityBase
     {
-        public int Id { get; set; }
         public string Number { get; set; }
         public string Remarks { get; set; }
 
@@ -13,5 +13,6 @@ namespace ColdCallsTracker.Code.Data.Models
         public Company Company { get; set; }
 
         public List<CallRecord> CallRecords { get; set; } = new List<CallRecord>();
+
     }
 }
