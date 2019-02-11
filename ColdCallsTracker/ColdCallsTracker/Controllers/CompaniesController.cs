@@ -20,6 +20,12 @@ namespace ColdCallsTracker.Controllers
             return View("~/Pages/Companies/Index.cshtml");
         }
 
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            return View("~/Pages/Companies/Index.cshtml");
+        }
+
         [HttpPost]
         public ActionResult Search(CompanySearchParameters parameters)
         {
