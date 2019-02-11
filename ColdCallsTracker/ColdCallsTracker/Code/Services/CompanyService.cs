@@ -27,9 +27,9 @@ namespace ColdCallsTracker.Code.Services
                     WebSites = x.WebSites,
                     LastCallRecordDate = x.Phones
                         .SelectMany(p => p.CallRecords)
-                        .OrderBy(d => d.Date)
-                        .Select(s => s.Date)
-                        .SingleOrDefault(),
+                        .OrderBy(d => d.DateModify)
+                        .Select(s => s.DateModify)
+                        .SingleOrDefault() ,
                     PhoneNumbersList = x.Phones.Select(n => n.Number).ToList(),
                 });
 
