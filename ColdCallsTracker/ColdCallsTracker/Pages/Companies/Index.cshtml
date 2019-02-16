@@ -6,10 +6,12 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css" />
 }
 
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js"></script>
     <script src="~/js/companies/companies-list.js" asp-append-version="true"></script>
 }
 
@@ -17,14 +19,17 @@
 
 </div>
 
-<div class="companies-list-page">
+<div v-cloak class="companies-list-page">
 
     <div class="info-line">
         <div class="row mb-2">
             <div class="col-md-6 ">
                 <div>
                     <strong>Список компаний &nbsp;&nbsp;</strong>
-                    <em>Отфильтровано 1235 из 17453, отображено 155</em>
+                    <em>Отфильтровано {{ filteredRecords }} из {{ totalRecords }}, отображено  {{ shownRecords }}</em>
+                    &nbsp;
+                    &nbsp;
+                    <span v-if="isLoading" ><i class="fas fa-sync fa-spin"></i> Загрузка</span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -36,88 +41,89 @@
     <table class="table table-bordered table-sm table-hover header-table results-table">
         <thead class="thead-light">
             <tr>
-                <th class="Id">
-                    <input type="number" placeholder="Id" class="form-control form-control-sm" />
+                <th v-bind:class="{ 'order-column': !!columns.Id.sorting }" class="Id">
+                    <input type="number" placeholder="Id" v-model="columns.Id.filter" class="form-control form-control-sm" />
                 </th>
-                <th class="order-column">
-                    <input type="text" placeholder="Название" class="form-control form-control-sm " />
+                <th v-bind:class="{ 'order-column': !!columns.Name.sorting }">
+                    <input type="text" placeholder="Название" v-model="columns.Name.filter" class="form-control form-control-sm " />
                 </th>
-                <th>
-                    <input type="text" placeholder="Деятельность" class="form-control form-control-sm" />
-                </th>
-                <th>
-                    <input type="text" placeholder="Сайты" class="form-control form-control-sm" />
+                <th v-bind:class="{ 'order-column': !!columns.ActivityType.sorting }">
+                    <input type="text" placeholder="Деятельность" v-model="columns.ActivityType.filter" class="form-control form-control-sm" />
                 </th>
                 <th>
-                    <input type="text" placeholder="Примечание" class="form-control form-control-sm" />
+                    <input type="text" placeholder="Сайты" v-model="columns.WebSites.filter" class="form-control form-control-sm" />
+                </th>
+                <th v-bind:class="{ 'order-column': !!columns.Remarks.sorting }">
+                    <input type="text" placeholder="Примечание" v-model="columns.Remarks.filter" class="form-control form-control-sm" />
                 </th>
                 <th>
-                    <input type="text" placeholder="Телефоны" class="form-control form-control-sm" />
+                    <input type="text" placeholder="Телефоны" v-model="columns.PhoneNumbers.filter" class="form-control form-control-sm" />
                 </th>
-                <th>
-                    <select class="form-control form-control-sm">
+                <th v-bind:class="{ 'order-column': !!columns.StateId.sorting }">
+                    <select v-model="columns.Id.filter" class="form-control form-control-sm">
                         <option value="">Любой</option>
-                        <option value="">В процессе</option>
-                        <option value="">Успех</option>
-                        <option value="">Отказ</option>
+                        <option value="1">В процессе</option>
+                        <option value="2">Успех</option>
+                        <option value="3">Отказ</option>
                     </select>
                 </th>
-                <th>
+                <th v-bind:class="{ 'order-column': !!columns.LastCallRecordDate.sorting }">
                     <div class="phones-wrapper">
-                        <input type="text" placeholder="C" class="form-control form-control-sm" />
-                        <input type="text" placeholder="По" class="form-control form-control-sm" />
+                        <input v-model="columns.LastCallRecordDate.filterFrom" type="text" placeholder="C" class="form-control form-control-sm from-date" />
+                        <input v-model="columns.LastCallRecordDate.filterTo" type="text" placeholder="По" class="form-control form-control-sm to-date" />
                     </div>
                 </th>
                 <th class="text-right actions-col">
                     <div class="buttons-actions-container">
-                        <span class="btn btn-danger btn-sm">
+                        <span v-on:click="clearSearch()" class="btn btn-danger btn-sm">
                             <i class="fas fa-undo"></i>
-
                         </span>
                         <span class="btn btn-success btn-sm">
                             <i class="fas fa-search"></i>
-
                         </span>
                     </div>
                 </th>
             </tr>
-            <tr >
-                <th class="Id sorting-th">
+            <tr>
+                <th v-on:click="applySorting(columns.Id)"
+                    v-bind:class="{ 'order-column': !!columns.Id.sorting, 'asc' : columns.Id.sorting == 'asc',  'desc' : columns.Id.sorting == 'desc'   }" class="Id sorting-th">
                     #
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="order-column sorting-th">
+                <th v-on:click="applySorting(columns.Name)"
+                    v-bind:class="{ 'order-column': !!columns.Name.sorting, 'asc' : columns.Name.sorting == 'asc',  'desc' : columns.Name.sorting == 'desc'  }"
+                    class="sorting-th">
                     Название
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th v-on:click="applySorting(columns.ActivityType)"
+                    v-bind:class="{ 'order-column': !!columns.ActivityType.sorting, 'asc' : columns.ActivityType.sorting == 'asc',  'desc' : columns.ActivityType.sorting == 'desc'   }" class="sorting-th">
                     Деятельность
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th>
                     Сайты
-                    <i class="fas fa-sort-up sort-arrow"></i>
-                    <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th v-on:click="applySorting(columns.Remarks)"
+                    v-bind:class="{ 'order-column': !!columns.Remarks.sorting, 'asc' : columns.Remarks.sorting == 'asc',  'desc' : columns.Remarks.sorting == 'desc'   }" class="sorting-th">
                     Примечание
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th>
                     Телефоны
-                    <i class="fas fa-sort-up sort-arrow"></i>
-                    <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th v-on:click="applySorting(columns.StateId)"
+                    v-bind:class="{ 'order-column': !!columns.StateId.sorting, 'asc' : columns.StateId.sorting == 'asc',  'desc' : columns.StateId.sorting == 'desc'   }" class="sorting-th">
                     Статус
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
                 </th>
-                <th class="sorting-th">
+                <th v-on:click="applySorting(columns.LastCallRecordDate)"
+                    v-bind:class="{ 'order-column': !!columns.LastCallRecordDate.sorting, 'asc' : columns.LastCallRecordDate.sorting == 'asc',  'desc' : columns.LastCallRecordDate.sorting == 'desc'   }" class="sorting-th">
                     Последняя запись
                     <i class="fas fa-sort-up sort-arrow"></i>
                     <i class="fas fa-sort-down sort-arrow"></i>
@@ -134,15 +140,15 @@
                 @for (int i = 0; i < 100; i++)
                 {
                     <tr class="data-tr">
-                        <td class="Id">@(i)</td>
-                        <td class="order-column">Название</td>
-                        <td>Деятельность</td>
+                        <td v-bind:class="{ 'order-column': !!columns.Id.sorting }" class="Id">@(i)</td>
+                        <td v-bind:class="{ 'order-column': !!columns.Name.sorting }">Название</td>
+                        <td v-bind:class="{ 'order-column': !!columns.ActivityType.sorting }">Деятельность</td>
                         <td>Сайты</td>
-                        <td>Примечание</td>
+                        <td v-bind:class="{ 'order-column': !!columns.Remarks.sorting }">Примечание</td>
 
                         <td>Телефоны</td>
-                        <td>Статус</td>
-                        <td>Последняя запись</td>
+                        <td v-bind:class="{ 'order-column': !!columns.StateId.sorting }">Статус</td>
+                        <td v-bind:class="{ 'order-column': !!columns.LastCallRecordDate.sorting }">Последняя запись</td>
                         <td class="text-left actions-col">
                             <span class="btn btn-success btn-xs edit-btn">
                                 <i class="fas fa-edit"></i>

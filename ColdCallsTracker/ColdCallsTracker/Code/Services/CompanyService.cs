@@ -30,7 +30,9 @@ namespace ColdCallsTracker.Code.Services
                         .OrderBy(d => d.DateModify)
                         .Select(s => s.DateModify)
                         .SingleOrDefault() ,
-                    PhoneNumbersList = x.Phones.Select(n => n.Number).ToList(),
+                    PhoneNumbersList = x.Phones
+                        .Select(n => n.Number)
+                        .ToList(),
                 });
 
             if (!parameters.Name.IsEmptyOrWhiteSpace())

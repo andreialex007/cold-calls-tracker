@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
-    public class CompanyListItem
+    public class CompanySearchParameters : SearchParametersBase
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -12,11 +11,10 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Remarks { get; set; }
 
         public int? StateId { get; set; }
-        public string State { get; set; }
 
-        public string PhoneNumbers => string.Join(";", PhoneNumbersList);
-        public List<string> PhoneNumbersList { get; set; } = new List<string>();
+        public string PhoneNumbers { get; set; }
 
-        public DateTime LastCallRecordDate { get; set; }
+        public DateTime LastCallRecordDateFrom { get; set; }
+        public DateTime LastCallRecordDateTo { get; set; }
     }
 }
