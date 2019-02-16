@@ -24,10 +24,10 @@
 
 
 .overflow-wrapper {
-    height: calc(100vh - 174px);
+    height: calc(100vh - 216px);
     overflow-y: overlay;
     position: absolute;
-    top: 74px;
+    top: 113px;
     box-shadow: inset 0px 10px 6px -6px rgba(0,0,0,0.2);
 }
 
@@ -115,4 +115,49 @@ input[type=number]::-webkit-outer-spin-button {
     min-height: 24px;
     padding-top: 3px;
     padding-bottom: 3px;
+}
+
+.order-column {
+    background-image: url(/images/selected.png);
+}
+
+.sorting-th {
+    position: relative;
+}
+
+    .sorting-th:hover {
+        opacity: 0.5;
+        cursor: pointer;
+    }
+
+
+    .sorting-th.asc .fa-sort-up {
+        opacity: 1 !important;
+    }
+
+    .sorting-th.asc .fa-sort-down {
+        opacity: 0 !important;
+    }
+
+    .sorting-th.desc .fa-sort-up {
+        opacity: 0 !important;
+    }
+
+    .sorting-th.desc .fa-sort-down {
+        opacity: 1 !important;
+    }
+
+
+.fa-sort-up {
+    position: absolute;
+    right: 6px;
+    opacity: 0.5;
+    top: 18%;
+}
+
+.fa-sort-down {
+    position: absolute;
+    right: 6px;
+    opacity: 0.5;
+    top: 34%;
 }
