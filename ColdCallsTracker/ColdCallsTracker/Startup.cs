@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 
 namespace ColdCallsTracker
 {
@@ -25,9 +28,9 @@ namespace ColdCallsTracker
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
+            services.AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             AppDbContext.ConnectionString = Configuration.GetConnectionString("MainConnnectionString");
 
@@ -41,7 +44,30 @@ namespace ColdCallsTracker
                     db.States.Add(new State { Name = "Отказ" });
                     db.SaveChanges();
                 }
+
+                if (!db.Companies.Any())
+                {
+                    var companies = Enumerable.Range(1, 1000)
+                        .Select(x => new Company
+                        {
+                            Name = "Company #" + x,
+                            StateId = (x % 2) == 0 ? 1 : 2,
+                            ActivityType = "Activity" + x,
+                            Remarks = "Remarks" + x,
+                            WebSites = "Websites"
+                        }).ToList();
+                    db.Companies.AddRange(companies);
+                    db.SaveChanges();
+                }
             }
+
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("ru-RU");
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("ru-RU") };
+            });
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

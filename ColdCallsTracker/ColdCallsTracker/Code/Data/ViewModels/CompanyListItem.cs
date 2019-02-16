@@ -18,5 +18,6 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public List<string> PhoneNumbersList { get; set; } = new List<string>();
 
         public DateTime LastCallRecordDate { get; set; }
+        public string LastCallRecordDateStr => LastCallRecordDate.ToString("dd.MM.yyyy");
     }
 }

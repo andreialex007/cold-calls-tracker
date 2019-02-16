@@ -2,9 +2,9 @@
 {
     public class SearchParametersBase
     {
-        public string OrderBy { get; set; }
-        public bool IsAsc { get; set; }
-        public int Skip { get; set; }
-        public int Take { get; set; }
+        public string OrderBy { get; set; } = "Id";
+        public bool IsAsc { get; set; } = false;
+        public int? Skip { get; set; } = 0;
+        public int? Take { get; set; } = 50;
     }
 }

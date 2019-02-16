@@ -26,14 +26,17 @@
             <div class="col-md-6 ">
                 <div>
                     <strong>Список компаний &nbsp;&nbsp;</strong>
-                    <em>Отфильтровано {{ filteredRecords }} из {{ totalRecords }}, отображено  {{ shownRecords }}</em>
+                    <em>Отфильтровано {{ filteredRecords }} из {{ totalRecords }}, отображено  {{ items.length }}</em>
                     &nbsp;
                     &nbsp;
-                    <span v-if="isLoading" ><i class="fas fa-sync fa-spin"></i> Загрузка</span>
+                    <span v-if="isLoading"><i class="fas fa-sync fa-spin"></i> Загрузка</span>
                 </div>
             </div>
             <div class="col-md-6">
-                <span class="btn btn-primary btn-sm float-right">Добавить</span>
+                <span class="btn btn-primary btn-sm float-right">
+                    <i class="fas fa-plus"></i>
+                    Добавить
+                </span>
             </div>
         </div>
     </div>
@@ -60,7 +63,7 @@
                     <input type="text" placeholder="Телефоны" v-model="columns.PhoneNumbers.filter" class="form-control form-control-sm" />
                 </th>
                 <th v-bind:class="{ 'order-column': !!columns.StateId.sorting }">
-                    <select v-model="columns.Id.filter" class="form-control form-control-sm">
+                    <select v-model="columns.StateId.filter" class="form-control form-control-sm">
                         <option value="">Любой</option>
                         <option value="1">В процессе</option>
                         <option value="2">Успех</option>
@@ -78,7 +81,7 @@
                         <span v-on:click="clearSearch()" class="btn btn-danger btn-sm">
                             <i class="fas fa-undo"></i>
                         </span>
-                        <span class="btn btn-success btn-sm">
+                        <span v-on:click="doSearch" class="btn btn-success btn-sm">
                             <i class="fas fa-search"></i>
                         </span>
                     </div>
@@ -134,35 +137,31 @@
             </tr>
         </thead>
     </table>
-    <div class="overflow-wrapper">
+    <div v-if="items.length > 0" class="overflow-wrapper">
         <table class="table table-bordered table-sm table-hover body-table results-table table-striped">
             <tbody>
-                @for (int i = 0; i < 100; i++)
-                {
-                    <tr class="data-tr">
-                        <td v-bind:class="{ 'order-column': !!columns.Id.sorting }" class="Id">@(i)</td>
-                        <td v-bind:class="{ 'order-column': !!columns.Name.sorting }">Название</td>
-                        <td v-bind:class="{ 'order-column': !!columns.ActivityType.sorting }">Деятельность</td>
-                        <td>Сайты</td>
-                        <td v-bind:class="{ 'order-column': !!columns.Remarks.sorting }">Примечание</td>
+                <tr v-for="item in items" class="data-tr">
+                    <td v-bind:class="{ 'order-column': !!columns.Id.sorting }" class="Id">{{ item.Id }}</td>
+                    <td v-bind:class="{ 'order-column': !!columns.Name.sorting }">{{ item.Name }}</td>
+                    <td v-bind:class="{ 'order-column': !!columns.ActivityType.sorting }">{{ item.ActivityType }}</td>
+                    <td>{{ item.WebSites }}</td>
+                    <td v-bind:class="{ 'order-column': !!columns.Remarks.sorting }">{{ item.Remarks }}</td>
 
-                        <td>Телефоны</td>
-                        <td v-bind:class="{ 'order-column': !!columns.StateId.sorting }">Статус</td>
-                        <td v-bind:class="{ 'order-column': !!columns.LastCallRecordDate.sorting }">Последняя запись</td>
-                        <td class="text-left actions-col">
-                            <span class="btn btn-success btn-xs edit-btn">
-                                <i class="fas fa-edit"></i>
-                            </span>
-                            <span class="btn btn-danger btn-xs delete-btn">
-                                <i class="fas fa-trash"></i>
-                            </span>
-                        </td>
-                    </tr>
-                }
-
-                <tr>
+                    <td>{{ item.PhoneNumbersList }}</td>
+                    <td v-bind:class="{ 'order-column': !!columns.StateId.sorting }">{{ item.State }}</td>
+                    <td v-bind:class="{ 'order-column': !!columns.LastCallRecordDate.sorting }">{{ item.LastCallRecordDateStr }}</td>
+                    <td class="text-left actions-col">
+                        <span class="btn btn-success btn-xs edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </span>
+                        <span class="btn btn-danger btn-xs delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                    </td>
+                </tr>
+                <tr v-if="!isEndofList">
                     <td colspan="9">
-                        <span class="btn btn-block btn-primary text-center text-uppercase btn-sm">
+                        <span v-on:click="loadMore()" v-bind:class="{ 'disabled': isLoading }" class="btn btn-block btn-primary text-center text-uppercase btn-sm">
                             <i class="fas fa-download"></i>
                             Загрузить еще
                         </span>
@@ -170,5 +169,8 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center" v-else>
+        Нет результатов
     </div>
 </div>

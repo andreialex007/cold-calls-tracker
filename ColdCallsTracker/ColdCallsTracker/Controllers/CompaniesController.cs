@@ -27,13 +27,14 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(CompanySearchParameters parameters)
+        public ActionResult Search([FromBody] CompanySearchParameters parameters)
         {
-            var (items, total) = Service.Company.Search(parameters);
+            var (items, total, filtered) = Service.Company.Search(parameters);
             return Json(new
             {
                 items,
-                total
+                total,
+                filtered
             });
         }
     }
