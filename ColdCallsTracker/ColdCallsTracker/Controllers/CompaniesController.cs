@@ -21,9 +21,11 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(int? id)
         {
-            return View("~/Pages/Companies/Index.cshtml");
+            var company = Service.Company.Edit(id);
+
+            return View("~/Pages/Companies/Index.cshtml", company);
         }
 
         [HttpPost]

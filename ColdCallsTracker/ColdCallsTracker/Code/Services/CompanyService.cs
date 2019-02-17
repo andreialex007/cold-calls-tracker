@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ColdCallsTracker.Code.Data;
+using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Extensions;
 
@@ -9,6 +10,56 @@ namespace ColdCallsTracker.Code.Services
     public class CompanyService : ServiceBase
     {
         public CompanyService(AppDbContext db, AppService appService) : base(db, appService) { }
+
+        public CompanyEditItem Edit(int? id)
+        {
+            var editItem = new CompanyEditItem();
+
+            if (id != null)
+            {
+                var company = Db.Companies
+                    .Select(x => new CompanyEditItem
+                    {
+                        State = x.State.Name,
+                        Name = x.Name,
+                        StateId = x.StateId,
+                        // Phones = x.Phones.Select(x=> new)
+                    })
+                    .Single();
+
+
+                return company;
+            }
+
+
+            return editItem;
+        }
+
+        public void Save(CompanyEditItem item)
+        {
+            item.GetValidationErrors().ThrowIfHasErrors();
+
+            var company = new Company();
+
+            if (item.Id != 0)
+            {
+                company = Db.Companies.Single(x => x.Id == item.Id);
+            }
+            else
+            {
+                Db.Companies.Add(company);
+            }
+
+            company.StateId = item.StateId;
+            company.Name = item.Name;
+            company.ActivityType = item.ActivityType;
+            company.Remarks = item.Remarks;
+            company.WebSites = item.WebSites;
+
+            Db.SaveChanges();
+
+            item.Id = company.Id;
+        }
 
         public (List<CompanyListItem> items, int total, int filtered) Search(CompanySearchParameters parameters)
         {

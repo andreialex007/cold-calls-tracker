@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using ColdCallsTracker.Code.Data.Models;
+using ColdCallsTracker.Code.Data.ViewModels._Common;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
     public class CompanyListItem
     {
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public string ActivityType { get; set; }
         public string WebSites { get; set; }
         public string Remarks { get; set; }
@@ -19,5 +26,20 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public DateTime LastCallRecordDate { get; set; }
         public string LastCallRecordDateStr => LastCallRecordDate.ToString("dd.MM.yyyy");
+    }
+
+
+    public class CompanyEditItem : ViewModelBase
+    {
+        public string Name { get; set; }
+        public string ActivityType { get; set; }
+        public string WebSites { get; set; }
+        public string Remarks { get; set; }
+
+        public List<Phone> Phones { get; set; } = new List<Phone>();
+
+        public int? StateId { get; set; }
+        public string State { get; set; }
+
     }
 }
