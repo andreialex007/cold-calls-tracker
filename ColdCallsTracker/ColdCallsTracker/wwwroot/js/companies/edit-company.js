@@ -1,12 +1,19 @@
 ﻿$(function () {
 
-    window.companiesList = new Vue({
+    window.editCompany = new Vue({
         el: ".company-edit-page",
         data: function () {
             return {
-                entity: { Id: location.pathname.split('/')[3] },
+                entity: {
+                    Id: location.pathname.split('/')[3],
+                    Phones: []
+                },
                 errorsView: "",
-                activeTab: "log"
+                activeTab: "log",
+
+
+                callDescription: "",
+                selectedPhoneId: null
             }
         },
         methods: {
@@ -22,6 +29,9 @@
             },
             async load() {
 
+            },
+            addPhone() {
+                window.editPhoneModal.open();
             }
         },
         async mounted() {
@@ -37,6 +47,35 @@
             }
 
             this.entity = result;
+        }
+    });
+
+
+    window.editPhoneModal = new Vue({
+        el: ".edit-phone-modal",
+        data: function () {
+            return {
+                visible: false,
+                entity: {
+                    Number: "",
+                    Remarks: "Общий"
+                }
+            }
+        },
+        methods: {
+            open() {
+                this.visible = true;
+
+                setTimeout(function () {
+                    $(".phone-input").focus();
+                }, 100);
+            },
+            close() {
+                this.visible = false;
+            },
+            save() {
+                this.close();
+            }
         }
     });
 

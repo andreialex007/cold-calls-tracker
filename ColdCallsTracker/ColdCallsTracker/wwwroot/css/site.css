@@ -172,11 +172,30 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 .phones-list {
-    width: 86%;
+    flex-grow: 1;
     padding-right: 19px;
 }
 
 .phoens-management {
-    width: 14%;
     text-align: right;
+}
+
+.records-table {
+    table-layout: fixed;
+}
+
+    .records-table .date {
+        width: 150px;
+    }
+
+    .records-table .phone {
+        width: 150px;
+    }
+
+.edit-phone-modal .modal {
+    background-color: #0000004d !important;
+}
+
+.form-control {
+    background-color: #f2f2f21f !important;
 }
