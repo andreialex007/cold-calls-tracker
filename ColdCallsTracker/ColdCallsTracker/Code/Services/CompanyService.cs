@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
@@ -15,17 +16,30 @@ namespace ColdCallsTracker.Code.Services
         {
             var editItem = new CompanyEditItem();
 
-            if (id != null)
+            if (id != 0)
             {
                 var company = Db.Companies
                     .Select(x => new CompanyEditItem
                     {
+                        Id = x.Id,
                         State = x.State.Name,
                         Name = x.Name,
                         StateId = x.StateId,
-                        // Phones = x.Phones.Select(x=> new)
+                        Remarks = x.Remarks,
+                        ActivityType = x.ActivityType,
+                        WebSites = x.WebSites,
+                        Phones = x.Phones.Select(p => new PhoneEditItem
+                        {
+                            Id = p.Id,
+                            Remarks = p.Remarks,
+                            DateCreate = p.DateCreate,
+                            DateModify = p.DateModify,
+                            Number = p.Number,
+                            CompanyId = p.CompanyId
+                        })
+                            .ToList()
                     })
-                    .Single();
+                    .FirstOrDefault(x => x.Id == id);
 
 
                 return company;
@@ -47,6 +61,7 @@ namespace ColdCallsTracker.Code.Services
             }
             else
             {
+                company.DateCreate = DateTime.Now;
                 Db.Companies.Add(company);
             }
 
@@ -55,6 +70,7 @@ namespace ColdCallsTracker.Code.Services
             company.ActivityType = item.ActivityType;
             company.Remarks = item.Remarks;
             company.WebSites = item.WebSites;
+            company.DateModify = DateTime.Now;
 
             Db.SaveChanges();
 

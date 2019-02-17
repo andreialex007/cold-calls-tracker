@@ -36,10 +36,18 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string WebSites { get; set; }
         public string Remarks { get; set; }
 
-        public List<Phone> Phones { get; set; } = new List<Phone>();
+        public List<PhoneEditItem> Phones { get; set; } = new List<PhoneEditItem>();
 
         public int? StateId { get; set; }
         public string State { get; set; }
+
+    }
+
+    public class PhoneEditItem : ViewModelBase
+    {
+        public string Number { get; set; }
+        public string Remarks { get; set; }
+        public int CompanyId { get; set; }
 
     }
 }

@@ -1,7 +1,12 @@
-﻿using ColdCallsTracker.Code;
+﻿using System;
+using System.Net;
+using ColdCallsTracker.Code;
 using ColdCallsTracker.Code.Data;
+using ColdCallsTracker.Code.Exceptions;
+using ColdCallsTracker.Code.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ColdCallsTracker.Controllers
 {
@@ -20,6 +25,24 @@ namespace ColdCallsTracker.Controllers
         {
             if (disposing) Service.Dispose();
             base.Dispose(disposing);
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            try
+            {
+                base.OnActionExecuting(context);
+            }
+            catch (ValidationException e)
+            {
+                var errorsView = this.RenderViewAsync("~/Views/Shared/_Errors.cshtml", e.Errors).Result;
+                context.Result = new JsonResult(new
+                {
+                    errorsView
+                });
+            }
+
+            
         }
     }
 }

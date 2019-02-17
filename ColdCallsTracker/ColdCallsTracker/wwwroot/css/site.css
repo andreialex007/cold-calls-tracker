@@ -165,3 +165,18 @@ input[type=number]::-webkit-outer-spin-button {
 [v-cloak] {
     display: none;
 }
+
+.phone-holder {
+    display: flex;
+}
+
+
+.phones-list {
+    width: 86%;
+    padding-right: 19px;
+}
+
+.phoens-management {
+    width: 14%;
+    text-align: right;
+}

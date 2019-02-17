@@ -1,0 +1,14 @@
+﻿@model System.Collections.Generic.List<ColdCallsTracker.Code.Extensions.DbValidationError>
+
+
+
+<div class="alert alert-danger" role="alert">
+    @foreach (var item in Model)
+    {
+        <div>
+            <div><strong>@item.PropertyName</strong></div>
+            <div>@item.ErrorMessage</div>
+            <hr />
+        </div>
+    }
+</div>

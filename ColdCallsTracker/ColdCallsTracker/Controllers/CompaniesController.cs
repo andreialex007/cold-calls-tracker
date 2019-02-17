@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ColdCallsTracker.Code.Data.ViewModels;
+﻿using ColdCallsTracker.Code.Data.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,17 +11,23 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
-        {
-            return View("~/Pages/Companies/Index.cshtml");
-        }
+        public ActionResult Index() => View("~/Pages/Companies/Index.cshtml");
 
         [HttpGet]
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id) => View("~/Pages/Companies/Edit.cshtml");
+
+        [HttpGet]
+        public ActionResult Load(int id)
         {
             var company = Service.Company.Edit(id);
+            return Json(company);
+        }
 
-            return View("~/Pages/Companies/Index.cshtml", company);
+        [HttpPost]
+        public ActionResult Save([FromBody] CompanyEditItem item)
+        {
+            Service.Company.Save(item);
+            return Json(item);
         }
 
         [HttpPost]
