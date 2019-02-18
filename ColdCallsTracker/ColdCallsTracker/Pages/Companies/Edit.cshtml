@@ -11,13 +11,17 @@
 
 
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.dependencyLib.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-inputmask@0.2.1/dist/vue-inputmask-browser.js"></script>
+
+
     <script src="~/js/companies/edit-company.js" asp-append-version="true"></script>
 }
 
 <div v-cloak class="company-edit-page">
-
     <div v-bind:html="errorsView" class="errors-holder"></div>
-
     <h2>
         <span class="pb-2">{{ entity.Name || 'Данные о компании' }}</span>
         <span v-on:click="save" class="btn btn-success float-right ml-2 btn-sm">Сохранить</span>
@@ -66,20 +70,22 @@
                 <div class="col mt-2">
                     <div class="phone-holder">
                         <div class="phones-list">
-                            <select v-bind:disabled="entity.Phones.length === 0" class="form-control form-control-sm">
-                                <template v-for="phone in entity.Phones">
-                                    <option>{{ phone.Number }} - {{ phone.Remarks }}</option>
-                                </template>
+                            <select v-bind:disabled="entity.Phones.length === 0" v-model="selectedPhoneId" class="form-control form-control-sm">
+                                <option v-for="phone in entity.Phones" v-bind:value="phone.Id">{{ phone.Number }} - {{ phone.Remarks }}</option>
                             </select>
                         </div>
                         <div class="phoens-management">
-                            <span v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" class="btn btn-success btn-sm">
+                            <span v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" v-on:click="editPhone" class="btn btn-success btn-sm">
                                 <i class="fas fa-edit"></i>
-                                Редактировать телефон
+                                Редактировать
                             </span>
                             <span v-on:click="addPhone" class="btn btn-secondary ml-2 btn-sm">
                                 <i class="fas fa-plus-circle"></i>
-                                Добавить телефон
+                                Добавить
+                            </span>
+                            <span v-on:click="removePhone" class="btn btn-secondary ml-2 btn-sm">
+                                <i class="fas fa-times"></i>
+                                Удалить
                             </span>
                             <span v-bind:class="{ 'disabled' : !callDescription || !selectedPhoneId }" class="btn btn-danger ml-2 btn-sm">
                                 <i class="fas fa-save"></i>
@@ -88,7 +94,7 @@
                         </div>
                     </div>
                     <div>
-                        <textarea placeholder="Описание звонка" v-model="callDescription" rows="3" class="form-control mt-3"></textarea>
+                        <textarea placeholder="Описание звонка" v-model="callDescription" rows="2" class="form-control mt-3"></textarea>
                     </div>
                 </div>
             </div>
@@ -125,23 +131,27 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Редактирование телефона</h5>
-                    <button type="button"  v-on:click="close"  class="close" aria-label="Close">
+                    <h5 class="modal-title">{{ entity.Id == 0 ? 'Редактирование' : 'Добавление' }} телефона</h5>
+                    <button type="button" v-on:click="close" class="close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <div>
-                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup.enter="save" placeholder="телефон"/>
+                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup="maskCheck" v-mask="'9 (999) 999-99-99'" v-on:keyup.enter="save" placeholder="телефон" />
+                        </div>
+                        <div v-if="hasDuplicates" class="alert alert-danger mt-2">
+                            <div><strong>Найден дубликат</strong></div>
+                            <div><a href="#" target="_blank"><em>{{ duplicate.company }}</em></a></div>
                         </div>
                     </div>
                     <div>
-                        <div><input type="text" class="form-control"  v-model="entity.Remarks"  placeholder="Описание" /></div>
+                        <div><input type="text" class="form-control" v-model="entity.Remarks" placeholder="Описание" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" v-on:click="save" class="btn btn-danger">Сохранить</button>
+                    <button type="button" v-on:click="save" v-bind:class="{ 'disabled': !isReadyForSave }" class="btn btn-danger">Сохранить</button>
                 </div>
             </div>
         </div>

@@ -28,15 +28,17 @@ namespace ColdCallsTracker.Code.Services
                         Remarks = x.Remarks,
                         ActivityType = x.ActivityType,
                         WebSites = x.WebSites,
-                        Phones = x.Phones.Select(p => new PhoneEditItem
-                        {
-                            Id = p.Id,
-                            Remarks = p.Remarks,
-                            DateCreate = p.DateCreate,
-                            DateModify = p.DateModify,
-                            Number = p.Number,
-                            CompanyId = p.CompanyId
-                        })
+                        Phones = x.Phones
+                            .Select(p => new PhoneEditItem
+                            {
+                                Id = p.Id,
+                                Remarks = p.Remarks,
+                                DateCreate = p.DateCreate,
+                                DateModify = p.DateModify,
+                                Number = p.Number,
+                                CompanyId = p.CompanyId
+                            })
+                            .OrderBy(n => n.Number)
                             .ToList()
                     })
                     .FirstOrDefault(x => x.Id == id);

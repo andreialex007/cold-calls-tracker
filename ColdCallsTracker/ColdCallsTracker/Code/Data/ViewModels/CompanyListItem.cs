@@ -45,7 +45,10 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
     public class PhoneEditItem : ViewModelBase
     {
+        [Required]
         public string Number { get; set; }
+
+        [Required]
         public string Remarks { get; set; }
         public int CompanyId { get; set; }
 

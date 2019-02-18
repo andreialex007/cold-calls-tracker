@@ -31,6 +31,33 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpPost]
+        public ActionResult EditPhone([FromBody] PhoneEditItem item)
+        {
+            Service.Phone.Save(item);
+            return Json(item);
+        }
+
+        [HttpGet]
+        public ActionResult FindPhoneDuplicate(int id, string phone)
+        {
+            var duplicate = Service.Phone.FindDuplicate(phone, id);
+            if (duplicate != null)
+            {
+                return Json(new
+                {
+                    number = duplicate.Number,
+                    company = duplicate.Company.Name,
+                    duplicate.CompanyId,
+                    hasDuplicate = true
+                });
+            }
+            return Json(new
+            {
+                hasDuplicate = false
+            });
+        }
+
+        [HttpPost]
         public ActionResult Search([FromBody] CompanySearchParameters parameters)
         {
             var (items, total, filtered) = Service.Company.Search(parameters);
