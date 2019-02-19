@@ -53,5 +53,18 @@ namespace ColdCallsTracker.Code.Services
             return phone;
         }
 
+        public void DeletePhone(int id)
+        {
+            var phone = Db.Phones
+                .Where(x => x.Id == id)
+                .Include(x => x.CallRecords)
+                .First();
+
+
+            Db.CallRecords.RemoveRange(phone.CallRecords);
+            Db.Phones.Remove(phone);
+            Db.SaveChanges();
+        }
+
     }
 }

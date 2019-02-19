@@ -23,6 +23,13 @@ namespace ColdCallsTracker.Controllers
             return Json(company);
         }
 
+        [HttpGet]
+        public ActionResult DeletePhone(int id)
+        {
+            Service.Phone.DeletePhone(id);
+            return Json(new { });
+        }
+
         [HttpPost]
         public ActionResult Save([FromBody] CompanyEditItem item)
         {

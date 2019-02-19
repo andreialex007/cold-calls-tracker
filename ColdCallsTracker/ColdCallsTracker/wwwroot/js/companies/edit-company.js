@@ -1,10 +1,11 @@
 ﻿$(function () {
 
-    Vue.directive('mask', {
-        bind: function (el, binding) {
-            window.Inputmask(binding.value).mask(el);
-        }
-    });
+    Vue.directive('mask',
+        {
+            bind: function (el, binding) {
+                window.Inputmask(binding.value).mask(el);
+            }
+        });
 
 
     window.editCompany = new Vue({
@@ -42,12 +43,23 @@
                 window.editPhoneModal.open();
             },
             editPhone(item) {
-                window.editPhoneModal.entity = JSON.parse(JSON.stringify(editCompany.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0]));
+                window.editPhoneModal.entity =
+                    JSON.parse(JSON.stringify(this.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0]));
                 window.editPhoneModal.open();
                 window.editPhoneModal.isComplete = true;
             },
-            removePhone(item) {
-                
+            async removePhone(item) {
+                let result = confirm("Хотите удалить телефон, все записи связанные с телефоном будут удалены!");
+                if (result == true) {
+                    await $.ajax({
+                        method: "GET",
+                        contentType: "application/json",
+                        url: "/Companies/DeletePhone?id=" + this.selectedPhoneId
+                    });
+                    this.entity.Phones = this.entity.Phones.filter(x => x.Id != this.selectedPhoneId);
+                };
+
+                this.selectedPhoneId = this.entity.Phones[0].Id + "";
             }
         },
         async mounted() {
