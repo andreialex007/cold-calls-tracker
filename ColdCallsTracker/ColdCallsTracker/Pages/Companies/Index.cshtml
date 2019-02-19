@@ -31,10 +31,10 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <span class="btn btn-primary btn-sm float-right">
+                <a href="/Companies/Edit/0" class="btn btn-primary btn-sm float-right">
                     <i class="fas fa-plus"></i>
                     Добавить
-                </span>
+                </a>
             </div>
         </div>
     </div>
@@ -63,6 +63,7 @@
                 <th v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">
                     <select v-model="config.columns.StateId.filter" class="form-control form-control-sm">
                         <option value="">Любой</option>
+                        <option value="0">Черновик</option>
                         <option value="1">В процессе</option>
                         <option value="2">Успех</option>
                         <option value="3">Отказ</option>
@@ -145,7 +146,7 @@
                     <td>{{ item.WebSites }}</td>
                     <td v-bind:class="{ 'order-column': !!config.columns.Remarks.sorting }">{{ item.Remarks }}</td>
                     <td>{{ item.PhoneNumbersList }}</td>
-                    <td v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">{{ item.State }}</td>
+                    <td v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">{{ item.State || 'Черновик' }}</td>
                     <td v-bind:class="{ 'order-column': !!config.columns.LastCallRecordDate.sorting }">{{ item.LastCallRecordDateStr }}</td>
                     <td class="text-left actions-col">
                         <a v-bind:href="'/Companies/Edit/' + item.Id" class="btn btn-success btn-xs edit-btn">

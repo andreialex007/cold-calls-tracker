@@ -33,6 +33,8 @@ namespace ColdCallsTracker.Controllers
         [HttpPost]
         public ActionResult Save([FromBody] CompanyEditItem item)
         {
+            if (item.StateId == 0)
+                item.StateId = null;
             Service.Company.Save(item);
             return Json(item);
         }

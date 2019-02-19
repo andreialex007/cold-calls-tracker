@@ -15,7 +15,8 @@
                 entity: {
                     Id: location.pathname.split('/')[3],
                     Phones: [],
-                    Records: []
+                    Records: [],
+                    StateId: 0
                 },
                 errorsView: "",
                 activeTab: "log",
@@ -31,6 +32,13 @@
                     data: JSON.stringify(this.entity),
                     url: "/Companies/Save"
                 });
+                if (this.entity.Id == 0) {
+                    location.href = "/Companies/Edit/" + result.Id;
+                    return;
+                }
+                if (result.StateId == null) {
+                    result.StateId = 0;
+                }
                 this.entity = result;
             },
             async load() {
@@ -41,8 +49,7 @@
                 window.editPhoneModal.open();
             },
             editPhone(item) {
-                window.editPhoneModal.entity =
-                    JSON.parse(JSON.stringify(this.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0]));
+                window.editPhoneModal.entity = JSON.parse(JSON.stringify(this.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0]));
                 window.editPhoneModal.open();
                 window.editPhoneModal.isComplete = true;
             },
@@ -94,6 +101,9 @@
                 return;
             }
 
+            if (result.StateId == null) {
+                result.StateId = 0;
+            }
             this.entity = result;
 
             if (this.entity.Phones.length !== 0) {

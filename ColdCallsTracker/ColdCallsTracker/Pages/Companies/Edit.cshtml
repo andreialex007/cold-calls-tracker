@@ -42,7 +42,7 @@
                 <label class="col-sm-1 text-right">Статус</label>
                 <div class="col-sm-3">
                     <select v-model="entity.StateId" class="form-control  form-control-sm">
-                        <option value="">Черновик</option>
+                        <option value="0">Черновик</option>
                         <option value="1">В процессе</option>
                         <option value="2">Успех</option>
                         <option value="3">Отказ</option>
@@ -65,7 +65,7 @@
             <div class="mt-1 text-center">
             </div>
         </div>
-        <div>
+        <div v-if="entity.Id > 0" >
             <div class="row">
                 <div class="col mt-2">
                     <div class="phone-holder">

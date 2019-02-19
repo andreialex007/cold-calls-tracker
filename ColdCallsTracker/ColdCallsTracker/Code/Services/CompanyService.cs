@@ -133,7 +133,10 @@ namespace ColdCallsTracker.Code.Services
                 query = query.Where(x => x.WebSites.ToLower().Contains(parameters.WebSites.ToLower()));
 
             if (parameters.StateId.HasValue)
+            {
+                if (parameters.StateId == 0) parameters.StateId = null;
                 query = query.Where(x => x.StateId == parameters.StateId);
+            }
 
             if (parameters.LastCallRecordDateFrom.HasValue)
                 query = query.Where(x => x.LastCallRecordDate >= parameters.LastCallRecordDateFrom);
