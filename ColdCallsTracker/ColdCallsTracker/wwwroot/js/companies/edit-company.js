@@ -14,12 +14,11 @@
             return {
                 entity: {
                     Id: location.pathname.split('/')[3],
-                    Phones: []
+                    Phones: [],
+                    Records: []
                 },
                 errorsView: "",
                 activeTab: "log",
-
-
                 callDescription: "",
                 selectedPhoneId: null
             }
@@ -32,7 +31,6 @@
                     data: JSON.stringify(this.entity),
                     url: "/Companies/Save"
                 });
-
                 this.entity = result;
             },
             async load() {
@@ -59,7 +57,17 @@
                     this.entity.Phones = this.entity.Phones.filter(x => x.Id != this.selectedPhoneId);
                 };
 
-                this.selectedPhoneId = this.entity.Phones[0].Id + "";
+                this.selectedPhoneId = this.entity.Phones.length == 0 ? "" : this.entity.Phones[0].Id + "";
+            },
+            async saveRecord() {
+                let newRecord = await $.ajax({
+                    method: "POST",
+                    // contentType: "application/json",
+                    data: { description: this.callDescription, phoneId: this.selectedPhoneId },
+                    url: "/Companies/AddRecord"
+                });
+                this.entity.Records = [newRecord].concat(this.entity.Records);
+                this.callDescription = "";
             }
         },
         async mounted() {
@@ -71,6 +79,9 @@
                 vm.entity.Phones = vm.entity.Phones.filter(x => x.Id !== entity.Id);
                 vm.entity.Phones.push(entity);
                 vm.entity.Phones = _.sortBy(vm.entity.Phones, function (x) { return x.Number; });
+                if (!vm.selectedPhoneId) {
+                    vm.selectedPhoneId = entity.Id;
+                }
             }
 
             let result = await $.ajax({
@@ -91,21 +102,24 @@
         }
     });
 
+    let defaultPhoneEntity = {
+        Number: "8 (___) ___-__-__",
+        Remarks: "Общий",
+        CompanyId: null,
+        Id: 0
+    };
+
     window.editPhoneModal = new Vue({
         el: ".edit-phone-modal",
         data: function () {
+
             return {
                 isComplete: false,
                 visible: false,
                 hasDuplicates: false,
                 duplicate: { number: "", company: "" },
                 companyEditLink: "",
-                entity: {
-                    Number: "8 (___) ___-__-__",
-                    Remarks: "Общий",
-                    CompanyId: null,
-                    Id: 0
-                }
+                entity: JSON.parse(JSON.stringify(defaultPhoneEntity))
             }
         },
         methods: {
@@ -133,6 +147,8 @@
                 this.entity = result;
                 window.onPhoneChange();
                 this.close();
+
+                this.entity = JSON.parse(JSON.stringify(defaultPhoneEntity));
             },
             maskCheck: function (field) {
                 this.isComplete = field.target.inputmask.isComplete();

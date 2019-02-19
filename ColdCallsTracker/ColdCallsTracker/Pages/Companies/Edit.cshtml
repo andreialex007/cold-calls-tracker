@@ -83,11 +83,11 @@
                                 <i class="fas fa-plus-circle"></i>
                                 Добавить
                             </span>
-                            <span v-on:click="removePhone" class="btn btn-secondary ml-2 btn-sm">
+                            <span v-on:click="removePhone" v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" class="btn btn-secondary ml-2 btn-sm">
                                 <i class="fas fa-times"></i>
                                 Удалить
                             </span>
-                            <span v-bind:class="{ 'disabled' : !callDescription || !selectedPhoneId }" class="btn btn-danger ml-2 btn-sm">
+                            <span v-bind:class="{ 'disabled' : !callDescription || !selectedPhoneId }" v-on:click="saveRecord" class="btn btn-danger ml-2 btn-sm">
                                 <i class="fas fa-save"></i>
                                 Сохранить запись
                             </span>
@@ -102,20 +102,10 @@
                 <div class="col">
                     <table class="records-table table table-bordered table-hover table-sm table-striped">
                         <tbody>
-                            <tr>
-                                <td>Первая запись</td>
-                                <td class="phone">+7(123)456-78-91</td>
-                                <td class="date">10.10.2019 12:12:00</td>
-                            </tr>
-                            <tr>
-                                <td>Вторая запись</td>
-                                <td class="phone">+7(123)456-78-91</td>
-                                <td class="date">10.10.2019 12:12:00</td>
-                            </tr>
-                            <tr>
-                                <td>Третья запись</td>
-                                <td class="phone">+7(123)456-78-91</td>
-                                <td class="date">10.10.2019 12:12:00</td>
+                            <tr v-for="record in entity.Records">
+                                <td>{{ record.Content }}</td>
+                                <td class="phone">{{ record.Phone }}</td>
+                                <td class="date">{{ record.DateCreate }}</td>
                             </tr>
                         </tbody>
                     </table>

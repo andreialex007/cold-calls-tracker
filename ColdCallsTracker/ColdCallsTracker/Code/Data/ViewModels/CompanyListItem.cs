@@ -37,6 +37,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Remarks { get; set; }
 
         public List<PhoneEditItem> Phones { get; set; } = new List<PhoneEditItem>();
+        public List<CallRecordItem> Records { get; set; } = new List<CallRecordItem>();
 
         public int? StateId { get; set; }
         public string State { get; set; }
@@ -52,5 +53,12 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Remarks { get; set; }
         public int CompanyId { get; set; }
 
+    }
+    public class CallRecordItem : ViewModelBase
+    {
+        [Required]
+        public string Content { get; set; }
+        public int PhoneId { get; set; }
+        public string Phone { get; set; }
     }
 }

@@ -39,6 +39,17 @@ namespace ColdCallsTracker.Code.Services
                                 CompanyId = p.CompanyId
                             })
                             .OrderBy(n => n.Number)
+                            .ToList(),
+                        Records = x.Phones.SelectMany(i => i.CallRecords)
+                            .OrderByDescending(s => s.DateCreate)
+                            .Select(r => new CallRecordItem
+                            {
+                                Id = r.Id,
+                                Content = r.Content,
+                                Phone = r.Phone.Number,
+                                DateCreate = r.DateCreate,
+                                PhoneId = r.PhoneId
+                            })
                             .ToList()
                     })
                     .FirstOrDefault(x => x.Id == id);
@@ -95,7 +106,7 @@ namespace ColdCallsTracker.Code.Services
                         .SelectMany(p => p.CallRecords)
                         .OrderBy(d => d.DateModify)
                         .Select(s => s.DateModify)
-                        .SingleOrDefault(),
+                        .FirstOrDefault(),
                     PhoneNumbersList = x.Phones
                         .Select(n => n.Number)
                         .ToList(),

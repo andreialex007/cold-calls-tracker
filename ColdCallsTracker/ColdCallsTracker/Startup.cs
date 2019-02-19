@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace ColdCallsTracker
@@ -29,7 +30,15 @@ namespace ColdCallsTracker
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
             services.AddMvc()
-                .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    var dateConverter = new Newtonsoft.Json.Converters.IsoDateTimeConverter
+                    {
+                        DateTimeFormat = "dd.MM.yyyy HH:mm:ss"
+                    };
+                    options.SerializerSettings.Converters.Add(dateConverter);
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             AppDbContext.ConnectionString = Configuration.GetConnectionString("MainConnnectionString");

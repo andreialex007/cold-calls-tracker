@@ -38,6 +38,13 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpPost]
+        public ActionResult AddRecord([FromForm] string description, [FromForm] int phoneId)
+        {
+            var item = Service.CallRecord.AddRecord(phoneId, description);
+            return Json(item);
+        }
+
+        [HttpPost]
         public ActionResult EditPhone([FromBody] PhoneEditItem item)
         {
             Service.Phone.Save(item);
