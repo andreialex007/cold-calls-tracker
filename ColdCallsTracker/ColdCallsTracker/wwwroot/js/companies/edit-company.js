@@ -67,9 +67,13 @@
                 this.selectedPhoneId = this.entity.Phones.length == 0 ? "" : this.entity.Phones[0].Id + "";
             },
             async saveRecord() {
+                if (!this.selectedPhoneId) {
+                    return;
+                }
+
+
                 let newRecord = await $.ajax({
                     method: "POST",
-                    // contentType: "application/json",
                     data: { description: this.callDescription, phoneId: this.selectedPhoneId },
                     url: "/Companies/AddRecord"
                 });

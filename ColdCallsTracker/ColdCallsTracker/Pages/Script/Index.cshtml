@@ -1,0 +1,20 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Скрипт";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+    <script src="~/js/script/call-script.js" asp-append-version="true"></script>
+}
+
+    <div class="script-page">
+        <h1>Скрипт звонка</h1>
+        <div id="summernote">@Html.Raw(Model)</div>
+    </div>

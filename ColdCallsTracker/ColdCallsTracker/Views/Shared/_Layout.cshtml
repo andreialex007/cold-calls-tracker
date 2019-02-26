@@ -26,7 +26,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <i class="fas fa-phone"></i>
                 &nbsp;Трекер звонков
             </a>
@@ -35,10 +35,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+                    <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/companies") ? "active" : "")">
                         <a class="nav-link" href="/Companies">Компании</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/script") ? "active" : "")">
                         <a class="nav-link" href="/Script">Скрипт</a>
                     </li>
                 </ul>

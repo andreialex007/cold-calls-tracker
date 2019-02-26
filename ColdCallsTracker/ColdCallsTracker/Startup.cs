@@ -35,7 +35,7 @@ namespace ColdCallsTracker
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     var dateConverter = new Newtonsoft.Json.Converters.IsoDateTimeConverter
                     {
-                        DateTimeFormat = "dd.MM.yyyy HH:mm:ss"
+                        DateTimeFormat = "dd MMM yy HH:mm"
                     };
                     options.SerializerSettings.Converters.Add(dateConverter);
                 })
@@ -68,8 +68,18 @@ namespace ColdCallsTracker
                     db.Companies.AddRange(companies);
                     db.SaveChanges();
                 }
-            }
 
+                if (!db.SystemSettings.Any())
+                {
+                    var systemSetting = new SystemSetting
+                    {
+                        Code = "ScriptText",
+                        Value = "<em>This is script text</em>"
+                    };
+                    db.SystemSettings.Add(systemSetting);
+                    db.SaveChanges();
+                }
+            }
 
             services.Configure<RequestLocalizationOptions>(options =>
             {

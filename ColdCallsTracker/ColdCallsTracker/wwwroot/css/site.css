@@ -199,3 +199,27 @@ input[type=number]::-webkit-outer-spin-button {
 .form-control {
     background-color: #fbfbfb !important;
 }
+
+.navbar-expand-lg {
+    z-index: 9999;
+}
+
+.note-editing-area {
+    height: calc(100vh - 205px) !important;
+}
+
+.modal {
+    z-index: 9999999 !important;
+}
+
+.call-content {
+    white-space: pre-line;
+}
+
+.records-table .phone {
+    vertical-align: middle;
+}
+
+.records-table .date {
+    vertical-align: middle;
+}

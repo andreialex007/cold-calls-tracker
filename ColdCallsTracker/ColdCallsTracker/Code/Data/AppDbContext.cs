@@ -16,5 +16,6 @@ namespace ColdCallsTracker.Code.Data
         public DbSet<Phone> Phones { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<CallRecord> CallRecords { get; set; }
+        public DbSet<SystemSetting> SystemSettings { get; set; }
     }
 }

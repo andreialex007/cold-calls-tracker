@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div>
-                        <textarea placeholder="Описание звонка" v-model="callDescription" rows="2" class="form-control mt-3"></textarea>
+                        <textarea placeholder="Описание звонка" v-model="callDescription"  v-on:keyup.ctrl.enter="saveRecord"  rows="2" class="form-control mt-3"></textarea>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                     <table class="records-table table table-bordered table-hover table-sm table-striped">
                         <tbody>
                             <tr v-for="record in entity.Records">
-                                <td>{{ record.Content }}</td>
+                                <td class="call-content" >{{ record.Content }}</td>
                                 <td class="phone">{{ record.Phone }}</td>
                                 <td class="date">{{ record.DateCreate }}</td>
                             </tr>
@@ -129,7 +129,8 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div>
-                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup="maskCheck" v-mask="'9 (999) 999-99-99'" v-on:keyup.enter="save" placeholder="телефон" />
+                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup="maskCheck" 
+                                   v-mask="'9 (999) 999-99-99'" v-on:keyup.enter="save" placeholder="телефон" />
                         </div>
                         <div v-if="hasDuplicates" class="alert alert-danger mt-2">
                             <div><strong>Найден дубликат</strong></div>
@@ -137,7 +138,7 @@
                         </div>
                     </div>
                     <div>
-                        <div><input type="text" class="form-control" v-model="entity.Remarks" placeholder="Описание" /></div>
+                        <div><input type="text" class="form-control" v-model="entity.Remarks"  v-on:keyup.enter="save"  placeholder="Описание" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
