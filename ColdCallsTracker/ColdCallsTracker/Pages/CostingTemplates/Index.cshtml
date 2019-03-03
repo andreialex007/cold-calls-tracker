@@ -1,7 +1,10 @@
-﻿@model List<ColdCallsTracker.Code.Data.ViewModels.CostingTemplateItem>
+﻿@using ColdCallsTracker.Code.Data.Models
+@using ColdCallsTracker.Code.Extensions
+@using ColdCallsTracker.Code.Utils
+@model List<ColdCallsTracker.Code.Data.ViewModels.CostingTemplateItem>
 
 @{
-    ViewBag.Title = "Компании";
+    ViewBag.Title = "Шаблоны затрат";
     Layout = "_Layout";
 }
 
@@ -15,9 +18,66 @@
     <script src="~/js/costing-templates/costing-templates.js" asp-append-version="true"></script>
 }
 
-<div v-cloak data-items="@(Model)" class="costing-templates-page">
-    
-    <h1>Шаблоны затрат</h1>
-    
+<div v-cloak data-items="@(Model.ToJson())" class="costing-templates-page">
+
+    <div class="row">
+        <div class="col">
+            <h1>Шаблоны затрат</h1>
+        </div>
+        <div class="col">
+            <span v-on:click="addItem()" class="btn btn-success btn-sm float-right mt-3">Добавить элемент затрат</span>
+        </div>
+    </div>
+
+    <table class="table table-sm mt-3 table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th class="id">#</th>
+                <th>Название</th>
+                <th class="qty">Кол.</th>
+                <th class="unit">Юнит</th>
+                <th class="cost">Цена</th>
+                <th class="total">Всего</th>
+                <th class="category">Категория</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-bind:class="'element_' + item.Id" v-for="item in items">
+                <td>{{ item.Id }}</td>
+                <td>
+                    <input v-on:change="saveItem(item)" v-model="item.Name" type="text" class="form-control form-control-sm" placeholder="Название" />
+                </td>
+                <td>
+                    <input v-on:change="saveItem(item)" v-model="item.Qty" type="text" class="form-control form-control-sm numbers-only" placeholder="Количество" />
+                </td>
+                <td>
+                    <select v-on:change="saveItem(item)" v-model="item.Unit" class="form-control form-control-sm">
+                        @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
+                        {
+                            <option value="@(el.Key)">@(el.Value)</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <input v-on:change="saveItem(item)" v-model="item.Cost" type="text" class="form-control form-control-sm numbers-only" placeholder="Цена" />
+                </td>
+                <td>
+                    <input v-on:change="saveItem(item)" v-model="item.Total" type="text" class="form-control form-control-sm numbers-only" placeholder="Всего" />
+                </td>
+                <td>
+                    <select v-on:change="saveItem(item)" v-model="item.CategoryId" class="form-control form-control-sm">
+                        @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
+                        {
+                            <option value="@(el.Key)">@(el.Value)</option>
+                        }
+                    </select>
+                </td>
+                <td class="actions">
+                    <span v-on:click="removeItem(item)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
 </div>

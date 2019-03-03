@@ -35,7 +35,7 @@ namespace ColdCallsTracker
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     var dateConverter = new Newtonsoft.Json.Converters.IsoDateTimeConverter
                     {
-                        DateTimeFormat = "dd MMM yy HH:mm"
+                        DateTimeFormat = "dd.MM.yyyy HH:mm"
                     };
                     options.SerializerSettings.Converters.Add(dateConverter);
                 })
@@ -77,6 +77,67 @@ namespace ColdCallsTracker
                         Value = "<em>This is script text</em>"
                     };
                     db.SystemSettings.Add(systemSetting);
+                    db.SaveChanges();
+                }
+
+                if (!db.CostingTemplates.Any())
+                {
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Лента с детальным просмотром и постраничностью",
+                        Qty = 3,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Лента с детальным просмотром и постраничностью + сложный фильтр",
+                        Qty = 4.5,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Форма из 5-ти инпутов",
+                        Qty = 2,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Полнотекстовый поиск по сайту",
+                        Qty = 1.5,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Страница со статической информацией",
+                        Qty = 1.5,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Лента без детального просмотра",
+                        Qty = 1.5,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Лента без детального просмотра с постраничностью",
+                        Qty = 2,
+                        CategoryId = (int)CostingCategoryEnum.Ui
+                    });
+                    db.CostingTemplates.Add(new CostingTemplate
+                    {
+                        Unit = (int)UnitEnum.Hours,
+                        Name = "Интеграция с 1с базовая",
+                        Qty = 5,
+                        CategoryId = (int)CostingCategoryEnum.Integration
+                    });
                     db.SaveChanges();
                 }
             }

@@ -8,5 +8,7 @@
         public double Qty { get; set; }
         public double? Cost { get; set; }
         public double? Total { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

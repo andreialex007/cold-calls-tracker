@@ -11,10 +11,25 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index() => View("~/Pages/Companies/Index.cshtml");
+        public ActionResult Index()
+        {
+            var items = Service.CostingTemplateService.All();
+
+            return View("~/Pages/CostingTemplates/Index.cshtml", items);
+        }
+
+        [HttpPost]
+        public ActionResult Save([FromBody] CostingTemplateItem item)
+        {
+            Service.CostingTemplateService.Save(item);
+            return Json(item);
+        }
 
         [HttpGet]
-        public ActionResult Edit(int? id) => View("~/Pages/Companies/Edit.cshtml");
-
+        public ActionResult Delete(int id)
+        {
+            Service.CostingTemplateService.Remove(id);
+            return Json(new { result = "OK" });
+        }
     }
 }

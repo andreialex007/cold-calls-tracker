@@ -1,9 +1,14 @@
-﻿@model List<ColdCallsTracker.Code.Data.Models.State>
+﻿@using ColdCallsTracker.Code.Data.Models
+@using ColdCallsTracker.Code.Utils
+@model List<ColdCallsTracker.Code.Data.Models.State>
 @{
     ViewData["Title"] = "Главная";
 }
 <div class="row">
     <div class="col">
-        
+        @foreach (var iteim in EnumUtil.ToDictionary<CostingCategoryEnum>())
+        {
+            <div>@iteim.Value : @iteim.Key</div>
+        }
     </div>
 </div>

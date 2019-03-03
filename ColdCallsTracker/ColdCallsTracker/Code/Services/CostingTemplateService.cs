@@ -25,7 +25,8 @@ namespace ColdCallsTracker.Code.Services
                 DateModify = x.DateModify,
                 Name = x.Name,
                 Qty = x.Qty,
-                Total = x.Total
+                Total = x.Total,
+                CategoryId = x.CategoryId
             })
                 .OrderBy(x => x.Name)
                 .ToList();
@@ -55,11 +56,14 @@ namespace ColdCallsTracker.Code.Services
             dbItem.Qty = item.Qty;
             dbItem.Total = item.Total;
             dbItem.Unit = item.Unit;
+            dbItem.CategoryId = item.CategoryId;
             dbItem.DateModify = DateTime.Now;
 
             Db.SaveChanges();
 
             item.Id = dbItem.Id;
+            item.DateModify = dbItem.DateModify;
+            item.DateCreate = dbItem.DateCreate;
         }
 
         public void Remove(int id)

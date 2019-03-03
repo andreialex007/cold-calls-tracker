@@ -9,6 +9,8 @@
         public double Cost { get; set; }
         public double Total { get; set; }
 
+        public int CategoryId { get; set; }
+
         public int QuoteId { get; set; }
         public Quote Quote { get; set; }
     }

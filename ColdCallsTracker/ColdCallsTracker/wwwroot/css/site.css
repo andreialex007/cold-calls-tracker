@@ -223,3 +223,43 @@ input[type=number]::-webkit-outer-spin-button {
 .records-table .date {
     vertical-align: middle;
 }
+
+.costing-templates-page .qty {
+    width: 50px;
+}
+
+.costing-templates-page .id {
+    width: 50px;
+}
+
+.costing-templates-page .unit {
+    width: 100px;
+}
+
+.costing-templates-page table {
+    table-layout: fixed;
+}
+
+.costing-templates-page .cost {
+    width: 100px;
+}
+
+.costing-templates-page .total {
+    width: 100px;
+}
+
+.costing-templates-page .actions .btn {
+    visibility: hidden;
+}
+
+.costing-templates-page .actions{
+    width: 50px;
+}
+
+.costing-templates-page .category{
+    width: 130px;
+}
+
+.costing-templates-page tr:hover .actions .btn {
+    visibility: visible;
+}
