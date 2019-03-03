@@ -40,6 +40,9 @@
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/companies") ? "active" : "")">
                         <a class="nav-link" href="/Companies">Компании</a>
                     </li>
+                    <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/costingtemplates") ? "active" : "")">
+                        <a class="nav-link" href="/CostingTemplates">Шаблоны затрат</a>
+                    </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/script") ? "active" : "")">
                         <a class="nav-link" href="/Script">Скрипт</a>
                     </li>
