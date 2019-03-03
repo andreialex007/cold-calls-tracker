@@ -4,14 +4,16 @@ using ColdCallsTracker.Code.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ColdCallsTracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190303155617_QuotesAndCostingsAdd")]
+    partial class QuotesAndCostingsAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +81,9 @@ namespace ColdCallsTracker.Migrations
 
                     b.Property<DateTime>("DateModify");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.Property<string>("Name");
 
                     b.Property<double>("Qty");
@@ -87,38 +92,13 @@ namespace ColdCallsTracker.Migrations
 
                     b.Property<double>("Total");
 
-                    b.Property<int>("Unit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("QuoteId");
 
-                    b.ToTable("Costings");
-                });
+                    b.ToTable("Costing");
 
-            modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.CostingTemplate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double?>("Cost");
-
-                    b.Property<DateTime>("DateCreate");
-
-                    b.Property<DateTime>("DateModify");
-
-                    b.Property<string>("Name");
-
-                    b.Property<double>("Qty");
-
-                    b.Property<double?>("Total");
-
-                    b.Property<int>("Unit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CostingTemplates");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Costing");
                 });
 
             modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.Phone", b =>
@@ -195,6 +175,16 @@ namespace ColdCallsTracker.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SystemSettings");
+                });
+
+            modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.CostingTemplate", b =>
+                {
+                    b.HasBaseType("ColdCallsTracker.Code.Data.Models.Costing");
+
+
+                    b.ToTable("CostingTemplate");
+
+                    b.HasDiscriminator().HasValue("CostingTemplate");
                 });
 
             modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.CallRecord", b =>

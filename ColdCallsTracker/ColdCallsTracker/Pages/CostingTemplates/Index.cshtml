@@ -1,0 +1,23 @@
+﻿@model List<ColdCallsTracker.Code.Data.ViewModels.CostingTemplateItem>
+
+@{
+    ViewBag.Title = "Компании";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css" />
+}
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js"></script>
+    <script src="~/js/costing-templates/costing-templates.js" asp-append-version="true"></script>
+}
+
+<div v-cloak data-items="@(Model)" class="costing-templates-page">
+    
+    <h1>Шаблоны затрат</h1>
+    
+
+</div>

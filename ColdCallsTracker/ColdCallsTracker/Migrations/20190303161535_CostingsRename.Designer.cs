@@ -4,14 +4,16 @@ using ColdCallsTracker.Code.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ColdCallsTracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190303161535_CostingsRename")]
+    partial class CostingsRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,7 +104,7 @@ namespace ColdCallsTracker.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double?>("Cost");
+                    b.Property<double>("Cost");
 
                     b.Property<DateTime>("DateCreate");
 
@@ -112,7 +114,7 @@ namespace ColdCallsTracker.Migrations
 
                     b.Property<double>("Qty");
 
-                    b.Property<double?>("Total");
+                    b.Property<double>("Total");
 
                     b.Property<int>("Unit");
 
