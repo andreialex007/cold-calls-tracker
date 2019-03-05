@@ -36,5 +36,10 @@
         /// Средняя зарплата в час
         /// </summary>
         public static readonly double AverageSalaryPerHour = SalaryWithFix / WorkingHoursPerMonth;
+
+        /// <summary>
+        /// Доплата за кастомный дизайн
+        /// </summary>
+        public const double CustomDesignMarkup = 0.25;
     }
 }

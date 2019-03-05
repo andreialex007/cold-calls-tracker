@@ -17,11 +17,4 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public DateTime? LastCallRecordDateFrom { get; set; }
         public DateTime? LastCallRecordDateTo { get; set; }
     }
-
-    public class QuoteSearchParameters : SearchParametersBase
-    {
-        public int? Id { get; set; }
-        public string Name { get; set; }
-        public int? CompanyId { get; set; }
-    }
 }

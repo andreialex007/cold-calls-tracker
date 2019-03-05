@@ -2,6 +2,7 @@
 using System.Linq;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels._Common;
+using ColdCallsTracker.Code.Utils;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
@@ -11,15 +12,30 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public List<CostingTemplateItem> CostingTemplates { get; set; }
 
+        public bool CustomDesign { get; set; }
+
         public double Total
         {
             get
             {
                 var uiTemplates = this.CostingTemplates
                     .Where(x => x.Category == CostingCategoryEnum.Ui)
-                    .Where(x => x.Total == null);
+                    .Where(x => x.Total == null)
+                    .Where(x => x.Cost == null);
 
-                return 0;
+                var uiTotal = 0.0;
+                foreach (var templateItem in uiTemplates)
+                {
+                    templateItem.Cost = GlobalVariables.AverageSalaryPerHour;
+                    templateItem.Total = templateItem.Cost * templateItem.Qty;
+                    uiTotal += (templateItem.Total ?? 0);
+                }
+
+                var totalPrice = this.CostingTemplates.Sum(x => x.Total ?? 0);
+                if (this.CustomDesign)
+                    totalPrice += ((GlobalVariables.CustomDesignMarkup + 1) * uiTotal);
+
+                return totalPrice;
             }
         }
     }

@@ -13,14 +13,4 @@ namespace ColdCallsTracker.Code.Data.Models
 
         public List<QuoteTemplateCostingTemplate> CostingTemplates { get; set; }
     }
-
-
-    public class QuoteTemplateCostingTemplate
-    {
-        public int QuoteTemplateId { get; set; }
-        public QuoteTemplate QuoteTemplate { get; set; }
-
-        public int CostingTemplateId { get; set; }
-        public CostingTemplate CostingTemplate { get; set; }
-    }
 }
