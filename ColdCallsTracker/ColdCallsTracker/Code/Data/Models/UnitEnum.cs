@@ -10,16 +10,4 @@ namespace ColdCallsTracker.Code.Data.Models
         [Description("Штуки")]
         Items = 2
     }
-
-    public enum CostingCategoryEnum
-    {
-        [Description("UI")]
-        Ui = 1,
-
-        [Description("Интеграция")]
-        Integration = 2,
-
-        [Description("Прочее")]
-        Other = 3
-    }
 }

@@ -13,7 +13,9 @@ namespace ColdCallsTracker.Code
         public CallRecordService CallRecord { get; set; }
         public StateService State { get; set; }
         public SystemSettingService SystemSetting { get; set; }
-        public CostingTemplateService CostingTemplateService { get; set; }
+        public CostingTemplateService CostingTemplate { get; set; }
+        public QuoteTemplateService QuoteTemplate { get; set; }
+        public QuoteService Quote { get; set; }
 
         public AppService(AppDbContext db)
         {
@@ -22,7 +24,9 @@ namespace ColdCallsTracker.Code
             CallRecord = new CallRecordService(db, this);
             State = new StateService(db, this);
             SystemSetting = new SystemSettingService(db, this);
-            CostingTemplateService = new CostingTemplateService(db, this);
+            CostingTemplate = new CostingTemplateService(db, this);
+            QuoteTemplate = new QuoteTemplateService(db, this);
+            Quote = new QuoteService(db, this);
 
             _appDbContext = db;
         }

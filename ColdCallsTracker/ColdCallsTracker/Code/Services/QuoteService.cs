@@ -8,9 +8,9 @@ using ColdCallsTracker.Code.Extensions;
 
 namespace ColdCallsTracker.Code.Services
 {
-    public class QuotesService : ServiceBase
+    public class QuoteService : ServiceBase
     {
-        public QuotesService(AppDbContext db, AppService appService)
+        public QuoteService(AppDbContext db, AppService appService)
             : base(db, appService)
         {
         }
