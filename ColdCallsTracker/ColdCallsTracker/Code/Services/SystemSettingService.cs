@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ColdCallsTracker.Code.Data;
 
 namespace ColdCallsTracker.Code.Services
@@ -8,6 +9,8 @@ namespace ColdCallsTracker.Code.Services
         public SystemSettingService(AppDbContext db, AppService appService) : base(db, appService)
         {
         }
+
+        
 
         public string GetSetting(string code)
         {
