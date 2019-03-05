@@ -12,6 +12,20 @@ namespace ColdCallsTracker.Code.Data
             if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer(ConnectionString);
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
+                .HasKey(x => new { x.CostingTemplateId, x.QuoteTemplateId });
+            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
+                .HasOne(x => x.CostingTemplate)
+                .WithMany(m => m.QuoteTemplates)
+                .HasForeignKey(x => x.CostingTemplateId);
+            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
+                .HasOne(x => x.QuoteTemplate)
+                .WithMany(e => e.CostingTemplates)
+                .HasForeignKey(x => x.QuoteTemplateId);
+        }
+
         public DbSet<State> States { get; set; }
         public DbSet<Phone> Phones { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -20,5 +34,6 @@ namespace ColdCallsTracker.Code.Data
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Costing> Costings { get; set; }
         public DbSet<CostingTemplate> CostingTemplates { get; set; }
+        public DbSet<QuoteTemplate> QuoteTemplates { get; set; }
     }
 }

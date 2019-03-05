@@ -1,4 +1,6 @@
-﻿namespace ColdCallsTracker.Code.Data.Models
+﻿using System.Collections.Generic;
+
+namespace ColdCallsTracker.Code.Data.Models
 {
     public class CostingTemplate : EntityBase
     {
@@ -10,5 +12,7 @@
         public double? Total { get; set; }
 
         public int CategoryId { get; set; }
+
+        public List<QuoteTemplateCostingTemplate> QuoteTemplates { get; set; }
     }
 }

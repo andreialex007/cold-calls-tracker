@@ -140,6 +140,7 @@ namespace ColdCallsTracker
                     });
                     db.SaveChanges();
                 }
+
             }
 
             services.Configure<RequestLocalizationOptions>(options =>
