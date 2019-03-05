@@ -13,5 +13,7 @@ namespace ColdCallsTracker.Code.Data.Models
 
         public int CategoryId { get; set; }
 
+        public List<QuoteTemplateCostingTemplate> QuoteTemplates { get; set; }
+
     }
 }
