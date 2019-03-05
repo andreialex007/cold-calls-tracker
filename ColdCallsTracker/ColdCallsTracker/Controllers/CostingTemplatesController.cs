@@ -13,7 +13,7 @@ namespace ColdCallsTracker.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var items = Service.CostingTemplateService.All();
+            var items = Service.CostingTemplate.All();
 
             return View("~/Pages/CostingTemplates/Index.cshtml", items);
         }
@@ -21,14 +21,14 @@ namespace ColdCallsTracker.Controllers
         [HttpPost]
         public ActionResult Save([FromBody] CostingTemplateItem item)
         {
-            Service.CostingTemplateService.Save(item);
+            Service.CostingTemplate.Save(item);
             return Json(item);
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            Service.CostingTemplateService.Remove(id);
+            Service.CostingTemplate.Remove(id);
             return Json(new { result = "OK" });
         }
     }

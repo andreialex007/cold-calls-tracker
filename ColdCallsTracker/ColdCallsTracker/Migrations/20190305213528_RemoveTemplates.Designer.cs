@@ -4,14 +4,16 @@ using ColdCallsTracker.Code.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ColdCallsTracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190305213528_RemoveTemplates")]
+    partial class RemoveTemplates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +169,23 @@ namespace ColdCallsTracker.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Quotes");
+                });
+
+            modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.QuoteTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreate");
+
+                    b.Property<DateTime>("DateModify");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuoteTemplates");
                 });
 
             modelBuilder.Entity("ColdCallsTracker.Code.Data.Models.State", b =>

@@ -14,16 +14,6 @@ namespace ColdCallsTracker.Code.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
-                .HasKey(x => new { x.CostingTemplateId, x.QuoteTemplateId });
-            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
-                .HasOne(x => x.CostingTemplate)
-                .WithMany(m => m.QuoteTemplates)
-                .HasForeignKey(x => x.CostingTemplateId);
-            modelBuilder.Entity<QuoteTemplateCostingTemplate>()
-                .HasOne(x => x.QuoteTemplate)
-                .WithMany(e => e.CostingTemplates)
-                .HasForeignKey(x => x.QuoteTemplateId);
         }
 
         public DbSet<State> States { get; set; }
@@ -34,6 +24,5 @@ namespace ColdCallsTracker.Code.Data
         public DbSet<Quote> Quotes { get; set; }
         public DbSet<Costing> Costings { get; set; }
         public DbSet<CostingTemplate> CostingTemplates { get; set; }
-        public DbSet<QuoteTemplate> QuoteTemplates { get; set; }
     }
 }
