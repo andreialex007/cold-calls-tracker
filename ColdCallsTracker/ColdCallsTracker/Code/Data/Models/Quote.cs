@@ -6,7 +6,7 @@ namespace ColdCallsTracker.Code.Data.Models
     {
         public string Name { get; set; }
 
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public Company Company { get; set; }
 
         public List<Costing> Costings { get; set; } = new List<Costing>();

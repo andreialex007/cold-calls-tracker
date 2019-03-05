@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using ColdCallsTracker.Code;
+﻿using ColdCallsTracker.Code;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Exceptions;
 using ColdCallsTracker.Code.Extensions;
