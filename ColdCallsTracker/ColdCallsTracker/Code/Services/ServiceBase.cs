@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ColdCallsTracker.Code.Data;
+﻿using ColdCallsTracker.Code.Data;
 
 namespace ColdCallsTracker.Code.Services
 {
@@ -14,6 +10,7 @@ namespace ColdCallsTracker.Code.Services
         public ServiceBase(AppDbContext db, AppService appService)
         {
             this.Db = db;
+            this.App = appService;
         }
     }
 }

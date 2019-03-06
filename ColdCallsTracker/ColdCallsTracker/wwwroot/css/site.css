@@ -252,14 +252,34 @@ input[type=number]::-webkit-outer-spin-button {
     visibility: hidden;
 }
 
-.costing-templates-page .actions{
+.costing-templates-page .actions {
     width: 50px;
 }
 
-.costing-templates-page .category{
+.costing-templates-page .category {
     width: 130px;
 }
 
 .costing-templates-page tr:hover .actions .btn {
     visibility: visible;
 }
+
+.quote-templates-table {
+    table-layout: fixed;
+}
+
+    .quote-templates-table .id {
+        width: 100px;
+    }
+
+    .quote-templates-table .actions {
+        width: 100px;
+    }
+
+    .quote-templates-table .custom-design {
+        width: 150px;
+    }
+
+    .quote-templates-table .total {
+        width: 150px;
+    }

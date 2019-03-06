@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
-using ColdCallsTracker.Code.Data.ViewModels._Common;
 using ColdCallsTracker.Code.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,17 +17,57 @@ namespace ColdCallsTracker.Code.Services
 
         public List<QuoteTemplateItem> All()
         {
-            var items = Db.QuoteTemplates.Select(x => new QuoteTemplateItem
-            {
-                Id = x.Id,
-                Name = x.Name
-            })
+            var items = Db.QuoteTemplates
+                .Select(x => new QuoteTemplateItem
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
                 .OrderBy(x => x.Name)
                 .ToList();
 
             return items;
         }
 
+        public QuoteTemplateItem Get(int id)
+        {
+            var item = new QuoteTemplateItem
+            {
+                DateCreate = DateTime.Now
+            };
+
+            if (id != 0)
+            {
+                item = Db.QuoteTemplates
+                    .Select(x => new QuoteTemplateItem
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        DateModify = x.DateModify,
+                        DateCreate = x.DateCreate,
+                        CustomDesign = x.CustomDesign,
+                        CostingTemplates =
+                            x.CostingTemplates
+                                .Select(r => new CostingTemplateItem
+                                {
+                                    Id = r.CostingTemplate.Id,
+                                    Total = r.CostingTemplate.Total,
+                                    Cost = r.CostingTemplate.Cost,
+                                    Qty = r.CostingTemplate.Qty,
+                                    Name = r.CostingTemplate.Name,
+                                    DateModify = r.CostingTemplate.DateModify,
+                                    Unit = r.CostingTemplate.Unit,
+                                    CategoryId = r.CostingTemplate.CategoryId,
+                                    DateCreate = r.CostingTemplate.DateCreate
+                                })
+                                .ToList()
+                    })
+                    .Single(x => x.Id == id);
+            }
+
+            AppendData(item);
+            return item;
+        }
 
         public void Edit(QuoteTemplateItem item)
         {
@@ -57,9 +95,14 @@ namespace ColdCallsTracker.Code.Services
             item.DateCreate = dbItem.DateCreate;
         }
 
+        public void AppendData(QuoteTemplateItem item)
+        {
+            item.AvaliableCostingTemplates = this.App.CostingTemplate.All();
+        }
+
         public void Remove(int id)
         {
-            var entity = Db.CostingTemplates.Include(x=>x.QuoteTemplates).First(x => x.Id == id);
+            var entity = Db.CostingTemplates.Include(x => x.QuoteTemplates).First(x => x.Id == id);
             Db.CostingTemplates.Remove(entity);
             Db.SaveChanges();
         }

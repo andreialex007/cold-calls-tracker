@@ -10,7 +10,8 @@ namespace ColdCallsTracker.Code.Data.ViewModels
     {
         public string Name { get; set; }
 
-        public List<CostingTemplateItem> CostingTemplates { get; set; }
+        public List<CostingTemplateItem> AvaliableCostingTemplates { get; set; } = new List<CostingTemplateItem>();
+        public List<CostingTemplateItem> CostingTemplates { get; set; } = new List<CostingTemplateItem>();
 
         public bool CustomDesign { get; set; }
 

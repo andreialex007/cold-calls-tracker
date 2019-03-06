@@ -18,6 +18,9 @@
     <Content Update="Pages\CostingTemplates\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\QuoteTemplates\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\QuoteTemplates\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
