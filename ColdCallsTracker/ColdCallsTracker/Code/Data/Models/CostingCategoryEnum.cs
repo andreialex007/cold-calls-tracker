@@ -4,7 +4,7 @@ namespace ColdCallsTracker.Code.Data.Models
 {
     public enum CostingCategoryEnum
     {
-        [Description("UI (Верстка, Фронтэнд, Бэкэнд)")]
+        [Description("UI (Верстка, Фронт, Бэк)")]
         Ui = 1,
 
         [Description("Интеграция")]

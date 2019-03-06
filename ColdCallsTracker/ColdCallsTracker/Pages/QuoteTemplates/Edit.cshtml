@@ -1,4 +1,5 @@
-﻿@model ColdCallsTracker.Code.Data.ViewModels.QuoteTemplateItem
+﻿@using ColdCallsTracker.Code.Utils
+@model ColdCallsTracker.Code.Data.ViewModels.QuoteTemplateItem
 
 @{
     ViewBag.Title = "Редактирование шаблона";
@@ -25,12 +26,59 @@
             <label for="exampleInputEmail1">Название</label>
             <input type="text" class="form-control" placeholder="Введите название (Обязательно)">
         </div>
+
+        <div class="costing-templates-page">
+            <table class="table-sm table table-bordered table-hover table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="id">#</th>
+                        <th class="category">Категория</th>
+                        <th>Название</th>
+                        <th class="qty">Кол.</th>
+                        <th class="unit">Юнит</th>
+                        <th class="cost">Цена</th>
+                        <th class="total">Всего</th>
+                        <th class="actions">
+                            <input type="checkbox" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AvaliableCostingTemplates)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@(EnumUtil.DescriptionAttr(item.Category))</td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Qty
+                            </td>
+                            <td>@(EnumUtil.DescriptionAttr(item.UnitEnum))</td>
+                            <td>
+                                @((item.Cost ?? 0).ToString("N0"))
+                            </td>
+                            <td>
+                                @((item.Total ?? 0).ToString("N0"))
+                            </td>
+                            <td class="actions">
+                                <input type="checkbox" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
         <div class="form-check mb-5">
-            <label class="form-check-label" >
-                <input type="checkbox" class="form-check-input" >
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input">
                 Индивидуальный дизайн
             </label>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 </div>
