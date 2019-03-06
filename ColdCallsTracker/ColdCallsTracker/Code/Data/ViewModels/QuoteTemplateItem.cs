@@ -11,7 +11,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Name { get; set; }
 
         public List<CostingTemplateItem> AvaliableCostingTemplates { get; set; } = new List<CostingTemplateItem>();
-        public List<CostingTemplateItem> CostingTemplates { get; set; } = new List<CostingTemplateItem>();
+        public List<QuoteTemplateCostingTemplate> CostingTemplates { get; set; } = new List<QuoteTemplateCostingTemplate>();
 
         public bool CustomDesign { get; set; }
 
@@ -20,15 +20,15 @@ namespace ColdCallsTracker.Code.Data.ViewModels
             get
             {
                 var uiTemplates = this.CostingTemplates
-                    .Where(x => x.Category == CostingCategoryEnum.Ui)
-                    .Where(x => x.Total == null)
-                    .Where(x => x.Cost == null);
+                    .Where(x => x.CostingTemplate.CategoryId == (int) CostingCategoryEnum.Ui)
+                    .Where(x => x.CostingTemplate.Total == null)
+                    .Where(x => x.CostingTemplate.Cost == null);
 
                 var uiTotal = 0.0;
                 foreach (var templateItem in uiTemplates)
                 {
-                    templateItem.Cost = GlobalVariables.AverageSalaryPerHour;
-                    templateItem.Total = templateItem.Cost * templateItem.Qty;
+                    templateItem.CostingTemplate.Cost = GlobalVariables.AverageSalaryPerHour;
+                    templateItem.CostingTemplate.Total = templateItem.CostingTemplate.Cost * templateItem.CostingTemplate.Qty;
                     uiTotal += (templateItem.Total ?? 0);
                 }
 
