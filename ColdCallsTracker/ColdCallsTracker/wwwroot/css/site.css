@@ -283,3 +283,7 @@ input[type=number]::-webkit-outer-spin-button {
     .quote-templates-table .total {
         width: 150px;
     }
+
+.costing-templates-page .multiplier {
+    width: 100px;
+}

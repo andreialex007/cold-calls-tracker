@@ -29,10 +29,10 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                 {
                     templateItem.CostingTemplate.Cost = GlobalVariables.AverageSalaryPerHour;
                     templateItem.CostingTemplate.Total = templateItem.CostingTemplate.Cost * templateItem.CostingTemplate.Qty;
-                    uiTotal += (templateItem.Total ?? 0);
+                    uiTotal += (templateItem.CostingTemplate.Total ?? 0);
                 }
 
-                var totalPrice = this.CostingTemplates.Sum(x => x.Total ?? 0);
+                var totalPrice = this.CostingTemplates.Sum(x => x.CostingTemplate.Total ?? 0);
                 if (this.CustomDesign)
                     totalPrice += ((GlobalVariables.CustomDesignMarkup + 1) * uiTotal);
 

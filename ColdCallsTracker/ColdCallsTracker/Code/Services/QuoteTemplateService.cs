@@ -39,6 +39,7 @@ namespace ColdCallsTracker.Code.Services
             if (id != 0)
             {
                 item = Db.QuoteTemplates
+                    .Include(x => x.CostingTemplates.Select(c => c.CostingTemplate))
                     .Select(x => new QuoteTemplateItem
                     {
                         Id = x.Id,
@@ -47,20 +48,7 @@ namespace ColdCallsTracker.Code.Services
                         DateCreate = x.DateCreate,
                         CustomDesign = x.CustomDesign,
                         CostingTemplates =
-                            x.CostingTemplates
-                                .Select(r => new CostingTemplateItem
-                                {
-                                    Id = r.CostingTemplate.Id,
-                                    Total = r.CostingTemplate.Total,
-                                    Cost = r.CostingTemplate.Cost,
-                                    Qty = r.CostingTemplate.Qty,
-                                    Name = r.CostingTemplate.Name,
-                                    DateModify = r.CostingTemplate.DateModify,
-                                    Unit = r.CostingTemplate.Unit,
-                                    CategoryId = r.CostingTemplate.CategoryId,
-                                    DateCreate = r.CostingTemplate.DateCreate
-                                })
-                                .ToList()
+                            x.CostingTemplates.ToList()
                     })
                     .Single(x => x.Id == id);
             }

@@ -8,6 +8,6 @@
         public int CostingTemplateId { get; set; }
         public CostingTemplate CostingTemplate { get; set; }
 
-        public double Multiplier { get; set; } 
+        public double Multiplier { get; set; } = 1;
     }
 }
