@@ -24,6 +24,13 @@ namespace ColdCallsTracker.Controllers
             return View("~/Pages/QuoteTemplates/Edit.cshtml", item);
         }
 
+        [HttpGet]
+        public ActionResult New()
+        {
+            var item = Service.QuoteTemplate.New();
+            return RedirectToAction("Edit", new { id = item.Id });
+        }
+
         [HttpPost]
         public ActionResult Edit([FromBody] QuoteTemplateItem item)
         {

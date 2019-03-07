@@ -29,29 +29,37 @@ namespace ColdCallsTracker.Code.Services
             return items;
         }
 
+        public QuoteTemplateItem New()
+        {
+            var newTemplate = new QuoteTemplate
+            {
+                DateCreate = DateTime.Now,
+                DateModify = DateTime.Now,
+                CustomDesign = false,
+                Name = "Новый шаблон"
+            };
+            Db.QuoteTemplates.Add(newTemplate);
+            Db.SaveChanges();
+
+            return Get(newTemplate.Id);
+        }
+
         public QuoteTemplateItem Get(int id)
         {
-            var item = new QuoteTemplateItem
-            {
-                DateCreate = DateTime.Now
-            };
-
-            if (id != 0)
-            {
-                item = Db.QuoteTemplates
-                    .Include(x => x.CostingTemplates.Select(c => c.CostingTemplate))
-                    .Select(x => new QuoteTemplateItem
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        DateModify = x.DateModify,
-                        DateCreate = x.DateCreate,
-                        CustomDesign = x.CustomDesign,
-                        CostingTemplates =
-                            x.CostingTemplates.ToList()
-                    })
-                    .Single(x => x.Id == id);
-            }
+            var item = Db.QuoteTemplates
+                  .Include(x => x.CostingTemplates)
+                  .ThenInclude(x => x.CostingTemplate)
+                  .Select(x => new QuoteTemplateItem
+                  {
+                      Id = x.Id,
+                      Name = x.Name,
+                      DateModify = x.DateModify,
+                      DateCreate = x.DateCreate,
+                      CustomDesign = x.CustomDesign,
+                      QuoteCostingRelations =
+                          x.CostingTemplates.ToList()
+                  })
+                  .Single(x => x.Id == id);
 
             AppendData(item);
             return item;

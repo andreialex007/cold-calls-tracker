@@ -11,7 +11,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Name { get; set; }
 
         public List<CostingTemplateItem> AvaliableCostingTemplates { get; set; } = new List<CostingTemplateItem>();
-        public List<QuoteTemplateCostingTemplate> CostingTemplates { get; set; } = new List<QuoteTemplateCostingTemplate>();
+        public List<QuoteTemplateCostingTemplate> QuoteCostingRelations { get; set; } = new List<QuoteTemplateCostingTemplate>();
 
         public bool CustomDesign { get; set; }
 
@@ -19,7 +19,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         {
             get
             {
-                var uiTemplates = this.CostingTemplates
+                var uiTemplates = this.QuoteCostingRelations
                     .Where(x => x.CostingTemplate.CategoryId == (int) CostingCategoryEnum.Ui)
                     .Where(x => x.CostingTemplate.Total == null)
                     .Where(x => x.CostingTemplate.Cost == null);
@@ -32,7 +32,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                     uiTotal += (templateItem.CostingTemplate.Total ?? 0);
                 }
 
-                var totalPrice = this.CostingTemplates.Sum(x => x.CostingTemplate.Total ?? 0);
+                var totalPrice = this.QuoteCostingRelations.Sum(x => x.CostingTemplate.Total ?? 0);
                 if (this.CustomDesign)
                     totalPrice += ((GlobalVariables.CustomDesignMarkup + 1) * uiTotal);
 

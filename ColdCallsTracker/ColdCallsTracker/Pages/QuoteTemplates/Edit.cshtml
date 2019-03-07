@@ -1,4 +1,5 @@
-﻿@using ColdCallsTracker.Code.Utils
+﻿@using ColdCallsTracker.Code.Extensions
+@using ColdCallsTracker.Code.Utils
 @model ColdCallsTracker.Code.Data.ViewModels.QuoteTemplateItem
 
 @{
@@ -11,9 +12,10 @@
 }
 
 @section Scripts {
+    <script src="~/js/quote-templates/quote-templates.js" asp-append-version="true"></script>
 }
 
-<div class="edit-quote-template">
+<div data-json="@Model.ToJson()" class="edit-quote-template">
 
     <div class="row">
         <div class="col">
@@ -23,66 +25,65 @@
 
     <form method="post">
         <div class="form-group">
-            <label for="exampleInputEmail1">Название</label>
-            <input type="text" class="form-control" placeholder="Введите название (Обязательно)">
+            <label>Название</label>
+            <input type="text" class="form-control" @Html.NameFor(x => x.Name) value="@Model.Name" placeholder="Введите название (Обязательно)">
         </div>
-
-        <div class="costing-templates-page">
-            <table class="table-sm table table-bordered table-hover table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th class="id">#</th>
-                        <th class="category">Категория</th>
-                        <th>Название</th>
-                        <th class="qty">Кол.</th>
-                        <th class="multiplier">Множитель</th>
-                        <th class="unit">Юнит</th>
-                        <th class="cost">Цена</th>
-                        <th class="total">Всего</th>
-                        <th class="actions">
-                            <input type="checkbox" />
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.AvaliableCostingTemplates)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@(EnumUtil.DescriptionAttr(item.Category))</td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Qty
-                            </td>
-                            <td>
-                                1
-                            </td>
-                            <td>@(EnumUtil.DescriptionAttr(item.UnitEnum))</td>
-                            <td>
-                                @((item.Cost ?? 0).ToString("N0"))
-                            </td>
-                            <td>
-                                @((item.Total ?? 0).ToString("N0"))
-                            </td>
-                            <td class="actions">
-                                <input type="checkbox" />
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="form-check mb-5">
-            <label class="form-check-label">
-                <input type="checkbox" class="form-check-input">
-                Индивидуальный дизайн
-            </label>
-        </div>
-
-
-
-        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
     </form>
+
+    <h4>Список затрат</h4>
+    <div class="costing-templates-page">
+        <table class="table-sm table table-bordered table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="id">#</th>
+                    <th class="category">Категория</th>
+                    <th>Название</th>
+                    <th class="qty">Кол.</th>
+                    <th class="multiplier">Множитель</th>
+                    <th class="unit">Юнит</th>
+                    <th class="cost">Цена</th>
+                    <th class="total">Всего</th>
+                    <th class="actions">
+                        <input type="checkbox" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-bind:class="{ 'table-warning' : isCheckedCosting(item) }" v-for="item in AvaliableCostingTemplates">
+                    <td>{{ item.Id }}</td>
+                    <td>{{ item.CategoryName }}</td>
+                    <td class="costing-description" >
+                        {{ item.Name }}
+                    </td>
+                    <td>
+                        {{ item.Qty }}
+                    </td>
+                    <td>
+                        <input type="number" value="1" class="form-control form-control-sm" />
+                    </td>
+                    <td>
+                        {{ item.UnitName }}
+                    </td>
+                    <td>
+                        {{ (item.Cost || 0) }}
+                    </td>
+                    <td>
+                        {{ (item.Total || 0) }}
+                    </td>
+                    <td v-on:click="checkCosting(item)" class="actions check-uncheck-costing">
+                        <i v-if="isCheckedCosting(item)" class="fas fa-check text-success"></i>
+                        <i v-if="!isCheckedCosting(item)" class="fas fa-times text-danger"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-check mb-5">
+        <label class="form-check-label">
+            <input v-model="CustomDesign" type="checkbox" class="form-check-input">
+            Индивидуальный дизайн
+        </label>
+    </div>
+
 </div>

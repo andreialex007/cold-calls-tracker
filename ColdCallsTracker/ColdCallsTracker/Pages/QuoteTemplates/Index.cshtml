@@ -21,7 +21,7 @@
             <h1>Шаблоны предложений</h1>
         </div>
         <div class="col">
-            <a href="/QuoteTemplates/Edit" class="btn btn-success btn-sm float-right mt-3">
+            <a href="/QuoteTemplates/New" class="btn btn-success btn-sm float-right mt-3">
                 <i class="fas fa-plus"></i>
                 Добавить шаблон предложения
             </a>
@@ -47,10 +47,10 @@
                     <td>@(item.CustomDesign ? "Да" : "Нет")</td>
                     <td>@(item.Total.ToString("N0"))</td>
                     <td>
-                        <a href="/QuoteTemplates/Edit?id=@(item.Id)" class="btn btn-success btn-xs edit-btn">
+                        <a href="/QuoteTemplates/Edit/@(item.Id)" class="btn btn-success btn-xs edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="/QuoteTemplates/Delete?id=@(item.Id)" class="btn btn-danger btn-xs delete-btn">
+                        <a href="/QuoteTemplates/Delete/@(item.Id)" class="btn btn-danger btn-xs delete-btn">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>

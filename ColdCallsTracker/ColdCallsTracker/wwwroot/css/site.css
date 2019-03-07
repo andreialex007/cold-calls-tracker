@@ -257,7 +257,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .costing-templates-page .category {
-    width: 186px;
+    width: 198px;
 }
 
 .costing-templates-page tr:hover .actions .btn {
@@ -286,4 +286,19 @@ input[type=number]::-webkit-outer-spin-button {
 
 .costing-templates-page .multiplier {
     width: 100px;
+}
+
+.check-uncheck-costing {
+    cursor: pointer;
+    vertical-align: middle !important;
+    text-align: center;
+}
+
+    .check-uncheck-costing:hover {
+        opacity: 0.5;
+    }
+
+.costing-description {
+    overflow: hidden;
+    white-space: nowrap;
 }

@@ -13,9 +13,11 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public int Unit { get; set; }
         public UnitEnum UnitEnum => (UnitEnum)Unit;
+        public string UnitName => Utils.EnumUtil.DescriptionAttr(UnitEnum);
 
         public int CategoryId { get; set; }
         public CostingCategoryEnum Category => (CostingCategoryEnum)CategoryId;
+        public string CategoryName => Utils.EnumUtil.DescriptionAttr(Category);
 
         [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public double Qty { get; set; }
