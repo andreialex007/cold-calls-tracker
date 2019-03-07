@@ -24,14 +24,24 @@
     </div>
 
     <form method="post">
+        @Html.HiddenFor(x => x.Id)
         <div class="form-group">
             <label>Название</label>
-            <input type="text" class="form-control" @Html.NameFor(x => x.Name) value="@Model.Name" placeholder="Введите название (Обязательно)">
+            <input type="text" class="form-control template-name" name="@Html.NameFor(x => x.Name)" v-model="Name" placeholder="Введите название (Обязательно)">
         </div>
-        <button type="submit" class="btn btn-primary mb-3">Сохранить</button>
+        <span v-on:click="saveTemplate()" v-bind:class="{ 'disabled-button': isEmptyName }" class="btn btn-primary mb-3">Сохранить</span>
     </form>
 
-    <h4>Список затрат</h4>
+    <h4>
+        Список затрат
+        <small class="float-right">
+            <span class="pt-1 d-inline-block float-left mr-2">Показывать только отмеченные</span>
+            <label class="switch">
+                <input v-model="showOnlyChecked" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+        </small>
+    </h4>
     <div class="costing-templates-page">
         <table class="table-sm table table-bordered table-hover table-striped">
             <thead class="thead-dark">
@@ -45,15 +55,15 @@
                     <th class="cost">Цена</th>
                     <th class="total">Всего</th>
                     <th class="actions">
-                        <input type="checkbox" />
+
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-bind:class="{ 'table-warning' : isCheckedCosting(item) }" v-for="item in AvaliableCostingTemplates">
+                <tr v-bind:class="{ 'table-warning' : isCheckedCosting(item) }" v-show="showOnlyChecked === false || (showOnlyChecked === true && isCheckedCosting(item))" v-for="item in AvaliableCostingTemplates">
                     <td>{{ item.Id }}</td>
                     <td>{{ item.CategoryName }}</td>
-                    <td class="costing-description" >
+                    <td class="costing-description">
                         {{ item.Name }}
                     </td>
                     <td>

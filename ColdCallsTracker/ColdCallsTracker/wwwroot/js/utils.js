@@ -42,6 +42,16 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         };
 
+        self.doIfConfirm = function (link) {
+            window.event.preventDefault();
+
+            let href = $(link).attr("href");
+            let result = confirm("Подтверждаете действие?");
+            if (result) {
+                location.href = href;
+            }
+        };
+
         return self;
 
 

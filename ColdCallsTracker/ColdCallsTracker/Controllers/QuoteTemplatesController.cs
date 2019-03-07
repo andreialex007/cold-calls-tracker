@@ -1,4 +1,5 @@
-﻿using ColdCallsTracker.Code.Data.ViewModels;
+﻿using ColdCallsTracker.Code.Data.Models;
+using ColdCallsTracker.Code.Data.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,17 +33,31 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit([FromBody] QuoteTemplateItem item)
+        public ActionResult Edit([FromForm] QuoteTemplateItem item)
         {
             Service.QuoteTemplate.Edit(item);
-            return Json(item);
+            return RedirectToAction("Edit", new { id = item.Id });
+        }
+
+        [HttpPost]
+        public ActionResult AddRelation([FromBody] QuoteTemplateCostingTemplate relation)
+        {
+            Service.QuoteTemplate.AddRelation(relation);
+            return Json(new { result = "Ok" });
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRelation([FromBody] QuoteTemplateCostingTemplate relation)
+        {
+            Service.QuoteTemplate.RemoveRelation(relation);
+            return Json(new { result = "Ok" });
         }
 
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            Service.CostingTemplate.Remove(id);
-            return Json(new { result = "OK" });
+            Service.QuoteTemplate.Remove(id);
+            return RedirectToAction("Index");
         }
     }
 }

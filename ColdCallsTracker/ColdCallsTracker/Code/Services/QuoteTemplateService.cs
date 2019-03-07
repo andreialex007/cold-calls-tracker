@@ -46,21 +46,24 @@ namespace ColdCallsTracker.Code.Services
 
         public QuoteTemplateItem Get(int id)
         {
-            var item = Db.QuoteTemplates
-                  .Include(x => x.CostingTemplates)
-                  .ThenInclude(x => x.CostingTemplate)
+            var includableQueryable = Db.QuoteTemplates
+                .Include(x => x.CostingTemplates)
+                .ThenInclude(x => x.CostingTemplate);
+
+            var dbItem = includableQueryable.Single(x => x.Id == id);
+
+
+            var item = includableQueryable
                   .Select(x => new QuoteTemplateItem
                   {
                       Id = x.Id,
                       Name = x.Name,
                       DateModify = x.DateModify,
                       DateCreate = x.DateCreate,
-                      CustomDesign = x.CustomDesign,
-                      QuoteCostingRelations =
-                          x.CostingTemplates.ToList()
+                      CustomDesign = x.CustomDesign
                   })
-                  .Single(x => x.Id == id);
-
+                  .FirstOrDefault(x => x.Id == id);
+            item.QuoteCostingRelations = dbItem.CostingTemplates;
             AppendData(item);
             return item;
         }
@@ -91,6 +94,29 @@ namespace ColdCallsTracker.Code.Services
             item.DateCreate = dbItem.DateCreate;
         }
 
+        public void RemoveRelation(QuoteTemplateCostingTemplate uiRelation)
+        {
+            var quoteTemplate = Db.QuoteTemplates
+                .Include(x => x.CostingTemplates)
+                .ThenInclude(x => x.CostingTemplate)
+                .Single(x => x.Id == uiRelation.QuoteTemplateId);
+
+            var itemToRemove = quoteTemplate.CostingTemplates.Single(x => x.CostingTemplateId == uiRelation.CostingTemplateId);
+            quoteTemplate.CostingTemplates.Remove(itemToRemove);
+            Db.SaveChanges();
+        }
+
+        public void AddRelation(QuoteTemplateCostingTemplate uiRelation)
+        {
+            var quoteTemplate = Db.QuoteTemplates
+                .Include(x => x.CostingTemplates)
+                .ThenInclude(x => x.CostingTemplate)
+                .Single(x => x.Id == uiRelation.QuoteTemplateId);
+
+            quoteTemplate.CostingTemplates.Add(uiRelation);
+            Db.SaveChanges();
+        }
+
         public void AppendData(QuoteTemplateItem item)
         {
             item.AvaliableCostingTemplates = this.App.CostingTemplate.All();
@@ -98,8 +124,8 @@ namespace ColdCallsTracker.Code.Services
 
         public void Remove(int id)
         {
-            var entity = Db.CostingTemplates.Include(x => x.QuoteTemplates).First(x => x.Id == id);
-            Db.CostingTemplates.Remove(entity);
+            var entity = Db.QuoteTemplates.First(x => x.Id == id);
+            Db.QuoteTemplates.Remove(entity);
             Db.SaveChanges();
         }
     }

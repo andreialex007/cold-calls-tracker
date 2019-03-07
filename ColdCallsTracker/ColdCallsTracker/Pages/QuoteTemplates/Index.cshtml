@@ -50,7 +50,7 @@
                         <a href="/QuoteTemplates/Edit/@(item.Id)" class="btn btn-success btn-xs edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <a href="/QuoteTemplates/Delete/@(item.Id)" class="btn btn-danger btn-xs delete-btn">
+                        <a onclick="window.utils.doIfConfirm(this);" href="/QuoteTemplates/Delete/@(item.Id)" class="btn btn-danger btn-xs delete-btn">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>
