@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ColdCallsTracker.Code.Data.Models;
-using ColdCallsTracker.Code.Data.ViewModels._Common;
+﻿using ColdCallsTracker.Code.Data.ViewModels._Common;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {

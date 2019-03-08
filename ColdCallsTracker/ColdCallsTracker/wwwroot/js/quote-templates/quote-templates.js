@@ -37,7 +37,7 @@
             calcWithMultiplier(costing) {
                 let relation = this.getRelation(costing);
                 let multiplier = !relation ? 1 : relation.Multiplier;
-                return (costing.Total * multiplier).toFixed(2);
+                return (costing.Total * multiplier).toFixed(0);
             },
             isCheckedCosting(costing) {
                 return !!this.getRelation(costing);
@@ -59,6 +59,7 @@
                     dataType: "JSON"
                 });
                 this.Total = result.total;
+                this.TotalHours = result.totalHours;
                 this.QuoteCostingRelations.push(newRelation);
             },
             async deleteRelation(costing) {
@@ -75,6 +76,7 @@
                     dataType: "JSON"
                 });
                 this.Total = result.total;
+                this.TotalHours = result.totalHours;
                 this.QuoteCostingRelations = this.QuoteCostingRelations.filter(x => x.CostingTemplateId !== costing.Id);
             },
             async setMultiplier(costing) {
@@ -93,6 +95,7 @@
                     dataType: "JSON"
                 });
                 this.Total = result.total;
+                this.TotalHours = result.totalHours;
             },
             async setCustomDesign(isCustom) {
                 var result = await $.ajax({
@@ -103,6 +106,7 @@
                 });
                 this.Total = result.total;
                 this.CustomDesignTotal = result.customDesignTotal;
+                this.TotalHours = result.totalHours;
             },
             saveTemplate() {
                 $("form").submit();

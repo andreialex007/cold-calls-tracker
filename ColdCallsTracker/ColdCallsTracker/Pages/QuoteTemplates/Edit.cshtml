@@ -76,10 +76,10 @@
                         {{ item.UnitName }}
                     </td>
                     <td>
-                        {{ (item.Cost || 0).toFixed(2) }}
+                        {{ (item.Cost || 0).toFixed(0) }}
                     </td>
                     <td>
-                        {{ (item.Total || 0).toFixed(2) }}
+                        {{ (item.Total || 0).toFixed(0) }}
                     </td>
                     <td>
                         <template v-if="!!getRelation(item)">
@@ -108,14 +108,19 @@
                         От стоимости UI: @(GlobalVariables.CustomDesignMarkup * 100) %
                     </td>
                     <td>
-                        <strong>{{ CustomDesignTotal.toFixed(2) }}</strong>
+                        <strong>{{ CustomDesignTotal.toFixed(0) }}</strong>
                     </td>
                     <td class="actions check-uncheck-costing"></td>
                 </tr>
                 <tr>
-                    <td colspan="8"><strong>Всего стоимость проекта</strong></td>
+                    <td colspan="3"><strong>Итого сроки-стоимость</strong></td>
+                    <td colspan="5">
+                        Общее время работ в часах: <strong>{{ TotalHours }}</strong>, 
+                        дней: <strong>{{ (TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                        раб. недель: <strong>{{ ((TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
+                    </td>
                     <td>
-                        <strong>{{ Total.toFixed(2) }}</strong>
+                        <strong>{{ Total.toFixed(0) }} р.</strong>
                     </td>
                     <td class="actions check-uncheck-costing"></td>
                 </tr>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels._Common;
@@ -17,6 +18,30 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public bool CustomDesign { get; set; }
 
         public double CustomDesignTotal { get; set; }
+
+        public double TotalHours
+        {
+            get
+            {
+                var totalHours = this.QuoteCostingRelations
+                    .Where(x => x.CostingTemplate.Unit == (int)UnitEnum.Hours)
+                    .Sum(x => x.Multiplier * x.CostingTemplate.Qty);
+
+                if (CustomDesign)
+                {
+                    var uiHours = this.QuoteCostingRelations
+                        .Where(x => x.CostingTemplate.Unit == (int)UnitEnum.Hours)
+                        .Where(x => x.CostingTemplate.CategoryId == (int) CostingCategoryEnum.Ui)
+                        .Sum(x => x.Multiplier * x.CostingTemplate.Qty);
+
+
+                    var designHours = (uiHours * GlobalVariables.CustomDesignMarkup);
+                    totalHours += designHours;
+                }
+
+                return Math.Round(totalHours);
+            }
+        }
 
         public void Recalc()
         {

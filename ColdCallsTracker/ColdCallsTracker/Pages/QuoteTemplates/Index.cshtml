@@ -1,4 +1,4 @@
-﻿@using ColdCallsTracker.Code.Extensions
+﻿@using System.Globalization
 @model List<ColdCallsTracker.Code.Data.ViewModels.QuoteTemplateItem>
 
 @{
@@ -7,14 +7,24 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" />
 }
 
 
 @section Scripts {
-    <script src="~/js/costing-templates/costing-templates.js" asp-append-version="true"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(function () {
+            $('table').DataTable({
+                language: { "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json" },
+                paging: false
+            });
+        })
+    </script>
 }
 
-<div v-cloak data-items="@(Model.ToJson())" class="costing-templates-page">
+<div class="costing-templates-page">
 
     <div class="row">
         <div class="col">
@@ -34,7 +44,7 @@
                 <th class="id">#</th>
                 <th>Название</th>
                 <th class="custom-design">Инд. дизайн</th>
-                <th class="total">Цена</th>
+                <th data-s-type="num-fmt" class="total">Цена</th>
                 <th class="actions">Действия</th>
             </tr>
         </thead>
@@ -45,7 +55,7 @@
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@(item.CustomDesign ? "Да" : "Нет")</td>
-                    <td>@(item.Total.ToString("N0"))</td>
+                    <td>@item.Total.ToString("N0",CultureInfo.InvariantCulture)</td>
                     <td>
                         <a href="/QuoteTemplates/Edit/@(item.Id)" class="btn btn-success btn-xs edit-btn">
                             <i class="fas fa-edit"></i>

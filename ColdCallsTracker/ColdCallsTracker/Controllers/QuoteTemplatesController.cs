@@ -47,24 +47,36 @@ namespace ColdCallsTracker.Controllers
         public ActionResult AddRelation([FromBody] QuoteTemplateCostingTemplate relation)
         {
             Service.QuoteTemplate.AddRelation(relation);
-            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
-            return Json(new { total });
+            var item = Service.QuoteTemplate.Get(relation.QuoteTemplateId);
+            return Json(new
+            {
+                total = item.Total,
+                totalHours = item.TotalHours
+            });
         }
 
         [HttpPost]
         public ActionResult DeleteRelation([FromBody] QuoteTemplateCostingTemplate relation)
         {
             Service.QuoteTemplate.RemoveRelation(relation);
-            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
-            return Json(new { total });
+            var item = Service.QuoteTemplate.Get(relation.QuoteTemplateId);
+            return Json(new
+            {
+                total = item.Total,
+                totalHours = item.TotalHours
+            });
         }
 
         [HttpPost]
         public ActionResult SetMultiplier([FromBody] QuoteTemplateCostingTemplate relation)
         {
             Service.QuoteTemplate.SetMultiplier(relation);
-            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
-            return Json(new { total });
+            var item = Service.QuoteTemplate.Get(relation.QuoteTemplateId);
+            return Json(new
+            {
+                total = item.Total,
+                totalHours = item.TotalHours
+            });
         }
 
         [HttpGet]
@@ -76,7 +88,8 @@ namespace ColdCallsTracker.Controllers
             return Json(new
             {
                 total = item.Total,
-                customDesignTotal = item.CustomDesignTotal
+                customDesignTotal = item.CustomDesignTotal,
+                totalHours = item.TotalHours
             });
         }
 

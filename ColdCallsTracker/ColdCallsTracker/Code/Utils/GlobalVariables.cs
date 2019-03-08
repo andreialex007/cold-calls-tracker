@@ -40,6 +40,6 @@
         /// <summary>
         /// Доплата за кастомный дизайн
         /// </summary>
-        public const double CustomDesignMarkup = 0.25;
+        public const double CustomDesignMarkup = 0.3;
     }
 }
