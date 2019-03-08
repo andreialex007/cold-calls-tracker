@@ -1,4 +1,5 @@
-﻿using ColdCallsTracker.Code.Data.Models;
+﻿using System.Collections.Generic;
+using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Index()
         {
             var items = Service.QuoteTemplate.All();
+            items.ForEach(x => x.Recalc());
             return View("~/Pages/QuoteTemplates/Index.cshtml", items);
         }
 
@@ -23,7 +25,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Edit(int id)
         {
             var item = Service.QuoteTemplate.Get(id);
-            item.AvaliableCostingTemplates.CalcTotalForCostingTemplates();
+            item.Recalc();
             return View("~/Pages/QuoteTemplates/Edit.cshtml", item);
         }
 
@@ -54,7 +56,7 @@ namespace ColdCallsTracker.Controllers
         {
             Service.QuoteTemplate.RemoveRelation(relation);
             var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
-            return Json(new {total });
+            return Json(new { total });
         }
 
         [HttpPost]
@@ -63,6 +65,19 @@ namespace ColdCallsTracker.Controllers
             Service.QuoteTemplate.SetMultiplier(relation);
             var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
             return Json(new { total });
+        }
+
+        [HttpGet]
+        public ActionResult SetCustomDesign(int id, bool isCustomDesign)
+        {
+            var item = Service.QuoteTemplate.Get(id);
+            item.CustomDesign = isCustomDesign;
+            Service.QuoteTemplate.Edit(item);
+            return Json(new
+            {
+                total = item.Total,
+                customDesignTotal = item.CustomDesignTotal
+            });
         }
 
         [HttpGet]

@@ -11,6 +11,12 @@
         mounted() {
 
         },
+        watch: {
+            CustomDesign: function (newVal) {
+                console.log("design=" + newVal);
+                this.setCustomDesign(newVal);
+            }
+        },
         computed: {
             isEmptyName: function () {
                 return !this.Name || !this.Name.trim();
@@ -32,11 +38,6 @@
                 let relation = this.getRelation(costing);
                 let multiplier = !relation ? 1 : relation.Multiplier;
                 return (costing.Total * multiplier).toFixed(2);
-            },
-            getMultiplier(costing) {
-                let relation = this.getRelation(costing);
-                let multiplier = !relation ? 1 : relation.Multiplier;
-                return multiplier;
             },
             isCheckedCosting(costing) {
                 return !!this.getRelation(costing);
@@ -92,6 +93,16 @@
                     dataType: "JSON"
                 });
                 this.Total = result.total;
+            },
+            async setCustomDesign(isCustom) {
+                var result = await $.ajax({
+                    method: "GET",
+                    contentType: "application/json",
+                    url: "/QuoteTemplates/SetCustomDesign?id=" + this.Id + "&isCustomDesign=" + isCustom,
+                    dataType: "JSON"
+                });
+                this.Total = result.total;
+                this.CustomDesignTotal = result.customDesignTotal;
             },
             saveTemplate() {
                 $("form").submit();

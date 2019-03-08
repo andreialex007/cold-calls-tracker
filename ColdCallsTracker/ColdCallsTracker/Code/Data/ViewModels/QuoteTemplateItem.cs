@@ -16,6 +16,14 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public bool CustomDesign { get; set; }
 
+        public double CustomDesignTotal { get; set; }
+
+        public void Recalc()
+        {
+            this.AvaliableCostingTemplates.CalcTotalForCostingTemplates();
+            var total = this.Total;
+        }
+
         public double Total
         {
             get
@@ -35,7 +43,11 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                 var uiTotal = withMultiplier.Where(x => x.item.CategoryId == (int)CostingCategoryEnum.Ui).Sum(x => (x.item.Total ?? 0) * x.Multiplier);
 
                 if (this.CustomDesign)
-                    totalPrice += ((GlobalVariables.CustomDesignMarkup) * uiTotal);
+                {
+                    var customDesignTotal = ((GlobalVariables.CustomDesignMarkup) * uiTotal);
+                    this.CustomDesignTotal = customDesignTotal;
+                    totalPrice += customDesignTotal;
+                };
 
                 return totalPrice;
             }

@@ -17,14 +17,27 @@ namespace ColdCallsTracker.Code.Services
 
         public List<QuoteTemplateItem> All()
         {
+            var includableQueryable = Db.QuoteTemplates
+                .Include(x => x.CostingTemplates)
+                .ThenInclude(x => x.CostingTemplate)
+                .ToList();
+
+
             var items = Db.QuoteTemplates
                 .Select(x => new QuoteTemplateItem
                 {
                     Id = x.Id,
-                    Name = x.Name
+                    Name = x.Name,
+                    CustomDesign = x.CustomDesign
                 })
                 .OrderBy(x => x.Name)
                 .ToList();
+
+
+            var allCostings = this.App.CostingTemplate.All();
+            items.ForEach(x => x.AvaliableCostingTemplates = allCostings);
+            items.ForEach(x => x.QuoteCostingRelations =
+                (includableQueryable.FirstOrDefault(t => t.Id == x.Id)?.CostingTemplates ?? new List<QuoteTemplateCostingTemplate>()));
 
             return items;
         }
@@ -85,6 +98,7 @@ namespace ColdCallsTracker.Code.Services
             }
 
             dbItem.Name = item.Name;
+            dbItem.CustomDesign = item.CustomDesign;
             dbItem.DateModify = DateTime.Now;
 
             Db.SaveChanges();
