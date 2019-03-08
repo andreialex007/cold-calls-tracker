@@ -28,6 +28,16 @@
                     this.addRelation(costing);
                 }
             },
+            calcWithMultiplier(costing) {
+                let relation = this.getRelation(costing);
+                let multiplier = !relation ? 1 : relation.Multiplier;
+                return (costing.Total * multiplier).toFixed(2);
+            },
+            getMultiplier(costing) {
+                let relation = this.getRelation(costing);
+                let multiplier = !relation ? 1 : relation.Multiplier;
+                return multiplier;
+            },
             isCheckedCosting(costing) {
                 return !!this.getRelation(costing);
             },
@@ -40,20 +50,20 @@
                     Multiplier: 1
                 }
 
-                await $.ajax({
+                var result = await $.ajax({
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(newRelation),
                     url: "/QuoteTemplates/AddRelation",
                     dataType: "JSON"
                 });
-
+                this.Total = result.total;
                 this.QuoteCostingRelations.push(newRelation);
             },
             async deleteRelation(costing) {
                 let relation = this.getRelation(costing);
 
-                await $.ajax({
+                var result = await $.ajax({
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify({
@@ -63,7 +73,25 @@
                     url: "/QuoteTemplates/DeleteRelation",
                     dataType: "JSON"
                 });
+                this.Total = result.total;
                 this.QuoteCostingRelations = this.QuoteCostingRelations.filter(x => x.CostingTemplateId !== costing.Id);
+            },
+            async setMultiplier(costing) {
+
+                let relation = this.getRelation(costing);
+
+                var result = await $.ajax({
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        QuoteTemplateId: relation.QuoteTemplateId,
+                        Multiplier: relation.Multiplier,
+                        CostingTemplateId: relation.CostingTemplateId
+                    }),
+                    url: "/QuoteTemplates/SetMultiplier",
+                    dataType: "JSON"
+                });
+                this.Total = result.total;
             },
             saveTemplate() {
                 $("form").submit();

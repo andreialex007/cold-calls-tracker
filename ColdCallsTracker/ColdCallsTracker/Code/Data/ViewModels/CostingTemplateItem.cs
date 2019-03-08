@@ -6,6 +6,22 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 {
     public class CostingTemplateItem : ViewModelBase
     {
+        public CostingTemplateItem()
+        {
+
+        }
+
+        public CostingTemplateItem(CostingTemplate template)
+        {
+            this.Id = template.Id;
+            this.Name = template.Name;
+            this.Unit = template.Unit;
+            this.CategoryId = template.CategoryId;
+            this.Qty = template.Qty;
+            this.Cost = template.Cost;
+            this.Total = template.Total;
+        }
+
         [Required]
         public string Name { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Linq;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels._Common;
+using ColdCallsTracker.Code.Extensions;
 using ColdCallsTracker.Code.Utils;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
@@ -19,22 +20,22 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         {
             get
             {
-                var uiTemplates = this.QuoteCostingRelations
-                    .Where(x => x.CostingTemplate.CategoryId == (int) CostingCategoryEnum.Ui)
-                    .Where(x => x.CostingTemplate.Total == null)
-                    .Where(x => x.CostingTemplate.Cost == null);
+                var costingTemplates = this.QuoteCostingRelations.Select(x => new CostingTemplateItem(x.CostingTemplate)).ToList();
 
-                var uiTotal = 0.0;
-                foreach (var templateItem in uiTemplates)
-                {
-                    templateItem.CostingTemplate.Cost = GlobalVariables.AverageSalaryPerHour;
-                    templateItem.CostingTemplate.Total = templateItem.CostingTemplate.Cost * templateItem.CostingTemplate.Qty;
-                    uiTotal += (templateItem.CostingTemplate.Total ?? 0);
-                }
+                costingTemplates.CalcTotalForCostingTemplates();
+                var withMultiplier = costingTemplates
+                    .Select(x => new
+                    {
+                        item = x,
+                        Multiplier =
+                            QuoteCostingRelations.FirstOrDefault(c => c.CostingTemplateId == x.Id)?.Multiplier ?? 1
+                    });
+                var totalPrice = withMultiplier.Sum(x => (x.item.Total ?? 0) * x.Multiplier);
 
-                var totalPrice = this.QuoteCostingRelations.Sum(x => x.CostingTemplate.Total ?? 0);
+                var uiTotal = withMultiplier.Where(x => x.item.CategoryId == (int)CostingCategoryEnum.Ui).Sum(x => (x.item.Total ?? 0) * x.Multiplier);
+
                 if (this.CustomDesign)
-                    totalPrice += ((GlobalVariables.CustomDesignMarkup + 1) * uiTotal);
+                    totalPrice += ((GlobalVariables.CustomDesignMarkup) * uiTotal);
 
                 return totalPrice;
             }

@@ -106,6 +106,18 @@ namespace ColdCallsTracker.Code.Services
             Db.SaveChanges();
         }
 
+        public void SetMultiplier(QuoteTemplateCostingTemplate uiRelation)
+        {
+            var quoteTemplate = Db.QuoteTemplates
+                .Include(x => x.CostingTemplates)
+                .ThenInclude(x => x.CostingTemplate)
+                .Single(x => x.Id == uiRelation.QuoteTemplateId);
+
+            var itemToRemove = quoteTemplate.CostingTemplates.Single(x => x.CostingTemplateId == uiRelation.CostingTemplateId);
+            itemToRemove.Multiplier = uiRelation.Multiplier;
+            Db.SaveChanges();
+        }
+
         public void AddRelation(QuoteTemplateCostingTemplate uiRelation)
         {
             var quoteTemplate = Db.QuoteTemplates

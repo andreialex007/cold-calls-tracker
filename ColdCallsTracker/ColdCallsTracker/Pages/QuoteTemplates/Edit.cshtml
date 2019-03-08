@@ -50,10 +50,12 @@
                     <th class="category">Категория</th>
                     <th>Название</th>
                     <th class="qty">Кол.</th>
-                    <th class="multiplier">Множитель</th>
+
                     <th class="unit">Юнит</th>
                     <th class="cost">Цена</th>
                     <th class="total">Всего</th>
+                    <th class="multiplier">Множитель</th>
+                    <th class="multiplier">Мн. Всего</th>
                     <th class="actions">
 
                     </th>
@@ -69,31 +71,60 @@
                     <td>
                         {{ item.Qty }}
                     </td>
-                    <td>
-                        <input type="number" value="1" class="form-control form-control-sm" />
-                    </td>
+
                     <td>
                         {{ item.UnitName }}
                     </td>
                     <td>
-                        {{ (item.Cost || 0) }}
+                        {{ (item.Cost || 0).toFixed(2) }}
                     </td>
                     <td>
-                        {{ (item.Total || 0) }}
+                        {{ (item.Total || 0).toFixed(2) }}
+                    </td>
+                    <td>
+                        <template v-if="!!getRelation(item)">
+                            <input type="number" v-model="getRelation(item).Multiplier" v-on:change="setMultiplier(item)" class="form-control form-control-sm" />
+                        </template>
+                        <template v-else>
+                            <input type="number" placeholder="1" class="form-control form-control-sm with-single-multiplier" disabled="disabled" />
+                        </template>
+                    </td>
+                    <td>
+                        {{ calcWithMultiplier(item) }}
                     </td>
                     <td v-on:click="checkCosting(item)" class="actions check-uncheck-costing">
                         <i v-if="isCheckedCosting(item)" class="fas fa-check text-success"></i>
                         <i v-if="!isCheckedCosting(item)" class="fas fa-times text-danger"></i>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="3">
+                        <label class="form-check-label ml-4">
+                            <input v-model="CustomDesign" type="checkbox" class="form-check-input">
+                            Индивидуальный дизайн
+                        </label>
+                    </td>
+                    <td colspan="5">
+                        От стоимости UI: @(GlobalVariables.CustomDesignMarkup * 100) %
+                    </td>
+                    <td>
+                        <strong>{{ 0 }}</strong>
+                    </td>
+                    <td class="actions check-uncheck-costing"></td>
+                </tr>
+                <tr>
+                    <td colspan="8"><strong>Всего стоимость проекта</strong></td>
+                    <td>
+                        <strong>{{ Total.toFixed(2) }}</strong>
+                    </td>
+                    <td class="actions check-uncheck-costing"></td>
+                </tr>
+
             </tbody>
         </table>
     </div>
     <div class="form-check mb-5">
-        <label class="form-check-label">
-            <input v-model="CustomDesign" type="checkbox" class="form-check-input">
-            Индивидуальный дизайн
-        </label>
+
     </div>
 
 </div>

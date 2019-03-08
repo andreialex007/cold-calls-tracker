@@ -1,5 +1,6 @@
 ﻿using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
+using ColdCallsTracker.Code.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Edit(int id)
         {
             var item = Service.QuoteTemplate.Get(id);
+            item.AvaliableCostingTemplates.CalcTotalForCostingTemplates();
             return View("~/Pages/QuoteTemplates/Edit.cshtml", item);
         }
 
@@ -43,14 +45,24 @@ namespace ColdCallsTracker.Controllers
         public ActionResult AddRelation([FromBody] QuoteTemplateCostingTemplate relation)
         {
             Service.QuoteTemplate.AddRelation(relation);
-            return Json(new { result = "Ok" });
+            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
+            return Json(new { total });
         }
 
         [HttpPost]
         public ActionResult DeleteRelation([FromBody] QuoteTemplateCostingTemplate relation)
         {
             Service.QuoteTemplate.RemoveRelation(relation);
-            return Json(new { result = "Ok" });
+            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
+            return Json(new {total });
+        }
+
+        [HttpPost]
+        public ActionResult SetMultiplier([FromBody] QuoteTemplateCostingTemplate relation)
+        {
+            Service.QuoteTemplate.SetMultiplier(relation);
+            var total = Service.QuoteTemplate.Get(relation.QuoteTemplateId).Total;
+            return Json(new { total });
         }
 
         [HttpGet]
