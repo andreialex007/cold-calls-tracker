@@ -22,95 +22,126 @@
 
 <div v-cloak class="company-edit-page">
     <div v-bind:html="errorsView" class="errors-holder"></div>
-    <h2>
-        <span class="pb-2">{{ entity.Name || 'Данные о компании' }}</span>
-        <span v-on:click="save" class="btn btn-success float-right ml-2 btn-sm">Сохранить</span>
-        <a href="/Companies/" class="btn btn-info float-right btn-sm">Отмена</a>
-    </h2>
 
-    <div class="current-page-content">
-        <div>
-            <div class="form-group row">
-                <label class="col-sm-1 ">Название</label>
-                <div class="col-sm-3">
-                    <input type="text" v-model="entity.Name" class="form-control form-control-sm" placeholder="Краткое название фирмы">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a v-bind:class="{ 'active': currentTab === 'main' }" v-on:click="currentTab = 'main'" class="nav-link" href="javascript:;">
+                <strong>{{ entity.Name || 'Данные о компании' }}</strong>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" v-bind:class="{ 'active': currentTab === 'costings' }" v-on:click="currentTab = 'costings'" href="javascript:;">
+                <strong>Сметы</strong>
+            </a>
+        </li>
+    </ul>
+
+    <div v-show="currentTab === 'main'" class="main-tab">
+        <h2>
+            <span class="pb-2"></span>
+            <span v-on:click="save" class="btn btn-success float-right ml-2 btn-sm">Сохранить</span>
+            <a href="/Companies/" class="btn btn-info float-right btn-sm">Отмена</a>
+        </h2>
+
+        <div class="current-page-content">
+            <div>
+                <div class="form-group row">
+                    <label class="col-sm-1 ">Название</label>
+                    <div class="col-sm-3">
+                        <input type="text" v-model="entity.Name" class="form-control form-control-sm" placeholder="Краткое название фирмы">
+                    </div>
+                    <label class="col-sm-1 text-right">Сайты</label>
+                    <div class="col-sm-3">
+                        <input type="text" v-model="entity.WebSites" class="form-control form-control-sm" placeholder="Список сайтов через разделитель">
+                    </div>
+                    <label class="col-sm-1 text-right">Статус</label>
+                    <div class="col-sm-3">
+                        <select v-model="entity.StateId" class="form-control  form-control-sm">
+                            <option value="0">Черновик</option>
+                            <option value="1">В процессе</option>
+                            <option value="2">Успех</option>
+                            <option value="3">Отказ</option>
+                        </select>
+                    </div>
+
                 </div>
-                <label class="col-sm-1 text-right">Сайты</label>
-                <div class="col-sm-3">
-                    <input type="text" v-model="entity.WebSites" class="form-control form-control-sm" placeholder="Список сайтов через разделитель">
-                </div>
-                <label class="col-sm-1 text-right">Статус</label>
-                <div class="col-sm-3">
-                    <select v-model="entity.StateId" class="form-control  form-control-sm">
-                        <option value="0">Черновик</option>
-                        <option value="1">В процессе</option>
-                        <option value="2">Успех</option>
-                        <option value="3">Отказ</option>
-                    </select>
+                <div class="form-group row">
+                    <label class="col-sm-1">Деятельность</label>
+                    <div class="col-sm-11">
+                        <input type="text" v-model="entity.ActivityType" class="form-control form-control-sm" placeholder="Описание рода деятельности">
+                    </div>
                 </div>
 
-            </div>
-            <div class="form-group row">
-                <label class="col-sm-1">Деятельность</label>
-                <div class="col-sm-11">
-                    <input type="text" v-model="entity.ActivityType" class="form-control form-control-sm" placeholder="Описание рода деятельности">
-                </div>
-            </div>
-
-            <div class="">
                 <div class="">
-                    <textarea class="form-control form-control-sm" v-model="entity.Remarks" rows="3" placeholder="Текст примечания"></textarea>
+                    <div class="">
+                        <textarea class="form-control form-control-sm" v-model="entity.Remarks" rows="3" placeholder="Текст примечания"></textarea>
+                    </div>
+                </div>
+                <div class="mt-1 text-center">
                 </div>
             </div>
-            <div class="mt-1 text-center">
+            <div v-if="entity.Id > 0">
+                <div class="row">
+                    <div class="col mt-2">
+                        <div class="phone-holder">
+                            <div class="phones-list">
+                                <select v-bind:disabled="entity.Phones.length === 0" v-model="selectedPhoneId" class="form-control form-control-sm">
+                                    <option v-for="phone in entity.Phones" v-bind:value="phone.Id">{{ phone.Number }} - {{ phone.Remarks }}</option>
+                                </select>
+                            </div>
+                            <div class="phoens-management">
+                                <span v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" v-on:click="editPhone" class="btn btn-success btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                    Редактировать
+                                </span>
+                                <span v-on:click="addPhone" class="btn btn-secondary ml-2 btn-sm">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Добавить
+                                </span>
+                                <span v-on:click="removePhone" v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" class="btn btn-secondary ml-2 btn-sm">
+                                    <i class="fas fa-times"></i>
+                                    Удалить
+                                </span>
+                                <span v-bind:class="{ 'disabled' : !callDescription || !selectedPhoneId }" v-on:click="saveRecord" class="btn btn-danger ml-2 btn-sm">
+                                    <i class="fas fa-save"></i>
+                                    Сохранить запись
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea placeholder="Описание звонка" v-model="callDescription" v-on:keyup.ctrl.enter="saveRecord" rows="2" class="form-control mt-3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <table class="records-table table table-bordered table-hover table-sm table-striped">
+                            <tbody>
+                                <tr v-for="record in entity.Records">
+                                    <td class="call-content">{{ record.Content }}</td>
+                                    <td class="phone">{{ record.Phone }}</td>
+                                    <td class="date">{{ record.DateCreate }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div v-if="entity.Id > 0" >
-            <div class="row">
-                <div class="col mt-2">
-                    <div class="phone-holder">
-                        <div class="phones-list">
-                            <select v-bind:disabled="entity.Phones.length === 0" v-model="selectedPhoneId" class="form-control form-control-sm">
-                                <option v-for="phone in entity.Phones" v-bind:value="phone.Id">{{ phone.Number }} - {{ phone.Remarks }}</option>
-                            </select>
-                        </div>
-                        <div class="phoens-management">
-                            <span v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" v-on:click="editPhone" class="btn btn-success btn-sm">
-                                <i class="fas fa-edit"></i>
-                                Редактировать
-                            </span>
-                            <span v-on:click="addPhone" class="btn btn-secondary ml-2 btn-sm">
-                                <i class="fas fa-plus-circle"></i>
-                                Добавить
-                            </span>
-                            <span v-on:click="removePhone" v-bind:class="{ 'disabled' : entity.Phones.length === 0 }" class="btn btn-secondary ml-2 btn-sm">
-                                <i class="fas fa-times"></i>
-                                Удалить
-                            </span>
-                            <span v-bind:class="{ 'disabled' : !callDescription || !selectedPhoneId }" v-on:click="saveRecord" class="btn btn-danger ml-2 btn-sm">
-                                <i class="fas fa-save"></i>
-                                Сохранить запись
-                            </span>
-                        </div>
-                    </div>
-                    <div>
-                        <textarea placeholder="Описание звонка" v-model="callDescription"  v-on:keyup.ctrl.enter="saveRecord"  rows="2" class="form-control mt-3"></textarea>
-                    </div>
+    </div>
+    <div v-show="currentTab === 'costings'" class="costings-tab">
+        <div class="d-flex" >
+            <div class="dropdown ml-2 mt-2">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Добавить смету из шаблона
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Интернет магазин MIN</a>
+                    <a class="dropdown-item" href="#">Сайт визитка</a>
+                    <a class="dropdown-item" href="#">Корпоративный сайт</a>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <table class="records-table table table-bordered table-hover table-sm table-striped">
-                        <tbody>
-                            <tr v-for="record in entity.Records">
-                                <td class="call-content" >{{ record.Content }}</td>
-                                <td class="phone">{{ record.Phone }}</td>
-                                <td class="date">{{ record.DateCreate }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <span class="btn btn-primary btn-sm ml-2 mt-2" >Добавить пустую смету</span>
         </div>
     </div>
 </div>
@@ -129,7 +160,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div>
-                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup="maskCheck" 
+                            <input type="text" class="form-control phone-input" v-model="entity.Number" v-on:keyup="maskCheck"
                                    v-mask="'9 (999) 999-99-99'" v-on:keyup.enter="save" placeholder="телефон" />
                         </div>
                         <div v-if="hasDuplicates" class="alert alert-danger mt-2">
@@ -138,7 +169,7 @@
                         </div>
                     </div>
                     <div>
-                        <div><input type="text" class="form-control" v-model="entity.Remarks"  v-on:keyup.enter="save"  placeholder="Описание" /></div>
+                        <div><input type="text" class="form-control" v-model="entity.Remarks" v-on:keyup.enter="save" placeholder="Описание" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">

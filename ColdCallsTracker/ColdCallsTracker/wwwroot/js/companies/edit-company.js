@@ -21,7 +21,8 @@
                 errorsView: "",
                 activeTab: "log",
                 callDescription: "",
-                selectedPhoneId: null
+                selectedPhoneId: null,
+                currentTab: "main"
             }
         },
         methods: {
