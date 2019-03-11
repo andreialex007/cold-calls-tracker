@@ -14,5 +14,6 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public CompanyEditItem Company { get; set; }
 
         public List<CostingItem> Costings { get; set; } = new List<CostingItem>();
+        public bool Opened { get; set; }
     }
 }

@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/inputmask/inputmask.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-inputmask@0.2.1/dist/vue-inputmask-browser.js"></script>
 
-
+    <script src="~/js/companies/quotes-management.js" asp-append-version="true"></script>
     <script src="~/js/companies/edit-company.js" asp-append-version="true"></script>
 }
 
@@ -141,21 +141,21 @@
                     <a class="dropdown-item" href="javascript:;">Корпоративный сайт</a>
                 </div>
             </div>
-            <span class="btn btn-primary btn-sm ml-2 mt-2">Добавить пустую смету</span>
+            <span v-on:click="newQuote" class="btn btn-primary btn-sm ml-2 mt-2">Добавить пустую смету</span>
         </div>
         <div>
-            <div class="card mt-2">
+            <div v-for="quote in entity.Quotes" class="card mt-2">
                 <div class="card-header d-flex">
                     <div class="quote-header-wrapper pl-2 mr-2 d-flex">
-                        <i class="fas fa-angle-down mt-1"></i>
+                        <i v-on:click="quote.Opened = !quote.Opened" v-bind:class="{ 'fa-angle-down' : quote.Opened, 'fa-angle-up' : !quote.Opened }" class="fas fa-angle-down mt-1"></i>
                         <span class="quote-header ml-2">
-                            <input type="text" value="Интернет магазин и лендинг" class="form-control-xs form-control" />
+                            <input type="text" v-model="quote.Name" class="form-control-xs form-control" />
                         </span>
                     </div>
-                    <span class="badge badge-info mr-2 date-changed-info">изм: 10 янв 19</span>
+                    <span class="badge badge-info mr-2 date-changed-info">изм: {{ quote.DateModify }}</span>
                     <span class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
                 </div>
-                <div class="card-body">
+                <div v-show="quote.Opened" class="card-body">
                     <div class="costing-templates-page">
                         <table class="table-xs table table-bordered table-hover table-striped mb-0">
                             <thead class="thead-dark">

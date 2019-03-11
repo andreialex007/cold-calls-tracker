@@ -10,6 +10,7 @@
 
     window.editCompany = new Vue({
         el: ".company-edit-page",
+        mixins: [window.quotesManagement],
         data: function () {
             return {
                 entity: {
