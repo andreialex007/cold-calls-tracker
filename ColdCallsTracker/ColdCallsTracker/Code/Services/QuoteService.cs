@@ -40,6 +40,19 @@ namespace ColdCallsTracker.Code.Services
             item.Id = dbItem.Id;
         }
 
+        public QuoteItem EmptyQuote(int companyId)
+        {
+            var quote = new Quote();
+            quote.CompanyId = companyId;
+            quote.Name = "Новая смета работ";
+            quote.DateModify = DateTime.Now;
+            quote.DateCreate = DateTime.Now;
+            Db.Quotes.Add(quote);
+            Db.SaveChanges();
+
+            return Edit(quote.Id);
+        }
+
         public QuoteItem Edit(int? id)
         {
             var editItem = new QuoteItem();
@@ -55,14 +68,11 @@ namespace ColdCallsTracker.Code.Services
                         CompanyId = x.CompanyId
                     })
                     .FirstOrDefault(x => x.Id == id);
-
-
                 return item;
             }
 
             return editItem;
         }
-
 
         public (List<QuoteItem> items, int total, int filtered) Search(QuoteSearchParameters parameters)
         {

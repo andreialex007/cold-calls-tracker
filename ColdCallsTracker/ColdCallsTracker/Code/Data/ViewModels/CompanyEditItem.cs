@@ -12,9 +12,11 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public List<PhoneEditItem> Phones { get; set; } = new List<PhoneEditItem>();
         public List<CallRecordItem> Records { get; set; } = new List<CallRecordItem>();
+        public List<QuoteItem> Quotes { get; set; } = new List<QuoteItem>();
 
         public int? StateId { get; set; }
         public string State { get; set; }
+
 
     }
 }

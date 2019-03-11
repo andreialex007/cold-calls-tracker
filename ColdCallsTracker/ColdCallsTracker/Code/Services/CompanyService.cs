@@ -50,6 +50,32 @@ namespace ColdCallsTracker.Code.Services
                                 DateCreate = r.DateCreate,
                                 PhoneId = r.PhoneId
                             })
+                            .ToList(),
+                        Quotes = x.Quotes
+                            .Select(q => new QuoteItem
+                            {
+                                Id = q.Id,
+                                DateModify = q.DateModify,
+                                Name = q.Name,
+                                DateCreate = q.DateCreate,
+                                CompanyId = q.CompanyId,
+                                Costings = q.Costings
+                                    .Select(c => new CostingItem
+                                    {
+                                        Total = c.Total,
+                                        Cost = c.Cost,
+                                        Id = c.Id,
+                                        CategoryId = c.CategoryId,
+                                        DateModify = c.DateModify,
+                                        Name = c.Name,
+                                        Unit = c.Unit,
+                                        DateCreate = c.DateCreate,
+                                        Qty = c.Qty,
+                                        Multiplier = c.Multiplier,
+                                        QuoteId = c.QuoteId
+                                    })
+                                    .ToList()
+                            })
                             .ToList()
                     })
                     .FirstOrDefault(x => x.Id == id);

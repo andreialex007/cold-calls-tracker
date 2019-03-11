@@ -9,6 +9,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public int Unit { get; set; }
         public double Qty { get; set; }
         public double Cost { get; set; }
+        public double Multiplier { get; set; }
         public double Total { get; set; }
 
         public int CategoryId { get; set; }

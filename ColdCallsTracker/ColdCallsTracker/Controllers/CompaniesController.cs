@@ -84,5 +84,12 @@ namespace ColdCallsTracker.Controllers
                 filtered
             });
         }
+
+        [HttpGet]
+        public ActionResult EmptyQuote(int companyId)
+        {
+            var quote = Service.Quote.EmptyQuote(companyId);
+            return Json(quote);
+        }
     }
 }
