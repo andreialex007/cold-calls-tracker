@@ -43,7 +43,7 @@
 .btn-group-xs > .btn, .btn-xs {
     padding: .25rem .4rem;
     font-size: .875rem;
-    line-height: .5;
+    line-height: .3;
     border-radius: .2rem;
 }
 
@@ -375,4 +375,37 @@ input:checked + .slider:before {
 .with-single-multiplier {
     background-color: lightgray !important;
     cursor: not-allowed;
+}
+
+.quote-header {
+    flex-grow: 1 !important;
+}
+
+.quote-header-wrapper {
+    flex-grow: 1;
+    cursor: pointer;
+    background-color: #efeded;
+    border-radius: 5px;
+}
+
+.date-changed-info {
+    line-height: 16px;
+    padding-right: 9px;
+    padding-left: 9px;
+}
+
+.table-xs td, .table-xs th {
+    padding: .1rem;
+}
+
+.form-control-xs {
+    padding: .08rem .3rem;
+    font-size: 0.875rem;
+    line-height: .8;
+    border-radius: .2rem;
+}
+
+.quote-header input {
+    border: 1px solid #f7f7f7;
+    font-weight: bold;
 }
