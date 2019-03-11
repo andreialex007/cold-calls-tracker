@@ -149,16 +149,17 @@
                     <div class="quote-header-wrapper pl-2 mr-2 d-flex">
                         <i v-on:click="quote.Opened = !quote.Opened" v-bind:class="{ 'fa-angle-down' : quote.Opened, 'fa-angle-up' : !quote.Opened }" class="fas fa-angle-down mt-1"></i>
                         <span class="quote-header ml-2">
-                            <input type="text" v-model="quote.Name" class="form-control-xs form-control" />
+                            <input type="text" v-model="quote.Name" v-on:change="renameQuote(quote)" class="form-control-xs form-control" />
                         </span>
                     </div>
                     <span class="badge badge-info mr-2 date-changed-info">изм: {{ quote.DateModify }}</span>
+                    <span class="btn btn-dark btn-xs mr-2"><i class="fas fa-plus"></i> затрата</span>
                     <span class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
                 </div>
                 <div v-show="quote.Opened" class="card-body">
                     <div class="costing-templates-page">
                         <table class="table-xs table table-bordered table-hover table-striped mb-0">
-                            <thead class="thead-dark">
+                            <thead >
                                 <tr>
                                     <th class="id">#</th>
                                     <th class="category">Категория</th>

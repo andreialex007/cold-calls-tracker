@@ -20,6 +20,13 @@
                 });
 
                 this.entity.Quotes.push(newQuote);
+            },
+            renameQuote(quote) {
+                 $.ajax({
+                    method: "GET",
+                    contentType: "application/json",
+                    url: "/Companies/Rename?quoteId=" + quote.Id + "&name=" + encodeURIComponent(quote.Name)
+                });
             }
         }
     };

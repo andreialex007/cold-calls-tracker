@@ -4,6 +4,7 @@ using System.Linq;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
+using ColdCallsTracker.Code.Exceptions;
 using ColdCallsTracker.Code.Extensions;
 
 namespace ColdCallsTracker.Code.Services
@@ -12,8 +13,7 @@ namespace ColdCallsTracker.Code.Services
     {
         public QuoteService(AppDbContext db, AppService appService)
             : base(db, appService)
-        {
-        }
+        { }
 
         public void Save(QuoteItem item)
         {
@@ -40,6 +40,17 @@ namespace ColdCallsTracker.Code.Services
             item.Id = dbItem.Id;
         }
 
+        public void Rename(int quoteId, string newName)
+        {
+            if (!newName.HasValue())
+                throw new ValidationException("Name required");
+
+            var quote = new Quote { Id = quoteId };
+            Db.Quotes.Attach(quote);
+            quote.Name = newName;
+            Db.SaveChanges();
+        }
+
         public QuoteItem EmptyQuote(int companyId)
         {
             var quote = new Quote();
@@ -49,7 +60,6 @@ namespace ColdCallsTracker.Code.Services
             quote.DateCreate = DateTime.Now;
             Db.Quotes.Add(quote);
             Db.SaveChanges();
-
             return Edit(quote.Id);
         }
 
@@ -105,7 +115,5 @@ namespace ColdCallsTracker.Code.Services
 
             return (items, total, filtered);
         }
-
-
     }
 }

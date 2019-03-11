@@ -91,5 +91,12 @@ namespace ColdCallsTracker.Controllers
             var quote = Service.Quote.EmptyQuote(companyId);
             return Json(quote);
         }
+
+        [HttpGet]
+        public ActionResult Rename(int quoteId, string name)
+        {
+            this.Service.Quote.Rename(quoteId, name);
+            return Json(new { result = "Ok" });
+        }
     }
 }
