@@ -145,5 +145,12 @@ namespace ColdCallsTracker.Code.Services
             Db.SaveChanges();
             return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == newQuote.Id);
         }
+
+
+        public void Delete(int id)
+        {
+            Db.Delete<Quote>(x => x.Id == id);
+            Db.SaveChanges();
+        }
     }
 }

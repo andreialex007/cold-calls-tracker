@@ -127,5 +127,11 @@ namespace ColdCallsTracker.Controllers
             return Json(templatedQuote);
         }
 
+        public ActionResult DeleteQuote(int id)
+        {
+            Service.Quote.Delete(id);
+            return Json(new { result = "Ok" });
+        }
+
     }
 }

@@ -102,6 +102,18 @@
                 });
 
                 this.entity.Quotes.push(newQuote);
+            },
+            async deleteQuote(id) {
+                let confirmed = confirm("Хотите удалить предложение?");
+                if (!confirmed)
+                    return;
+
+                await $.ajax({
+                    method: "GET",
+                    contentType: "application/json",
+                    url: "/Companies/DeleteQuote?id=" + id
+                });
+                this.entity.Quotes = this.entity.Quotes.filter(x => x.Id !== id);
             }
         }
     };

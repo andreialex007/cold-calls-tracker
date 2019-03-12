@@ -156,7 +156,7 @@
                         </span>
                     </div>
                     <span class="badge badge-info mr-2 date-changed-info">изм: {{ quote.DateModify }}</span>
-                    <span class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
+                    <span v-on:click="deleteQuote(quote.Id)" class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
                 </div>
                 <div v-show="quote.Opened" class="card-body">
                     <div class="costing-templates-page">
