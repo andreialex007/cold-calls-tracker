@@ -1,4 +1,5 @@
-﻿using ColdCallsTracker.Code.Data.ViewModels;
+﻿using System.Collections.Generic;
+using ColdCallsTracker.Code.Data.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +12,17 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index() => View("~/Pages/Companies/Index.cshtml");
+        public ActionResult Index()
+        {
+            return View("~/Pages/Companies/Index.cshtml");
+        }
 
         [HttpGet]
-        public ActionResult Edit(int? id) => View("~/Pages/Companies/Edit.cshtml");
+        public ActionResult Edit(int? id)
+        {
+            var items = this.Service.QuoteTemplate.All();
+            return View("~/Pages/Companies/Edit.cshtml", items);
+        }
 
         [HttpGet]
         public ActionResult Load(int id)
@@ -93,10 +101,31 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult Rename(int quoteId, string name)
+        public ActionResult RenameQuote(int quoteId, string name)
         {
             this.Service.Quote.Rename(quoteId, name);
             return Json(new { result = "Ok" });
         }
+
+        [HttpPost]
+        public ActionResult SaveCosting([FromBody] CostingItem item)
+        {
+            this.Service.Costing.Save(item);
+            return Json(item);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteCosting(int id)
+        {
+            this.Service.Costing.Delete(id);
+            return Json(new { result = "Ok" });
+        }
+
+        public ActionResult AddQuoteFromTemplate(int templateId, int companyId)
+        {
+            var templatedQuote = Service.Quote.AddQuoteFromTemplate(templateId, companyId);
+            return Json(templatedQuote);
+        }
+
     }
 }

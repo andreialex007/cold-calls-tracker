@@ -17,7 +17,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Index()
         {
             var items = Service.QuoteTemplate.All();
-            items.ForEach(x => x.Recalc());
+            
             return View("~/Pages/QuoteTemplates/Index.cshtml", items);
         }
 

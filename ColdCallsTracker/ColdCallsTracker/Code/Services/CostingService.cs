@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ColdCallsTracker.Code.Data;
+using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Extensions;
 
@@ -12,28 +13,44 @@ namespace ColdCallsTracker.Code.Services
         {
         }
 
-        public void Save(CostingItem item)
+        public void Save(CostingItem uiItem)
         {
-            item.GetValidationErrors().ThrowIfHasErrors();
+            uiItem.GetValidationErrors().ThrowIfHasErrors();
 
-            var dbItem = Db.Costings.Single(x => x.Id == item.Id);
+            var dbItem = new Costing();
 
-            dbItem.Name = item.Name;
-            dbItem.Total = item.Total;
-            dbItem.Multiplier = item.Multiplier;
-            dbItem.Qty = item.Qty;
-            dbItem.QuoteId = item.QuoteId;
-            dbItem.Unit = item.Unit;
-            dbItem.CategoryId = item.CategoryId;
-            dbItem.Cost = item.Cost;
+            if (uiItem.Id == 0)
+            {
+                dbItem = new Costing();
+                Db.Costings.Add(dbItem);
+            }
+            else
+            {
+                dbItem = Db.Costings.Single(x => x.Id == uiItem.Id);
+            }
+
+            dbItem.Name = uiItem.Name;
+            dbItem.Total = uiItem.Total;
+            dbItem.Multiplier = uiItem.Multiplier;
+            dbItem.Qty = uiItem.Qty;
+            dbItem.QuoteId = uiItem.QuoteId;
+            dbItem.Unit = uiItem.Unit;
+            dbItem.CategoryId = uiItem.CategoryId;
+            dbItem.Cost = uiItem.Cost;
 
             dbItem.DateModify = DateTime.Now;
 
             Db.SaveChanges();
 
-            item.Id = dbItem.Id;
-            item.DateModify = dbItem.DateModify;
-            item.DateCreate = dbItem.DateCreate;
+            uiItem.Id = dbItem.Id;
+            uiItem.DateModify = dbItem.DateModify;
+            uiItem.DateCreate = dbItem.DateCreate;
+        }
+
+        public void Delete(int id)
+        {
+            Db.Delete<Costing>(x => x.Id == id);
+            Db.SaveChanges();
         }
     }
 }

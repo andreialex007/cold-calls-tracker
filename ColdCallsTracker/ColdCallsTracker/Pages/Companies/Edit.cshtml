@@ -1,7 +1,9 @@
-﻿@model object
+﻿@using ColdCallsTracker.Code.Data.Models
+@using ColdCallsTracker.Code.Utils
+@model List<ColdCallsTracker.Code.Data.ViewModels.QuoteTemplateItem>
 
 @{
-    ViewBag.Title = "Companies";
+    ViewBag.Title = "Редактирование компании";
     Layout = "_Layout";
 }
 
@@ -136,9 +138,10 @@
                     Добавить смету из шаблона
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="javascript:;">Интернет магазин MIN</a>
-                    <a class="dropdown-item" href="javascript:;">Сайт визитка</a>
-                    <a class="dropdown-item" href="javascript:;">Корпоративный сайт</a>
+                    @foreach (var item in Model)
+                    {
+                        <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">@item.Name</a>
+                    }
                 </div>
             </div>
             <span v-on:click="newQuote" class="btn btn-primary btn-sm ml-2 mt-2">Добавить пустую смету</span>
@@ -153,28 +156,112 @@
                         </span>
                     </div>
                     <span class="badge badge-info mr-2 date-changed-info">изм: {{ quote.DateModify }}</span>
-                    <span class="btn btn-dark btn-xs mr-2"><i class="fas fa-plus"></i> затрата</span>
                     <span class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
                 </div>
                 <div v-show="quote.Opened" class="card-body">
                     <div class="costing-templates-page">
                         <table class="table-xs table table-bordered table-hover table-striped mb-0">
-                            <thead >
+                            <thead>
                                 <tr>
-                                    <th class="id">#</th>
-                                    <th class="category">Категория</th>
-                                    <th>Название</th>
-                                    <th class="qty">Кол.</th>
-                                    <th class="unit">Юнит</th>
-                                    <th class="cost">Цена</th>
-                                    <th class="total">Всего</th>
-                                    <th class="multiplier">Множ.</th>
-                                    <th class="multiplier">Мн. Всего</th>
+                                    <th class="id"></th>
+                                    <th class="category"></th>
+                                    <th></th>
+                                    <th class="qty"></th>
+                                    <th class="unit"></th>
+                                    <th class="cost"></th>
+                                    <th class="total"></th>
+                                    <th class="multiplier"></th>
+                                    <th class="multiplier"></th>
                                     <th class="actions">
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <tr class="table-info">
+                                    <td></td>
+                                    <td>
+                                        <select v-model="newCosting.CategoryId" class="form-control form-control-xs">
+                                            @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
+                                            {
+                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input v-model="newCosting.Name" type="text" class="form-control form-control-xs" placeholder="Название" />
+                                    </td>
+                                    <td>
+                                        <input v-model="newCosting.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
+                                    </td>
+                                    <td>
+                                        <select v-model="newCosting.Unit" class="form-control form-control-xs">
+                                            @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
+                                            {
+                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input v-model="newCosting.Cost" type="text" class="form-control form-control-xs numbers-only" placeholder="Цена" />
+                                    </td>
+
+                                    <td>
+                                        <input v-model="newCosting.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
+                                    </td>
+                                    <td>
+                                        <input v-model="newCosting.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-xs numbers-only" placeholder="Мн. Всего" />
+                                    </td>
+                                    <td class="actions d-flex">
+                                        <span v-on:click="addCosting(quote)" v-bind:class="{ 'disabled-button' : !addCostingBtnActive }" class="btn btn-xs btn-primary add-costing-btn"><i class="fas fa-plus"></i></span>
+                                    </td>
+                                </tr>
+                                <tr v-bind:class="{ 'table-danger': !costingValid(costing) }" v-for="costing in quote.Costings">
+                                    <td>{{ costing.Id }}</td>
+                                    <td>
+                                        <select v-on:change="costingChanged(costing)" v-model="costing.CategoryId" class="form-control form-control-xs">
+                                            @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
+                                            {
+                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" v-model="costing.Name" type="text" class="form-control form-control-xs" placeholder="Название" />
+                                    </td>
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" v-model="costing.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
+                                    </td>
+                                    <td>
+                                        <select v-on:change="costingChanged(costing)" v-model="costing.Unit" class="form-control form-control-xs">
+                                            @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
+                                            {
+                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" v-model="costing.Cost" type="text" class="form-control form-control-xs numbers-only" placeholder="Цена" />
+                                    </td>
+
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" v-model="costing.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
+                                    </td>
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" v-model="costing.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
+                                    </td>
+                                    <td>
+                                        <input v-on:change="costingChanged(costing)" type="text" class="form-control form-control-xs numbers-only" placeholder="Мн. Всего" />
+                                    </td>
+                                    <td class="actions d-flex">
+                                        <span v-on:click="deleteCosting(costing, quote)" class="btn btn-xs btn-danger add-costing-btn pl-1 pr-1">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

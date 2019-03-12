@@ -39,6 +39,7 @@ namespace ColdCallsTracker.Code.Services
             items.ForEach(x => x.QuoteCostingRelations =
                 (includableQueryable.FirstOrDefault(t => t.Id == x.Id)?.CostingTemplates ?? new List<QuoteTemplateCostingTemplate>()));
 
+            items.ForEach(x => x.Recalc());
             return items;
         }
 

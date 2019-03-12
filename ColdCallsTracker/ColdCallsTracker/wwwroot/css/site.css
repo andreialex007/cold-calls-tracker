@@ -248,7 +248,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100px;
 }
 
-.costing-templates-page .actions .btn {
+.costing-templates-page .actions .fa-trash-alt {
     visibility: hidden;
 }
 
@@ -405,7 +405,25 @@ input:checked + .slider:before {
     border-radius: .2rem;
 }
 
+select.form-control-xs {
+    height: calc(1.35rem + 2px) !important;
+}
+
 .quote-header input {
     border: 1px solid #f7f7f7;
     font-weight: bold;
+}
+
+.add-costing-btn {
+    padding: 2px;
+}
+
+.company-edit-page .costing-templates-page thead th {
+    padding: 0px !important;
+    height: 1px !important;
+    visibility: hidden;
+}
+
+.new-costing-line td{
+    background-color: #cccccc;
 }

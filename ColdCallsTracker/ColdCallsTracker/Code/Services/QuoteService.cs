@@ -6,6 +6,7 @@ using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Exceptions;
 using ColdCallsTracker.Code.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColdCallsTracker.Code.Services
 {
@@ -114,6 +115,35 @@ namespace ColdCallsTracker.Code.Services
                 .ToList();
 
             return (items, total, filtered);
+        }
+
+        public QuoteItem AddQuoteFromTemplate(int templateId, int companyId)
+        {
+            var template = this.App.QuoteTemplate.Get(templateId);
+
+            var newQuote = new Quote();
+            newQuote.Name = template.Name;
+            newQuote.CompanyId = companyId;
+            newQuote.CustomDesign = template.CustomDesign;
+            Db.Quotes.Add(newQuote);
+            Db.SaveChanges();
+
+            foreach (var relation in template.QuoteCostingRelations)
+            {
+                var costing = new Costing();
+                costing.Name = relation.CostingTemplate.Name;
+                costing.Qty = relation.CostingTemplate.Qty;
+                costing.Cost = relation.CostingTemplate.Cost;
+                costing.Multiplier = relation.Multiplier;
+                costing.Total = relation.CostingTemplate.Total;
+                costing.CategoryId = relation.CostingTemplate.CategoryId;
+                costing.QuoteId = newQuote.Id;
+                costing.Unit = relation.CostingTemplate.Unit;
+                Db.Costings.Add(costing);
+            }
+
+            Db.SaveChanges();
+            return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == newQuote.Id);
         }
     }
 }
