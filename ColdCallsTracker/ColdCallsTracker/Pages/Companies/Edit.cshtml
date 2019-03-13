@@ -276,13 +276,13 @@
                                         </label>
                                     </td>
                                     <td colspan="5">
-                                        От стоимости UI: 30 %
+                                        От стоимости UI: @(GlobalVariables.CustomDesignMarkup * 100) %
                                     </td>
                                     <td>
                                         {{ quote.CustomDesignTotalHrs }} ч.
                                     </td>
                                     <td>
-                                        {{ quote.CustomDesignTotal }} р.
+                                        {{ quote.CustomDesignTotal.toFixed(0) }} р.
                                     </td>
                                     <td></td>
                                 </tr>
@@ -295,7 +295,7 @@
                                         дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
                                         раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
                                     </td>
-                                    <td><strong>{{ quote.Total }} р.</strong></td>
+                                    <td><strong>{{ quote.Total.toFixed(0) }} р.</strong></td>
                                     <td ></td>
                                 </tr>
                             </tbody>
