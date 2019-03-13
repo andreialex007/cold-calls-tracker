@@ -87,6 +87,19 @@ namespace ColdCallsTracker.Code.Services
             return editItem;
         }
 
+        public QuoteItem Get(int? id)
+        {
+            var companyId = this.Db.Quotes.Single(x => x.Id == id).CompanyId;
+            return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == id);
+        }
+
+        public void SetDesign(int id, bool customDesign)
+        {
+            var quoteItem = this.Get(id);
+            quoteItem.CustomDesign = customDesign;
+            this.Save(quoteItem);
+        }
+
         public (List<QuoteItem> items, int total, int filtered) Search(QuoteSearchParameters parameters)
         {
             var query = Db.Quotes

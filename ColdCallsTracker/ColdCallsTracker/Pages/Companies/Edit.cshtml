@@ -140,7 +140,10 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var item in Model)
                     {
-                        <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">@item.Name</a>
+                    <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">
+                        @item.Name - @(Math.Round(item.Total).ToString("N0")) р.
+                        (дн: @Math.Round(item.TotalHours / GlobalVariables.WorkingHoursPerDay, 1) недель: @Math.Round((item.TotalHours / GlobalVariables.WorkingHoursPerDay) / 5, 1))
+                    </a>
                     }
                 </div>
             </div>
@@ -225,7 +228,7 @@
                                 <tr v-bind:class="{ 'table-danger': !costingValid(costing) }" v-for="costing in quote.Costings">
                                     <td>{{ costing.Id }}</td>
                                     <td>
-                                        <select v-on:change="costingChanged(costing)" v-model="costing.CategoryId" class="form-control form-control-xs">
+                                        <select v-on:change="costingChanged(costing, quote)" v-model="costing.CategoryId" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
                                             {
                                                 <option value="@(el.Key)">@(el.Value)</option>
@@ -233,13 +236,13 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" v-model="costing.Name" type="text" class="form-control form-control-xs" placeholder="Название" />
+                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Name" type="text" class="form-control form-control-xs" placeholder="Название" />
                                     </td>
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" v-model="costing.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
+                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
                                     </td>
                                     <td>
-                                        <select v-on:change="costingChanged(costing)" v-model="costing.Unit" class="form-control form-control-xs">
+                                        <select v-on:change="costingChanged(costing,quote)" v-model="costing.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
                                                 <option value="@(el.Key)">@(el.Value)</option>
@@ -247,14 +250,14 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" v-model="costing.Cost" type="text" class="form-control form-control-xs numbers-only" placeholder="Цена" />
+                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Cost" type="text" class="form-control form-control-xs numbers-only" placeholder="Цена" />
                                     </td>
 
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" v-model="costing.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
+                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
                                     </td>
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" v-model="costing.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
+                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
                                     </td>
                                     <td>
                                         <strong>{{ getQtyTotal(costing) }}</strong>
@@ -271,7 +274,7 @@
                                 <tr>
                                     <td colspan="3">
                                         <label class="form-check-label ml-4">
-                                            <input type="checkbox" class="form-check-input">
+                                            <input type="checkbox" v-model="quote.CustomDesign" v-on:change="designChanged(quote)" class="form-check-input">
                                             Индивидуальный дизайн
                                         </label>
                                     </td>
@@ -296,7 +299,7 @@
                                         раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
                                     </td>
                                     <td><strong>{{ quote.Total.toFixed(0) }} р.</strong></td>
-                                    <td ></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>

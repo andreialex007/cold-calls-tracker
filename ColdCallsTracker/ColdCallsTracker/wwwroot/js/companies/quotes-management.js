@@ -58,21 +58,37 @@
                     url: "/Companies/SaveCosting"
                 });
 
-                quote.Costings.push(result);
+                Object.assign(quote, result);
+                quote.Opened = true;
+
                 this.newCosting = {
                     ...defaultCosting
                 };
             },
-            async costingChanged(costing) {
+            async costingChanged(costing, quote) {
                 if (!this.costingValid(costing))
                     return;
 
-                await $.ajax({
+                let result = await $.ajax({
                     method: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(costing),
                     url: "/Companies/SaveCosting"
                 });
+
+                Object.assign(quote, result);
+                quote.Opened = true;
+            },
+            async designChanged(quote) {
+
+                let result = await $.ajax({
+                    method: "GET",
+                    contentType: "application/json",
+                    url: "/Companies/ChangeDesign?quoteId=" + quote.Id + "&individualDesign=" + quote.CustomDesign
+                });
+
+                Object.assign(quote, result);
+                quote.Opened = true;
             },
             getMultiplierTotal(costing) {
                 if (!costing.Total) return "-";
@@ -90,13 +106,13 @@
                 if (!confirmed)
                     return;
 
-                await $.ajax({
+                let result = await $.ajax({
                     method: "GET",
                     contentType: "application/json",
                     url: "/Companies/DeleteCosting?id=" + costing.Id
                 });
-                quote.Costings = quote.Costings.filter(x => x.Id !== costing.Id);
-
+                Object.assign(quote, result);
+                quote.Opened = true;
             },
             costingValid(costing) {
                 if (!costing.Name) return false;

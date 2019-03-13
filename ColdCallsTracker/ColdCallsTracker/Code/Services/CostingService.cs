@@ -52,5 +52,10 @@ namespace ColdCallsTracker.Code.Services
             Db.Delete<Costing>(x => x.Id == id);
             Db.SaveChanges();
         }
+
+        public int GetQuoteIdByCosting(int id)
+        {
+            return Db.Costings.Single(x => x.Id == id).QuoteId;
+        }
     }
 }

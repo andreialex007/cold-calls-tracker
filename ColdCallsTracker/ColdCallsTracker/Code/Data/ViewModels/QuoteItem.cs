@@ -44,7 +44,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                 if (this.CustomDesign)
                 {
                     var customDesignTotal = ((GlobalVariables.CustomDesignMarkup) * uiTotal);
-                    return customDesignTotal;
+                    return Math.Round(customDesignTotal);
                 }
                 return 0;
             }
@@ -55,7 +55,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         {
             get
             {
-                var hrs = Costings.Where(x=>x.Unit == (int) UnitEnum.Hours).Sum(x => x.Qty * x.Multiplier);
+                var hrs = Costings.Where(x => x.Unit == (int)UnitEnum.Hours).Sum(x => x.Qty * x.Multiplier);
                 return Math.Round(hrs + CustomDesignTotalHrs);
             }
         }

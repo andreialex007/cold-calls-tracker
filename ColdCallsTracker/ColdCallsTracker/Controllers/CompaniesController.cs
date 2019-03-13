@@ -111,14 +111,22 @@ namespace ColdCallsTracker.Controllers
         public ActionResult SaveCosting([FromBody] CostingItem item)
         {
             this.Service.Costing.Save(item);
-            return Json(item);
+            return Json(this.Service.Quote.Get(item.QuoteId));
+        }
+
+        [HttpGet]
+        public ActionResult ChangeDesign(int quoteId, bool individualDesign)
+        {
+            this.Service.Quote.SetDesign(quoteId,individualDesign);
+            return Json(this.Service.Quote.Get(quoteId));
         }
 
         [HttpGet]
         public ActionResult DeleteCosting(int id)
         {
+            var quoteId = this.Service.Costing.GetQuoteIdByCosting(id);
             this.Service.Costing.Delete(id);
-            return Json(new { result = "Ok" });
+            return Json(this.Service.Quote.Get(quoteId));
         }
 
         public ActionResult AddQuoteFromTemplate(int templateId, int companyId)
