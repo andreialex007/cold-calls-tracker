@@ -424,6 +424,18 @@ select.form-control-xs {
     visibility: hidden;
 }
 
-.new-costing-line td{
+.new-costing-line td {
     background-color: #cccccc;
+}
+
+.remove-costing-item {
+    visibility: hidden;
+}
+
+tr:hover .remove-costing-item {
+    visibility: visible;
+}
+
+tr:hover .remove-costing-item > i {
+    visibility: visible !important;
 }

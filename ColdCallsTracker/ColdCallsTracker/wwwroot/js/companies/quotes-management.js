@@ -74,6 +74,16 @@
                     url: "/Companies/SaveCosting"
                 });
             },
+            getMultiplierTotal(costing) {
+                if (!costing.Total) return "-";
+                if (!costing.Multiplier) return "-";
+                return costing.Total * costing.Multiplier;
+            },
+            getQtyTotal(costing) {
+                if (!costing.Qty) return "-";
+                if (!costing.Multiplier) return "-";
+                return costing.Qty * costing.Multiplier;
+            },
             async deleteCosting(costing, quote) {
 
                 let confirmed = confirm("Хотите удалить затрату?");

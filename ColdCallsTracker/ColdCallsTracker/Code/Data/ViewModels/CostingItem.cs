@@ -18,5 +18,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public int QuoteId { get; set; }
         public QuoteItem Quote { get; set; }
+
+        public double MultiplierTotal => (this.Total ?? 0) * this.Multiplier;
     }
 }

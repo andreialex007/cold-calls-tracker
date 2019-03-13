@@ -34,6 +34,7 @@ namespace ColdCallsTracker.Code.Services
 
             dbItem.CompanyId = item.CompanyId;
             dbItem.Name = item.Name;
+            dbItem.CustomDesign = item.CustomDesign;
             dbItem.DateModify = DateTime.Now;
 
             Db.SaveChanges();
@@ -76,7 +77,8 @@ namespace ColdCallsTracker.Code.Services
                         Id = x.Id,
                         Name = x.Name,
                         CompanyName = x.Company.Name,
-                        CompanyId = x.CompanyId
+                        CompanyId = x.CompanyId,
+                        CustomDesign = x.CustomDesign
                     })
                     .FirstOrDefault(x => x.Id == id);
                 return item;
@@ -93,7 +95,8 @@ namespace ColdCallsTracker.Code.Services
                     Id = x.Id,
                     Name = x.Name,
                     CompanyId = x.CompanyId,
-                    CompanyName = x.Company.Name
+                    CompanyName = x.Company.Name,
+                    CustomDesign = x.CustomDesign
                 });
 
             var total = query.Count();
@@ -120,6 +123,7 @@ namespace ColdCallsTracker.Code.Services
         public QuoteItem AddQuoteFromTemplate(int templateId, int companyId)
         {
             var template = this.App.QuoteTemplate.Get(templateId);
+            template.Recalc();
 
             var newQuote = new Quote();
             newQuote.Name = template.Name;
@@ -132,13 +136,16 @@ namespace ColdCallsTracker.Code.Services
             {
                 var costing = new Costing();
                 costing.Name = relation.CostingTemplate.Name;
-                costing.Qty = relation.CostingTemplate.Qty;
-                costing.Cost = relation.CostingTemplate.Cost;
                 costing.Multiplier = relation.Multiplier;
-                costing.Total = relation.CostingTemplate.Total;
+                costing.Qty = relation.CostingTemplate.Qty;
                 costing.CategoryId = relation.CostingTemplate.CategoryId;
                 costing.QuoteId = newQuote.Id;
                 costing.Unit = relation.CostingTemplate.Unit;
+
+                var calculatedTemplate = template.AvaliableCostingTemplates.Single(c => c.Id == relation.CostingTemplateId);
+                costing.Cost = Math.Round(calculatedTemplate.Cost ?? 0);
+                costing.Total = Math.Round(calculatedTemplate.Total ?? 0);
+
                 Db.Costings.Add(costing);
             }
 

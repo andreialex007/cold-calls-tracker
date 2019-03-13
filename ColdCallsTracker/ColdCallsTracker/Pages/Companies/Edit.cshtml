@@ -172,13 +172,14 @@
                                     <th class="total"></th>
                                     <th class="multiplier"></th>
                                     <th class="multiplier"></th>
+                                    <th class="multiplier"></th>
                                     <th class="actions">
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="table-info">
-                                    <td></td>
+                                    <td>#</td>
                                     <td>
                                         <select v-model="newCosting.CategoryId" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
@@ -212,7 +213,10 @@
                                         <input v-model="newCosting.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control form-control-xs numbers-only" placeholder="Мн. Всего" />
+                                        <strong>{{ getQtyTotal(newCosting) }}</strong>
+                                    </td>
+                                    <td>
+                                        <strong>{{ getMultiplierTotal(newCosting) }}</strong>
                                     </td>
                                     <td class="actions d-flex">
                                         <span v-on:click="addCosting(quote)" v-bind:class="{ 'disabled-button' : !addCostingBtnActive }" class="btn btn-xs btn-primary add-costing-btn"><i class="fas fa-plus"></i></span>
@@ -253,13 +257,46 @@
                                         <input v-on:change="costingChanged(costing)" v-model="costing.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
                                     </td>
                                     <td>
-                                        <input v-on:change="costingChanged(costing)" type="text" class="form-control form-control-xs numbers-only" placeholder="Мн. Всего" />
+                                        <strong>{{ getQtyTotal(costing) }}</strong>
+                                    </td>
+                                    <td>
+                                        <strong>{{ getMultiplierTotal(costing) }} р.</strong>
                                     </td>
                                     <td class="actions d-flex">
                                         <span v-on:click="deleteCosting(costing, quote)" class="btn btn-xs btn-danger add-costing-btn pl-1 pr-1">
                                             <i class="fas fa-times"></i>
                                         </span>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <label class="form-check-label ml-4">
+                                            <input type="checkbox" class="form-check-input">
+                                            Индивидуальный дизайн
+                                        </label>
+                                    </td>
+                                    <td colspan="5">
+                                        От стоимости UI: 30 %
+                                    </td>
+                                    <td>
+                                        {{ quote.CustomDesignTotalHrs }} ч.
+                                    </td>
+                                    <td>
+                                        {{ quote.CustomDesignTotal }} р.
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <strong>Итого сроки-стоимость</strong>
+                                    </td>
+                                    <td colspan="6">
+                                        Общее время работ в часах: <strong>{{ quote.TotalHours }}</strong>,
+                                        дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                                        раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
+                                    </td>
+                                    <td><strong>{{ quote.Total }} р.</strong></td>
+                                    <td ></td>
                                 </tr>
                             </tbody>
                         </table>

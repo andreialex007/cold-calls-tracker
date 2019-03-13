@@ -57,6 +57,7 @@ namespace ColdCallsTracker.Code.Services
                                 Id = q.Id,
                                 DateModify = q.DateModify,
                                 Name = q.Name,
+                                CustomDesign = q.CustomDesign,
                                 DateCreate = q.DateCreate,
                                 CompanyId = q.CompanyId,
                                 Costings = q.Costings
