@@ -1,12 +1,14 @@
 ﻿$(function () {
 
 
+    let salaryPerHour = $(".company-edit-page").data("basic-price-per-hour");
+
     let defaultCosting = {
         Id: 0,
         Name: "",
         Unit: 1,
         Qty: 1,
-        Cost: "",
+        Cost: salaryPerHour,
         Total: "",
         Multiplier: 1,
         CategoryId: 1
@@ -18,7 +20,8 @@
                 managementProperty: "",
                 newCosting: {
                     ...defaultCosting
-                }
+                },
+                basicSalaryPerHour: salaryPerHour
             }
         },
         mounted: function () {
@@ -68,7 +71,12 @@
             async costingChanged(costing, quote) {
                 if (!this.costingValid(costing))
                     return;
-
+                if (!costing.Cost && costing.Unit == 1 /* часы */) {
+                    costing.Cost = this.basicSalaryPerHour;
+                }
+                if (costing.Id === 0) {
+                    return;
+                }
                 let result = await $.ajax({
                     method: "POST",
                     contentType: "application/json",
@@ -80,7 +88,6 @@
                 quote.Opened = true;
             },
             async designChanged(quote) {
-
                 let result = await $.ajax({
                     method: "GET",
                     contentType: "application/json",
@@ -91,14 +98,21 @@
                 quote.Opened = true;
             },
             getMultiplierTotal(costing) {
-                if (!costing.Total) return "-";
-                if (!costing.Multiplier) return "-";
+                if (!costing.Total) return 0;
+                if (!costing.Multiplier) return 0;
                 return costing.Total * costing.Multiplier;
             },
             getQtyTotal(costing) {
-                if (!costing.Qty) return "-";
-                if (!costing.Multiplier) return "-";
+                if (!costing.Qty) return 0;
+                if (!costing.Multiplier) return 0;
                 return costing.Qty * costing.Multiplier;
+            },
+            calcTotal(costing) {
+                if (!costing.Qty) return 0;
+                if (!costing.Cost) return 0;
+
+                costing.Total = costing.Cost * costing.Qty;
+                return costing.Total;
             },
             async deleteCosting(costing, quote) {
 

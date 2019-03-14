@@ -1,4 +1,11 @@
-﻿$(function () {
+﻿Vue.filter('toNumber', function (number) {
+    let format = new Intl.NumberFormat('en-US', { style: 'decimal' }).format(number);
+    console.log("number=" + number);
+    console.log("format=" + format);
+    return format;
+});
+
+$(function () {
 
     // Restricts input for the given textbox to the given inputFilter.
     window.setInputFilter = function (textbox, inputFilter) {

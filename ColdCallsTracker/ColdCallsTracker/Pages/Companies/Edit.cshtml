@@ -22,7 +22,7 @@
     <script src="~/js/companies/edit-company.js" asp-append-version="true"></script>
 }
 
-<div v-cloak class="company-edit-page">
+<div v-cloak data-basic-price-per-hour="@GlobalVariables.AverageSalaryPerHour" class="company-edit-page">
     <div v-bind:html="errorsView" class="errors-holder"></div>
 
     <ul class="nav nav-tabs">
@@ -198,7 +198,7 @@
                                         <input v-model="newCosting.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
                                     </td>
                                     <td>
-                                        <select v-model="newCosting.Unit" class="form-control form-control-xs">
+                                        <select v-on:change="costingChanged(costing,quote)" v-model="newCosting.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
                                                 <option value="@(el.Key)">@(el.Value)</option>
@@ -210,16 +210,16 @@
                                     </td>
 
                                     <td>
-                                        <input v-model="newCosting.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
+                                        <strong>{{ calcTotal(newCosting) }}</strong>
                                     </td>
                                     <td>
                                         <input v-model="newCosting.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
                                     </td>
                                     <td>
-                                        <strong>{{ getQtyTotal(newCosting) }}</strong>
+                                        <strong>{{ getQtyTotal(newCosting) | toNumber }}</strong>
                                     </td>
                                     <td>
-                                        <strong>{{ getMultiplierTotal(newCosting) }}</strong>
+                                        <strong>{{ getMultiplierTotal(newCosting) | toNumber }}</strong>
                                     </td>
                                     <td class="actions d-flex">
                                         <span v-on:click="addCosting(quote)" v-bind:class="{ 'disabled-button' : !addCostingBtnActive }" class="btn btn-xs btn-primary add-costing-btn"><i class="fas fa-plus"></i></span>
@@ -242,7 +242,7 @@
                                         <input v-on:change="costingChanged(costing,quote)" v-model="costing.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
                                     </td>
                                     <td>
-                                        <select v-on:change="costingChanged(costing,quote)" v-model="costing.Unit" class="form-control form-control-xs">
+                                        <select v-on:change="costingChanged(costing,quote)"  v-model="costing.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
                                                 <option value="@(el.Key)">@(el.Value)</option>
@@ -254,16 +254,16 @@
                                     </td>
 
                                     <td>
-                                        <input v-on:change="costingChanged(costing,quote)" v-model="costing.Total" type="text" class="form-control form-control-xs numbers-only" placeholder="Всего" />
+                                        <strong>{{ calcTotal(costing) | toNumber }}</strong>
                                     </td>
                                     <td>
                                         <input v-on:change="costingChanged(costing,quote)" v-model="costing.Multiplier" type="text" class="form-control form-control-xs numbers-only" placeholder="Множитель" />
                                     </td>
                                     <td>
-                                        <strong>{{ getQtyTotal(costing) }}</strong>
+                                        <strong>{{ getQtyTotal(costing) | toNumber }}</strong>
                                     </td>
                                     <td>
-                                        <strong>{{ getMultiplierTotal(costing) }} р.</strong>
+                                        <strong>{{ getMultiplierTotal(costing) | toNumber }} р.</strong>
                                     </td>
                                     <td class="actions d-flex">
                                         <span v-on:click="deleteCosting(costing, quote)" class="btn btn-xs btn-danger add-costing-btn pl-1 pr-1">
@@ -285,7 +285,7 @@
                                         {{ quote.CustomDesignTotalHrs }} ч.
                                     </td>
                                     <td>
-                                        {{ quote.CustomDesignTotal.toFixed(0) }} р.
+                                        {{ quote.CustomDesignTotal.toFixed(0) | toNumber }} р.
                                     </td>
                                     <td></td>
                                 </tr>
@@ -298,7 +298,7 @@
                                         дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
                                         раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
                                     </td>
-                                    <td><strong>{{ quote.Total.toFixed(0) }} р.</strong></td>
+                                    <td><strong>{{ quote.Total.toFixed(0) | toNumber }} р.</strong></td>
                                     <td></td>
                                 </tr>
                             </tbody>

@@ -75,6 +75,7 @@ namespace ColdCallsTracker.Code.Services
                                         Multiplier = c.Multiplier,
                                         QuoteId = c.QuoteId
                                     })
+                                    .OrderBy(s => s.CategoryId)
                                     .ToList()
                             })
                             .ToList()

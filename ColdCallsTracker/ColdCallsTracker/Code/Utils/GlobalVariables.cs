@@ -1,4 +1,6 @@
-﻿namespace ColdCallsTracker.Code.Utils
+﻿using System;
+
+namespace ColdCallsTracker.Code.Utils
 {
     public class GlobalVariables
     {
@@ -35,7 +37,7 @@
         /// <summary>
         /// Средняя зарплата в час
         /// </summary>
-        public static readonly double AverageSalaryPerHour = SalaryWithFix / WorkingHoursPerMonth;
+        public static readonly double AverageSalaryPerHour = Math.Round(SalaryWithFix / WorkingHoursPerMonth);
 
         /// <summary>
         /// Доплата за кастомный дизайн
