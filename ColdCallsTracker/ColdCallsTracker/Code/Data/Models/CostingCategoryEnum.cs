@@ -38,6 +38,13 @@ namespace ColdCallsTracker.Code.Data.Models
         TechnicalSupport = 11,
 
         [Description("Информ. поддержка")]
-        InformationSupport = 12
+        InformationSupport = 12,
+
+        [Description("СЕО: тех. аудит сайта")]
+        SeoTechAudit = 13,
+
+        [Description("Контент менеджмент")]
+        ContentManagement = 14
+
     }
 }

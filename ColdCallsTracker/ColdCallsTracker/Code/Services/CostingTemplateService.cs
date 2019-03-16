@@ -28,7 +28,8 @@ namespace ColdCallsTracker.Code.Services
                 Total = x.Total,
                 CategoryId = x.CategoryId
             })
-                .OrderBy(x => x.CategoryId)
+                .ToList()
+                .OrderBy(x => x.CategoryName)
                 .ThenBy(x => x.Name)
                 .ToList();
 

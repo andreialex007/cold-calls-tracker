@@ -83,6 +83,8 @@ namespace ColdCallsTracker.Code.Services
                     .FirstOrDefault(x => x.Id == id);
 
 
+                company.Quotes.ForEach(x => x.Costings = x.Costings.OrderBy(c => c.CategoryName).ThenBy(c => c.Name).ToList());
+
                 return company;
             }
 

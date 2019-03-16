@@ -52,7 +52,7 @@
             }
         },
         async mounted() {
-            this.items = _.sortBy(this.items, function (x) { return x.CategoryId + "_" + x.Name; });
+            this.items = _.sortBy(this.items, function (x) { return x.CategoryName + "_" + x.Name; });
         },
         watch: {
         },

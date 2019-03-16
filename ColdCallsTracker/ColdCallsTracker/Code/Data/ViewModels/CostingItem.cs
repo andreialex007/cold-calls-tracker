@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels._Common;
+using ColdCallsTracker.Code.Utils;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
@@ -15,6 +17,8 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public double? Total { get; set; }
 
         public int CategoryId { get; set; }
+
+        public string CategoryName => ((CostingCategoryEnum)CategoryId).DescriptionAttr();
 
         public int QuoteId { get; set; }
         public QuoteItem Quote { get; set; }

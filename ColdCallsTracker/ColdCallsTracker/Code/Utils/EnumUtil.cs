@@ -26,7 +26,9 @@ namespace ColdCallsTracker.Code.Utils
                 .Cast<TEnum>()
                 .ToDictionary(
                     x => Convert.ToInt32(x),
-                    DescriptionAttr);
+                    DescriptionAttr)
+                .OrderBy(x => x.Value)
+                .ToDictionary(x => x.Key, x => x.Value);
             return dictionary;
         }
     }

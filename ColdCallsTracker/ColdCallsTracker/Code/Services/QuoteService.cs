@@ -6,6 +6,7 @@ using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Exceptions;
 using ColdCallsTracker.Code.Extensions;
+using ColdCallsTracker.Code.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace ColdCallsTracker.Code.Services
@@ -145,7 +146,9 @@ namespace ColdCallsTracker.Code.Services
             Db.Quotes.Add(newQuote);
             Db.SaveChanges();
 
-            foreach (var relation in template.QuoteCostingRelations.OrderBy(x => x.CostingTemplate.CategoryId).ThenBy(x => x.CostingTemplate.Name))
+            foreach (var relation in template.QuoteCostingRelations
+                .OrderBy(x => ((CostingCategoryEnum)x.CostingTemplate.CategoryId).DescriptionAttr())
+                .ThenBy(x => x.CostingTemplate.Name))
             {
                 var costing = new Costing();
                 costing.Name = relation.CostingTemplate.Name;
