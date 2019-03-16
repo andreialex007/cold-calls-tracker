@@ -296,7 +296,7 @@
                                     <td colspan="6">
                                         Общее время работ в часах: <strong>{{ quote.TotalHours }}</strong>,
                                         дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
-                                        раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
+                                        раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
                                     </td>
                                     <td><strong>{{ quote.Total.toFixed(0) | toNumber }} р.</strong></td>
                                     <td></td>

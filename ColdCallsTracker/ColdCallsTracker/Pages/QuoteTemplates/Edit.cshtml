@@ -65,7 +65,7 @@
                 <tr v-bind:class="{ 'table-warning' : isCheckedCosting(item) }" v-show="showOnlyChecked === false || (showOnlyChecked === true && isCheckedCosting(item))" v-for="item in AvaliableCostingTemplates">
                     <td>{{ item.Id }}</td>
                     <td>{{ item.CategoryName }}</td>
-                    <td class="costing-description">
+                    <td v-bind:title="item.Name" class="costing-description">
                         {{ item.Name }}
                     </td>
                     <td>
@@ -115,9 +115,9 @@
                 <tr>
                     <td colspan="3"><strong>Итого сроки-стоимость</strong></td>
                     <td colspan="5">
-                        Общее время работ в часах: <strong>{{ TotalHours }}</strong>, 
+                        Общее время работ в часах: <strong>{{ TotalHours }}</strong>,
                         дней: <strong>{{ (TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
-                        раб. недель: <strong>{{ ((TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(1) }}</strong>
+                        раб. недель: <strong>{{ ((TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
                     </td>
                     <td>
                         <strong>{{ Total.toFixed(0) }} р.</strong>

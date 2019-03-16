@@ -145,7 +145,7 @@ namespace ColdCallsTracker.Code.Services
             Db.Quotes.Add(newQuote);
             Db.SaveChanges();
 
-            foreach (var relation in template.QuoteCostingRelations)
+            foreach (var relation in template.QuoteCostingRelations.OrderBy(x => x.CostingTemplate.CategoryId).ThenBy(x => x.CostingTemplate.Name))
             {
                 var costing = new Costing();
                 costing.Name = relation.CostingTemplate.Name;
