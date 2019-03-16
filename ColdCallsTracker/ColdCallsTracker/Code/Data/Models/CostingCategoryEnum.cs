@@ -24,5 +24,20 @@ namespace ColdCallsTracker.Code.Data.Models
 
         [Description("Фронтэнд")]
         Frontend = 7,
+
+        [Description("Копирайтинг")]
+        Copyrighting = 8,
+
+        [Description("СЕО")]
+        SEO = 9,
+
+        [Description("Контекстная реклама")]
+        ContextAd = 10,
+
+        [Description("Тех. поддержка")]
+        TechnicalSupport = 11,
+
+        [Description("Информ. поддержка")]
+        InformationSupport = 12
     }
 }

@@ -17,7 +17,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Index()
         {
             var items = Service.QuoteTemplate.All();
-            
+
             return View("~/Pages/QuoteTemplates/Index.cshtml", items);
         }
 
@@ -39,6 +39,7 @@ namespace ColdCallsTracker.Controllers
         [HttpPost]
         public ActionResult Edit([FromForm] QuoteTemplateItem item)
         {
+            item.CustomDesign = Service.QuoteTemplate.Get(item.Id).CustomDesign;
             Service.QuoteTemplate.Edit(item);
             return RedirectToAction("Edit", new { id = item.Id });
         }
