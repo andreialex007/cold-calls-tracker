@@ -140,10 +140,10 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var item in Model)
                     {
-                    <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">
-                        @item.Name - @(Math.Round(item.Total).ToString("N0")) р.
-                        (дн: @Math.Round(item.TotalHours / GlobalVariables.WorkingHoursPerDay, 1) недель: @Math.Round((item.TotalHours / GlobalVariables.WorkingHoursPerDay) / 5, 1))
-                    </a>
+                        <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">
+                            @item.Name - @(Math.Round(item.Total).ToString("N0")) р.
+                            (дн: @Math.Round(item.TotalHours / GlobalVariables.WorkingHoursPerDay, 1) недель: @Math.Round((item.TotalHours / GlobalVariables.WorkingHoursPerDay) / 5, 1))
+                        </a>
                     }
                 </div>
             </div>
@@ -162,27 +162,38 @@
                     <span v-on:click="deleteQuote(quote.Id)" class="btn btn-danger btn-xs float-right"><i class="fas fa-times"></i></span>
                 </div>
                 <div v-show="quote.Opened" class="card-body">
-                    <div class="costing-templates-page">
+                    <div class="costing-templates-page quotes-for-company">
                         <table class="table-xs table table-bordered table-hover table-striped mb-0">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
-                                    <th class="id"></th>
-                                    <th class="category"></th>
-                                    <th></th>
-                                    <th class="qty"></th>
-                                    <th class="unit"></th>
-                                    <th class="cost"></th>
-                                    <th class="total"></th>
-                                    <th class="multiplier"></th>
-                                    <th class="multiplier"></th>
-                                    <th class="multiplier"></th>
+                                    <th class="id">#</th>
+                                    <th class="category">Категория</th>
+                                    <th>Название услуги</th>
+                                    <th class="qty">Кол. ед</th>
+                                    <th class="unit">Ед. измер.</th>
+                                    <th class="cost">Цена 1 ед.</th>
+                                    <th class="total">
+                                        <div>Цена услуги</div>
+                                        <div class="small-description">Цена 1 ед. x Кол.</div>
+                                    </th>
+                                    <th class="multiplier">
+                                        <div>Кол. услуг</div>
+                                    </th>
+                                    <th class="multiplier">
+                                        <div>Всего ед.</div>
+                                        <div class="small-description">Кол. усл. x Кол. ед.</div>
+                                    </th>
+                                    <th class="service-group-price">
+                                        <div>Цена группы услуг</div>
+                                        <div class="small-description">Всего ед. x Цена 1 ед.</div>
+                                    </th>
                                     <th class="actions">
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="table-info">
-                                    <td>#</td>
+                                    <td></td>
                                     <td>
                                         <select v-model="newCosting.CategoryId" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
@@ -242,7 +253,7 @@
                                         <input v-on:change="costingChanged(costing,quote)" v-model="costing.Qty" type="text" class="form-control form-control-xs numbers-only" placeholder="Количество" />
                                     </td>
                                     <td>
-                                        <select v-on:change="costingChanged(costing,quote)"  v-model="costing.Unit" class="form-control form-control-xs">
+                                        <select v-on:change="costingChanged(costing,quote)" v-model="costing.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
                                                 <option value="@(el.Key)">@(el.Value)</option>

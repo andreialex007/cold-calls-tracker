@@ -225,7 +225,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .costing-templates-page .qty {
-    width: 50px;
+    width: 59px;
 }
 
 .costing-templates-page .id {
@@ -233,7 +233,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .costing-templates-page .unit {
-    width: 100px;
+    width: 105px;
 }
 
 .costing-templates-page table {
@@ -241,11 +241,12 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .costing-templates-page .cost {
-    width: 100px;
+    width: 103px;
 }
 
 .costing-templates-page .total {
-    width: 100px;
+    width: 111px;
+    white-space: nowrap;
 }
 
 .costing-templates-page .actions .fa-trash-alt {
@@ -285,7 +286,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 
 .costing-templates-page .multiplier {
-    width: 100px;
+    width: 103px;
 }
 
 .check-uncheck-costing {
@@ -418,12 +419,6 @@ select.form-control-xs {
     padding: 2px;
 }
 
-.company-edit-page .costing-templates-page thead th {
-    padding: 0px !important;
-    height: 1px !important;
-    visibility: hidden;
-}
-
 .new-costing-line td {
     background-color: #cccccc;
 }
@@ -436,6 +431,23 @@ tr:hover .remove-costing-item {
     visibility: visible;
 }
 
-tr:hover .remove-costing-item > i {
-    visibility: visible !important;
+    tr:hover .remove-costing-item > i {
+        visibility: visible !important;
+    }
+
+.quotes-for-company thead th {
+    font-weight: normal !important;
+    vertical-align: top;
+}
+
+.small-description {
+    font-size: 12px !important;
+    line-height: 3px !important;
+    color: #b8b7b7 !important;
+    white-space: nowrap !important;
+    margin-bottom: 6px;
+}
+
+.service-group-price {
+    width: 150px;   
 }
