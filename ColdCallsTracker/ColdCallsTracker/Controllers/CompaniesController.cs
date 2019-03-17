@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ColdCallsTracker.Code.Data.ViewModels;
+﻿using ColdCallsTracker.Code.Data.ViewModels;
+using ColdCallsTracker.Code.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +20,14 @@ namespace ColdCallsTracker.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
-            var items = this.Service.QuoteTemplate.All();
-            return View("~/Pages/Companies/Edit.cshtml", items);
+            var quoteTemplates = this.Service.QuoteTemplate.All();
+            var costingTemplates = this.Service.CostingTemplate.All();
+            costingTemplates.CalcTotalForCostingTemplates();
+            return View("~/Pages/Companies/Edit.cshtml", new EditCompanyPageModel
+            {
+                CostingTemplates = costingTemplates,
+                QuoteTemplates = quoteTemplates
+            });
         }
 
         [HttpGet]
@@ -117,7 +123,7 @@ namespace ColdCallsTracker.Controllers
         [HttpGet]
         public ActionResult ChangeDesign(int quoteId, bool individualDesign)
         {
-            this.Service.Quote.SetDesign(quoteId,individualDesign);
+            this.Service.Quote.SetDesign(quoteId, individualDesign);
             return Json(this.Service.Quote.Get(quoteId));
         }
 
@@ -129,12 +135,21 @@ namespace ColdCallsTracker.Controllers
             return Json(this.Service.Quote.Get(quoteId));
         }
 
+        [HttpGet]
         public ActionResult AddQuoteFromTemplate(int templateId, int companyId)
         {
             var templatedQuote = Service.Quote.AddQuoteFromTemplate(templateId, companyId);
             return Json(templatedQuote);
         }
 
+        [HttpGet]
+        public ActionResult AddCostingFromTemplate(int templateId, int quoteId)
+        {
+            var templatedQuote = Service.Costing.AddCostingFromTemplate(templateId, quoteId);
+            return Json(templatedQuote);
+        }
+
+        [HttpGet]
         public ActionResult DeleteQuote(int id)
         {
             Service.Quote.Delete(id);

@@ -87,6 +87,8 @@
 
             let vm = this;
 
+            
+
             window.onPhoneChange = function () {
                 let entity = window.editPhoneModal.entity;
                 vm.entity.Phones = vm.entity.Phones.filter(x => x.Id !== entity.Id);
@@ -115,6 +117,8 @@
             if (this.entity.Phones.length !== 0) {
                 this.selectedPhoneId = this.entity.Phones[0].Id + "";
             }
+
+            this.initQuotesManagement();
         }
     });
 

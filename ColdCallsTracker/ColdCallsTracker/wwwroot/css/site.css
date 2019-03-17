@@ -449,5 +449,28 @@ tr:hover .remove-costing-item {
 }
 
 .service-group-price {
-    width: 150px;   
+    width: 150px;
+}
+
+.small-costing-add {
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.select2-results__option {
+    font-size: 14px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+.select2-results__options {
+    max-height: 500px !important;
+}
+
+.costing-template-select-cell .select2-container--default {
+    width: 45px !important;
+}
+
+.costing-template-select-cell .select2-selection {
+    width: 45px !important;
 }

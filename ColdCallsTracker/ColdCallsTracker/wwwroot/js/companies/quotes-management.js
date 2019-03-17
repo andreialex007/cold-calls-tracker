@@ -24,16 +24,18 @@
                 basicSalaryPerHour: salaryPerHour
             }
         },
-        mounted: function () {
-
-
-        },
         computed: {
             addCostingBtnActive() {
                 return this.costingValid(this.newCosting);
             }
         },
         methods: {
+            initQuotesManagement: function () {
+
+                for (let el of this.entity.Quotes) {
+                    this.addSelect2ToQuote(el);
+                }
+            },
             async newQuote() {
                 let newQuote = await $.ajax({
                     method: "GET",
@@ -154,6 +156,21 @@
                     url: "/Companies/DeleteQuote?id=" + id
                 });
                 this.entity.Quotes = this.entity.Quotes.filter(x => x.Id !== id);
+            },
+            async addSelect2ToQuote(quote) {
+                var vm = this;
+                await utils.wait(200);
+                $(".costings-template-select-" + quote.Id).select2({
+                    dropdownAutoWidth: true
+                }).on("select2:select",
+                    function () {
+                        debugger;
+                        vm.addCostingFromTemplate($(this).val());
+                        $(this).val("").trigger("change");
+                    });
+            },
+            async addCostingFromTemplate(costingTemplateId) {
+
             }
         }
     };

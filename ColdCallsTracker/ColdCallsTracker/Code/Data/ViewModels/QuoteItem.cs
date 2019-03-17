@@ -16,6 +16,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public int? CompanyId { get; set; }
         public string CompanyName { get; set; }
         public CompanyEditItem Company { get; set; }
+        public string SelectedCostingTemplateId { get; set; } = "";
 
         public bool CustomDesign { get; set; }
 

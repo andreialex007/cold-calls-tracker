@@ -13,6 +13,13 @@ namespace ColdCallsTracker.Code.Services
         {
         }
 
+        public QuoteItem AddCostingFromTemplate(int templateId, int quoteId)
+        {
+            var companyId = Db.Companies.Where(x => x.Quotes.Any(q => q.CompanyId == quoteId)).Select(x => x.Id).Single();
+            var quoteItem = this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == quoteId);
+            return quoteItem;
+        }
+
         public void Save(CostingItem uiItem)
         {
             uiItem.GetValidationErrors().ThrowIfHasErrors();
