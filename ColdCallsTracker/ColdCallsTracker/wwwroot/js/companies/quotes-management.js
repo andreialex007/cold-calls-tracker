@@ -31,7 +31,6 @@
         },
         methods: {
             initQuotesManagement: function () {
-
                 for (let el of this.entity.Quotes) {
                     this.addSelect2ToQuote(el);
                 }
@@ -44,6 +43,7 @@
                 });
 
                 this.entity.Quotes.push(newQuote);
+                this.addSelect2ToQuote(newQuote);
             },
             renameQuote(quote) {
                 $.ajax({
@@ -146,7 +146,7 @@
                 this.entity.Quotes.push(newQuote);
             },
             async deleteQuote(id) {
-                let confirmed = confirm("Хотите удалить предложение?");
+                let confirmed = confirm("Хотите удалить смету?");
                 if (!confirmed)
                     return;
 
@@ -164,7 +164,6 @@
                     dropdownAutoWidth: true
                 }).on("select2:select",
                     function () {
-                        debugger;
                         vm.addCostingFromTemplate($(this).val(), quote);
                         $(this).val("").trigger("change");
                     });
