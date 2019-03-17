@@ -145,8 +145,8 @@ namespace ColdCallsTracker.Controllers
         [HttpGet]
         public ActionResult AddCostingFromTemplate(int templateId, int quoteId)
         {
-            var templatedQuote = Service.Costing.AddCostingFromTemplate(templateId, quoteId);
-            return Json(templatedQuote);
+            Service.Costing.AddCostingFromTemplate(templateId, quoteId);
+            return Json(this.Service.Quote.Get(quoteId));
         }
 
         [HttpGet]

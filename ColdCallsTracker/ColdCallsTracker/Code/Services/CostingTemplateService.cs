@@ -37,6 +37,25 @@ namespace ColdCallsTracker.Code.Services
         }
 
 
+        public CostingTemplateItem Get(int id)
+        {
+            return Db.CostingTemplates
+               .Select(x => new CostingTemplateItem
+               {
+                   Unit = x.Unit,
+                   Id = x.Id,
+                   Cost = x.Cost,
+                   DateCreate = x.DateCreate,
+                   DateModify = x.DateModify,
+                   Name = x.Name,
+                   Qty = x.Qty,
+                   Total = x.Total,
+                   CategoryId = x.CategoryId
+               })
+               .Single(x => x.Id == id);
+        }
+
+
         public void Save(CostingTemplateItem item)
         {
             item.GetValidationErrors().ThrowIfHasErrors();

@@ -165,12 +165,18 @@
                 }).on("select2:select",
                     function () {
                         debugger;
-                        vm.addCostingFromTemplate($(this).val());
+                        vm.addCostingFromTemplate($(this).val(), quote);
                         $(this).val("").trigger("change");
                     });
             },
-            async addCostingFromTemplate(costingTemplateId) {
-
+            async addCostingFromTemplate(costingTemplateId, quote) {
+                let result = await $.ajax({
+                    method: "GET",
+                    contentType: "application/json",
+                    url: "/Companies/AddCostingFromTemplate?templateId=" + costingTemplateId + "&quoteId=" + quote.Id
+                });
+                Object.assign(quote, result);
+                quote.Opened = true;
             }
         }
     };

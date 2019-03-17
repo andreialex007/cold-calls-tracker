@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
@@ -13,11 +14,24 @@ namespace ColdCallsTracker.Code.Services
         {
         }
 
-        public QuoteItem AddCostingFromTemplate(int templateId, int quoteId)
+        public void AddCostingFromTemplate(int templateId, int quoteId)
         {
-            var companyId = Db.Companies.Where(x => x.Quotes.Any(q => q.CompanyId == quoteId)).Select(x => x.Id).Single();
-            var quoteItem = this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == quoteId);
-            return quoteItem;
+            var templateItem = this.App.CostingTemplate.Get(templateId);
+            var items = new List<CostingTemplateItem> { templateItem };
+            items.CalcTotalForCostingTemplates();
+            App.Costing.Save(new CostingItem
+            {
+                Total = templateItem.Total,
+                Cost = templateItem.Cost,
+                CategoryId = templateItem.CategoryId,
+                Multiplier = 1,
+                Name = templateItem.Name,
+                Qty = templateItem.Qty,
+                QuoteId = quoteId,
+                Unit = templateItem.Unit,
+                DateModify = DateTime.Now,
+                DateCreate = DateTime.Now
+            });
         }
 
         public void Save(CostingItem uiItem)
