@@ -132,11 +132,11 @@ namespace ColdCallsTracker.Code.Services
                     ActivityType = x.ActivityType,
                     Remarks = x.Remarks,
                     WebSites = x.WebSites,
-                    LastCallRecordDate = x.Phones
+                    LastCallRecordDate = x.Phones.Any() ? x.Phones
                         .SelectMany(p => p.CallRecords)
                         .OrderBy(d => d.DateModify)
                         .Select(s => s.DateModify)
-                        .FirstOrDefault(),
+                        .FirstOrDefault() : x.DateModify,
                     PhoneNumbersList = x.Phones
                         .Select(n => n.Number)
                         .ToList(),
