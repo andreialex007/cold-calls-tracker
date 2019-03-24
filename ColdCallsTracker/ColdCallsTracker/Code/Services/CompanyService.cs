@@ -15,10 +15,13 @@ namespace ColdCallsTracker.Code.Services
 
         public void SaveCompanyFromExport(Company company)
         {
-            var phone = company.Phones.First();
-            var duplicate = this.App.Phone.FindDuplicate(phone.Number, phone.Id);
-            if (duplicate != null)
-                return;
+            foreach (var companyPhone in company.Phones)
+            {
+                var duplicate = this.App.Phone.FindDuplicate(companyPhone.Number, companyPhone.Id);
+                if (duplicate != null)
+                    return;
+            }
+
             var newCompany = new Company
             {
                 ActivityType = company.ActivityType,
@@ -29,10 +32,14 @@ namespace ColdCallsTracker.Code.Services
             };
             Db.Companies.Add(newCompany);
             Db.SaveChanges();
-            phone.CompanyId = newCompany.Id;
-            phone.Remarks = "Из парсинга";
-            Db.Phones.Add(phone);
-            Db.SaveChanges();
+
+            foreach (var phone in company.Phones)
+            {
+                phone.CompanyId = newCompany.Id;
+                phone.Remarks = "Из парсинга";
+                Db.Phones.Add(phone);
+                Db.SaveChanges();
+            }
         }
 
         public CompanyEditItem Edit(int? id)

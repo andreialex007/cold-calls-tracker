@@ -48,57 +48,15 @@ namespace ColdCallsTracker.Controllers
         public ActionResult TwoGis()
         {
             //  var path = @"C:\мебель на заказ.har";
-            var path = @"C:\детлагеря.har";
-            var allText = System.IO.File.ReadAllText(path, Encoding.UTF8);
-            var jObject = JObject.Parse(allText);
-            var elements = (jObject["log"]["entries"] as JArray).ToList();
-            var list = elements
-                .Where(x => (x["request"] as JObject).GetValue("url").ToString().Contains("/items?viewpoint1="))
-                .Where(x => (x["request"] as JObject).GetValue("method").ToString() == "GET")
-                .SelectMany(x => (JArray)JObject.Parse(x["response"]["content"]["text"].ToString())["result"]["items"])
-                .Where(x => (x as JObject)["adm_div"].Any(r => r["name"].ToString() == "Краснодар"))
-                .Select(x => GetCompany(x as JObject))
-                .Where(x => x != null)
-                .ToList();
-
-            var withoutWeebsites = list.Where(x => !x.WebSites.HasValue()).ToList();
-
+            var path = @"C:\2gis\стоматологии.har";
+            var companies = TwoGisOrgParser.ParseFile(path);
+            foreach (var company in companies)
+            {
+                Service.Company.SaveCompanyFromExport(company);
+            }
 
             return Content("");
         }
-
-        private static Company GetCompany(JObject jObject)
-        {
-            try
-            {
-                var name = jObject["name"].ToString();
-                var category = jObject["rubrics"].First()["name"].ToString();
-                var address = jObject["address_name"] == null ? "" : jObject["address_name"].ToString();
-                var contacts = jObject["contact_groups"]
-                    .SelectMany(f => f["contacts"])
-                    .ToList();
-
-                var phones = contacts.Where(x => x["type"].ToString() == "phone").Select(x => x["value"].ToString()).ToList();
-                var webSites = contacts.Where(x => x["type"].ToString() == "website").Select(x => x["url"].ToString()).ToList();
-
-                return new Company
-                {
-                    ActivityType = category,
-                    Address = address,
-                    Name = name,
-                    Phones = phones.Select(p => new Phone
-                    {
-                        Number = p
-                    }).ToList(),
-                    WebSites = string.Join(" ", webSites)
-                };
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
 
     }
 }
