@@ -198,11 +198,13 @@ namespace ColdCallsTracker.Code.Services
                 query = query.Where(x => x.StateId == parameters.StateId);
             }
 
-            if (parameters.LastCallRecordDateFrom.HasValue)
-                query = query.Where(x => x.LastCallRecordDate >= parameters.LastCallRecordDateFrom);
+            var fromDate = parameters.LastCallRecordDateFrom.ToDateTime("dd.MM.yyyy HH:mm");
+            if (fromDate.HasValue)
+                query = query.Where(x => x.LastCallRecordDate >= fromDate);
 
-            if (parameters.LastCallRecordDateTo.HasValue)
-                query = query.Where(x => x.LastCallRecordDate >= parameters.LastCallRecordDateTo);
+            var toDate = parameters.LastCallRecordDateTo.ToDateTime("dd.MM.yyyy HH:mm");
+            if (toDate.HasValue)
+                query = query.Where(x => x.LastCallRecordDate <= toDate);
 
             var filtered = query.Count();
 

@@ -474,3 +474,8 @@ tr:hover .remove-costing-item {
 .costing-template-select-cell .select2-selection {
     width: 45px !important;
 }
+
+.from-date, .to-date {
+    padding-left: 4px;
+    padding-right: 4px;
+}

@@ -116,12 +116,16 @@
 
             $('.from-date').datepicker({
                 autoClose: true,
+                timepicker: true,
+                timeFormat:"hh:ii",
                 onSelect: function (value) { vm.config.columns.LastCallRecordDate.filterFrom = value; }
             });
 
             $('.to-date').datepicker({
                 autoClose: true,
-                onSelect: function (value) { vm.config.columns.LastCallRecordDate.filterFrom = value; }
+                timepicker: true,
+                timeFormat: "hh:ii",
+                onSelect: function (value) { vm.config.columns.LastCallRecordDate.filterTo = value; }
             });
 
             await utils.wait(100);

@@ -14,7 +14,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public string PhoneNumbers { get; set; }
 
-        public DateTime? LastCallRecordDateFrom { get; set; }
-        public DateTime? LastCallRecordDateTo { get; set; }
+        public string LastCallRecordDateFrom { get; set; }
+        public string LastCallRecordDateTo { get; set; }
     }
 }
