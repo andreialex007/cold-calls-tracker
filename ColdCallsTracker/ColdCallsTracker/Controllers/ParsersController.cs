@@ -47,7 +47,8 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult TwoGis()
         {
-            var path = @"C:\мебель на заказ.har";
+            //  var path = @"C:\мебель на заказ.har";
+            var path = @"C:\детлагеря.har";
             var allText = System.IO.File.ReadAllText(path, Encoding.UTF8);
             var jObject = JObject.Parse(allText);
             var elements = (jObject["log"]["entries"] as JArray).ToList();
@@ -72,7 +73,7 @@ namespace ColdCallsTracker.Controllers
             {
                 var name = jObject["name"].ToString();
                 var category = jObject["rubrics"].First()["name"].ToString();
-                var address = jObject["address_name"].ToString();
+                var address = jObject["address_name"] == null ? "" : jObject["address_name"].ToString();
                 var contacts = jObject["contact_groups"]
                     .SelectMany(f => f["contacts"])
                     .ToList();

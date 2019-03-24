@@ -32,12 +32,16 @@
         <li class="nav-item">
             <a v-bind:class="{ 'active': currentTab === 'main' }" v-on:click="currentTab = 'main'" class="nav-link" href="javascript:;">
                 <strong>{{ entity.Name || 'Данные о компании' }}</strong>
+                
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" v-bind:class="{ 'active': currentTab === 'costings' }" v-on:click="currentTab = 'costings'" href="javascript:;">
                 <strong>Сметы</strong>
             </a>
+        </li>
+        <li class="mt-2" >
+            <span><a v-bind:href="entity.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link"><i class="fas fa-external-link-alt"></i></a></span>
         </li>
     </ul>
 

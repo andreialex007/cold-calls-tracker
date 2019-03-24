@@ -141,7 +141,10 @@
             <tbody>
                 <tr v-for="item in items" v-on:dblclick="openDblClick(item)" class="data-tr">
                     <td v-bind:class="{ 'order-column': !!config.columns.Id.sorting }" class="Id">{{ item.Id }}</td>
-                    <td v-bind:class="{ 'order-column': !!config.columns.Name.sorting }">{{ item.Name }}</td>
+                    <td class="org-name-col" v-bind:class="{ 'order-column': !!config.columns.Name.sorting }">
+                        {{ item.Name }}
+                        <a v-bind:href="item.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link" ><i class="fas fa-external-link-alt"></i></a>
+                    </td>
                     <td v-bind:class="{ 'order-column': !!config.columns.ActivityType.sorting }">{{ item.ActivityType }}</td>
                     <td v-html="item.WebSitesLinks" ></td>
                     <td v-bind:class="{ 'order-column': !!config.columns.Remarks.sorting }">{{ item.Remarks }}</td>

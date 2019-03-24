@@ -18,6 +18,17 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public int? StateId { get; set; }
         public string State { get; set; }
 
+        public string SearchLink
+        {
+            get
+            {
+                var searchLink = "https://www.google.com/search?q=";
+                searchLink += System.Net.WebUtility.UrlEncode($" {this.Name} {this.Address}");
+                return searchLink;
+            }
+        }
+
+
 
     }
 }

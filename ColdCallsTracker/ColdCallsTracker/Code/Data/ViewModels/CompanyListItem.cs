@@ -32,6 +32,16 @@ namespace ColdCallsTracker.Code.Data.ViewModels
             }
         }
 
+        public string SearchLink
+        {
+            get
+            {
+                var searchLink = "https://www.google.com/search?q=";
+                searchLink += System.Net.WebUtility.UrlEncode($" {this.Name} {this.Address}");
+                return searchLink;
+            }
+        }
+
         public string Remarks { get; set; }
 
         public int? StateId { get; set; }
