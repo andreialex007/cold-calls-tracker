@@ -37,6 +37,10 @@
 
                 this.doSearch(true);
             },
+            openDblClick(item) {
+                var win = window.open("/Companies/Edit/" + item.Id, '_blank');
+                win.focus();
+            },
             async doSearch(reset) {
 
 
@@ -87,6 +91,17 @@
                     this.config.columns.LastCallRecordDate.filterTo = "";
                 }
                 this.doSearch(true);
+            },
+            async  deleteCompany(company) {
+                let isDelete = confirm("Хотите удалить?");
+                if (isDelete) {
+                    await $.ajax({
+                        method: "GET",
+                        contentType: "application/json",
+                        url: "/Companies/DeleteCompany?id=" + company.Id
+                    });
+                    this.doSearch(true);
+                }
             }
         },
         async mounted() {

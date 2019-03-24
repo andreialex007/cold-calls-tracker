@@ -156,5 +156,12 @@ namespace ColdCallsTracker.Controllers
             return Json(new { result = "Ok" });
         }
 
+        [HttpGet]
+        public ActionResult DeleteCompany(int id)
+        {
+            Service.Company.Delete(id);
+            return Content("OK");
+        }
+
     }
 }

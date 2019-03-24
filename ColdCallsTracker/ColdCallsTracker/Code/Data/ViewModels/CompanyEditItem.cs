@@ -7,6 +7,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
     {
         public string Name { get; set; }
         public string ActivityType { get; set; }
+        public string Address { get; set; }
         public string WebSites { get; set; }
         public string Remarks { get; set; }
 

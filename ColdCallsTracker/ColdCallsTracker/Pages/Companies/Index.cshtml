@@ -139,11 +139,11 @@
     <div v-if="items.length > 0" class="overflow-wrapper">
         <table class="table table-bordered table-sm table-hover body-table results-table table-striped">
             <tbody>
-                <tr v-for="item in items" class="data-tr">
+                <tr v-for="item in items" v-on:dblclick="openDblClick(item)" class="data-tr">
                     <td v-bind:class="{ 'order-column': !!config.columns.Id.sorting }" class="Id">{{ item.Id }}</td>
                     <td v-bind:class="{ 'order-column': !!config.columns.Name.sorting }">{{ item.Name }}</td>
                     <td v-bind:class="{ 'order-column': !!config.columns.ActivityType.sorting }">{{ item.ActivityType }}</td>
-                    <td>{{ item.WebSites }}</td>
+                    <td v-html="item.WebSitesLinks" ></td>
                     <td v-bind:class="{ 'order-column': !!config.columns.Remarks.sorting }">{{ item.Remarks }}</td>
                     <td>{{ item.PhoneNumbersList }}</td>
                     <td v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">{{ item.State || 'Черновик' }}</td>
@@ -152,7 +152,7 @@
                         <a v-bind:href="'/Companies/Edit/' + item.Id" class="btn btn-success btn-xs edit-btn">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <span class="btn btn-danger btn-xs delete-btn">
+                        <span v-on:click="deleteCompany(item)" class="btn btn-danger btn-xs delete-btn">
                             <i class="fas fa-trash"></i>
                         </span>
                     </td>

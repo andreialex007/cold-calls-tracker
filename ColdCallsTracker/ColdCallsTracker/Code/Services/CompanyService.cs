@@ -12,6 +12,29 @@ namespace ColdCallsTracker.Code.Services
     {
         public CompanyService(AppDbContext db, AppService appService) : base(db, appService) { }
 
+
+        public void SaveCompanyFromExport(Company company)
+        {
+            var phone = company.Phones.First();
+            var duplicate = this.App.Phone.FindDuplicate(phone.Number, phone.Id);
+            if (duplicate != null)
+                return;
+            var newCompany = new Company
+            {
+                ActivityType = company.ActivityType,
+                Address = company.Address,
+                Name = company.Name,
+                Remarks = company.Remarks,
+                WebSites = company.WebSites
+            };
+            Db.Companies.Add(newCompany);
+            Db.SaveChanges();
+            phone.CompanyId = newCompany.Id;
+            phone.Remarks = "Из парсинга";
+            Db.Phones.Add(phone);
+            Db.SaveChanges();
+        }
+
         public CompanyEditItem Edit(int? id)
         {
             var editItem = new CompanyEditItem();
@@ -27,6 +50,7 @@ namespace ColdCallsTracker.Code.Services
                         StateId = x.StateId,
                         Remarks = x.Remarks,
                         ActivityType = x.ActivityType,
+                        Address = x.Address,
                         WebSites = x.WebSites,
                         Phones = x.Phones
                             .Select(p => new PhoneEditItem
@@ -111,6 +135,7 @@ namespace ColdCallsTracker.Code.Services
             company.StateId = item.StateId;
             company.Name = item.Name;
             company.ActivityType = item.ActivityType;
+            company.Address = item.Address;
             company.Remarks = item.Remarks;
             company.WebSites = item.WebSites;
             company.DateModify = DateTime.Now;
@@ -130,16 +155,21 @@ namespace ColdCallsTracker.Code.Services
                     State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
+                    Address = x.Address,
                     Remarks = x.Remarks,
                     WebSites = x.WebSites,
-                    LastCallRecordDate = x.Phones.Any() ? x.Phones
-                        .SelectMany(p => p.CallRecords)
-                        .OrderBy(d => d.DateModify)
-                        .Select(s => s.DateModify)
-                        .FirstOrDefault() : x.DateModify,
+                    LastCallRecordDate = x.Phones.Select(p => p.DateModify)
+                        .Union(x.Phones.Select(p => p.DateModify))
+                        .Union(x.Quotes.Select(p => p.DateModify))
+                        .Union(x.Quotes.SelectMany(w => w.Costings.Select(k => k.DateModify)))
+                        .Union(new List<DateTime> { x.DateModify })
+                        .Union(x.Phones.SelectMany(r => r.CallRecords.Select(n => n.DateModify)))
+                        .OrderByDescending(s => s)
+                        .FirstOrDefault(),
                     PhoneNumbersList = x.Phones
                         .Select(n => n.Number)
                         .ToList(),
+
                 });
 
             var total = query.Count();
@@ -183,6 +213,19 @@ namespace ColdCallsTracker.Code.Services
                 .ToList();
 
             return (items, total, filtered);
+        }
+
+        public void Delete(int id)
+        {
+            var companyEditItem = this.App.Company.Edit(id);
+            foreach (var quoteItem in companyEditItem.Quotes)
+                this.App.Quote.Delete(quoteItem.Id);
+
+            foreach (var phone in companyEditItem.Phones)
+                this.App.Phone.DeletePhone(phone.Id);
+
+            Db.Delete<Company>(x => x.Id == id);
+            Db.SaveChanges();
         }
     }
 }

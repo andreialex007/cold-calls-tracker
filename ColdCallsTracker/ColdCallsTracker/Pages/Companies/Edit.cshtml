@@ -57,7 +57,7 @@
                     </div>
                     <label class="col-sm-1 text-right">Сайты</label>
                     <div class="col-sm-3">
-                        <input type="text" v-model="entity.WebSites" class="form-control form-control-sm" placeholder="Список сайтов через разделитель">
+                        <input type="text" v-model="entity.WebSites" class="form-control form-control-sm" placeholder="Список сайтов через пробел">
                     </div>
                     <label class="col-sm-1 text-right">Статус</label>
                     <div class="col-sm-3">
@@ -70,6 +70,13 @@
                     </div>
 
                 </div>
+                <div class="form-group row">
+                    <label class="col-sm-1">Адрес</label>
+                    <div class="col-sm-11">
+                        <input type="text" v-model="entity.Address" class="form-control form-control-sm" placeholder="Адрес">
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label class="col-sm-1">Деятельность</label>
                     <div class="col-sm-11">
