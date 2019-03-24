@@ -22,6 +22,9 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult Yandex()
         {
+
+            return null;
+
             var sourceFolder = @"C:\yandex-organizations\Г";
             var htmlFiles = Directory.GetFiles(sourceFolder, "*.html");
 
@@ -47,6 +50,8 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult TwoGis()
         {
+            return null;
+
             //  var path = @"C:\мебель на заказ.har";
             var path = @"C:\2gis\стоматологии.har";
             var companies = TwoGisOrgParser.ParseFile(path);
