@@ -13,32 +13,41 @@ namespace ColdCallsTracker.Code.Services
         public CompanyService(AppDbContext db, AppService appService) : base(db, appService) { }
 
 
-        public void SaveCompanyFromExport(Company company)
+        public bool SaveCompanyFromExport(Company company)
         {
-            foreach (var companyPhone in company.Phones)
+            try
             {
-                var duplicate = this.App.Phone.FindDuplicate(companyPhone.Number, companyPhone.Id);
-                if (duplicate != null)
-                    return;
-            }
+                foreach (var companyPhone in company.Phones)
+                {
+                    var duplicate = this.App.Phone.FindDuplicate(companyPhone.Number, companyPhone.Id);
+                    if (duplicate != null)
+                        return false;
+                }
 
-            var newCompany = new Company
-            {
-                ActivityType = company.ActivityType,
-                Address = company.Address,
-                Name = company.Name,
-                Remarks = company.Remarks,
-                WebSites = company.WebSites
-            };
-            Db.Companies.Add(newCompany);
-            Db.SaveChanges();
-
-            foreach (var phone in company.Phones)
-            {
-                phone.CompanyId = newCompany.Id;
-                phone.Remarks = "Из парсинга";
-                Db.Phones.Add(phone);
+                var newCompany = new Company
+                {
+                    ActivityType = company.ActivityType,
+                    Address = company.Address,
+                    Name = company.Name,
+                    Remarks = company.Remarks,
+                    WebSites = company.WebSites
+                };
+                Db.Companies.Add(newCompany);
                 Db.SaveChanges();
+
+                foreach (var phone in company.Phones)
+                {
+                    phone.CompanyId = newCompany.Id;
+                    phone.Remarks = "Из парсинга";
+                    Db.Phones.Add(phone);
+                    Db.SaveChanges();
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
 

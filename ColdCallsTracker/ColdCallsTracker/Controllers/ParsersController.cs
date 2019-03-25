@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,9 +24,7 @@ namespace ColdCallsTracker.Controllers
         public ActionResult Yandex()
         {
 
-            return null;
-
-            var sourceFolder = @"C:\yandex-organizations\Г";
+            var sourceFolder = @"C:\yandex-organizations\е";
             var htmlFiles = Directory.GetFiles(sourceFolder, "*.html");
 
             var allCompanies = new List<Company>();
@@ -48,16 +47,36 @@ namespace ColdCallsTracker.Controllers
             return Content("");
         }
 
+        private static readonly object _locker = new object();
+
         public ActionResult TwoGis()
         {
             return null;
 
-            //  var path = @"C:\мебель на заказ.har";
-            var path = @"C:\2gis\стоматологии.har";
-            var companies = TwoGisOrgParser.ParseFile(path);
-            foreach (var company in companies)
+            // Console.OutputEncoding = System.Text.Encoding.UTF8;
+            if (Monitor.TryEnter(_locker))
             {
-                Service.Company.SaveCompanyFromExport(company);
+                Thread.Sleep(5_000);
+
+                //  var path = @"C:\мебель на заказ.har";
+                var files = Directory.GetFiles(@"C:\2gis\new7", "*.har");
+                foreach (var file in files)
+                {
+                    Debug.WriteLine("path=" + file);
+                    var companies = TwoGisOrgParser.ParseFile(file);
+                    var inserted = 0;
+                    foreach (var company in companies)
+                    {
+                        if (Service.Company.SaveCompanyFromExport(company))
+                        {
+                            inserted++;
+                        };
+                    }
+
+                    Debug.WriteLine("inserted=" + inserted);
+                }
+                Monitor.Exit(_locker);
+                return Content("");
             }
 
             return Content("");
