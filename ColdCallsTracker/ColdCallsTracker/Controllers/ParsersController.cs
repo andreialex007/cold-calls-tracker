@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Extensions;
 using ColdCallsTracker.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using OpenQA.Selenium.Chrome;
 
 namespace ColdCallsTracker.Controllers
 {
@@ -59,7 +55,7 @@ namespace ColdCallsTracker.Controllers
                 Thread.Sleep(5_000);
 
                 //  var path = @"C:\мебель на заказ.har";
-                var files = Directory.GetFiles(@"C:\2gis\new7", "*.har");
+                var files = Directory.GetFiles(@"C:\2gis\new8", "*.har");
                 foreach (var file in files)
                 {
                     Debug.WriteLine("path=" + file);
