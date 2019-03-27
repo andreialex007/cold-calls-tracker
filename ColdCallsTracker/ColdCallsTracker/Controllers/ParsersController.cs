@@ -55,7 +55,7 @@ namespace ColdCallsTracker.Controllers
                 Thread.Sleep(5_000);
 
                 //  var path = @"C:\мебель на заказ.har";
-                var files = Directory.GetFiles(@"C:\2gis\new8", "*.har");
+                var files = Directory.GetFiles(@"C:\2gis\new10", "*.har");
                 foreach (var file in files)
                 {
                     Debug.WriteLine("path=" + file);
