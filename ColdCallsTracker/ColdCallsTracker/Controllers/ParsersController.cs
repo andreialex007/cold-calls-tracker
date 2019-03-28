@@ -19,7 +19,7 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult Yandex()
         {
-
+            return null;
             var sourceFolder = @"C:\yandex-organizations\е";
             var htmlFiles = Directory.GetFiles(sourceFolder, "*.html");
 
@@ -47,15 +47,15 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult TwoGis()
         {
+
             return null;
 
-            // Console.OutputEncoding = System.Text.Encoding.UTF8;
             if (Monitor.TryEnter(_locker))
             {
                 Thread.Sleep(5_000);
 
                 //  var path = @"C:\мебель на заказ.har";
-                var files = Directory.GetFiles(@"C:\2gis\new10", "*.har");
+                var files = Directory.GetFiles(@"C:\2gis\new12", "*.har");
                 foreach (var file in files)
                 {
                     Debug.WriteLine("path=" + file);
