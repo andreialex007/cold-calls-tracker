@@ -28,6 +28,18 @@ namespace ColdCallsTracker.Code.Data
                 .WithMany(t => t.QuoteTemplates)
                 .HasForeignKey(pt => pt.CostingTemplateId);
 
+            modelBuilder.Entity<CallAnswer>()
+                .HasOne(pt => pt.FromQuestion)
+                .WithMany(p => p.CallAnswers)
+                .HasForeignKey(pt => pt.FromQuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CallAnswer>()
+                .HasOne(pt => pt.ToQuestion)
+                .WithMany(p => p.FromCallAnswers)
+                .HasForeignKey(pt => pt.ToQuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         public DbSet<State> States { get; set; }
@@ -39,5 +51,13 @@ namespace ColdCallsTracker.Code.Data
         public DbSet<Costing> Costings { get; set; }
         public DbSet<CostingTemplate> CostingTemplates { get; set; }
         public DbSet<QuoteTemplate> QuoteTemplates { get; set; }
+
+
+        public DbSet<CallAnswer> CallAnswers { get; set; }
+        public DbSet<CallQuestion> CallQuestions { get; set; }
+        public DbSet<CallScript> CallScripts { get; set; }
+
+
+
     }
 }
