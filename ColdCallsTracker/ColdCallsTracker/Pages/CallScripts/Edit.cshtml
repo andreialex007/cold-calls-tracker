@@ -16,20 +16,82 @@
 }
 
 <div data-json="@Model.ToJson()" class="edit-script-page">
-
-    <div class="row">
-        <div class="col">
-            <h1>Редактирование скрипта</h1>
-        </div>
-    </div>
-
     <form method="post">
+
+
         @Html.HiddenFor(x => x.Id)
         <div class="form-group">
-            <label>Название</label>
-            <input type="text" class="form-control template-name" name="@Html.NameFor(x => x.Name)" v-model="entity.Name" placeholder="Введите название (Обязательно)">
-        </div>
-        <span v-on:click="savePage()" v-bind:class="{ 'disabled-button': isEmptyName }" class="btn btn-primary mb-3">Сохранить</span>
-    </form>
+            <div class="row">
+                <div class="col-1 pt-2">
+                    <label>Название</label>
+                </div>
+                <div class="col-10">
+                    <input type="text" class="form-control template-name" name="@Html.NameFor(x => x.Name)" v-model="entity.Name" placeholder="Введите название (Обязательно)">
+                </div>
 
+                <div class="col-1">
+                    <span v-on:click="savePage()" v-bind:class="{ 'disabled-button': isEmptyName }" class="btn btn-primary mb-3">Сохранить</span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="questions-answers-container row">
+        <div class="questions-left col-6">
+            <div class="row">
+                <div class="col"><h5>Вопросы</h5></div>
+                <div class="col"><span v-on:click="addQuestion()" class="btn btn-sm btn-danger float-right">Добавить вопрос</span></div>
+            </div>
+            <div class="list-group">
+                <a v-for="question in entity.CallQuestions" href="javascript:;" v-on:click="selectedQuestionId = question.Id" v-bind:class="{ 'active': question.Id === selectedQuestionId }" class="list-group-item list-group-item-action question-list-item">
+                    <table style="table-layout: fixed; width: 100%;">
+                        <tr>
+                            <td><span> {{ question.Text }}</span></td>
+                            <td style="width: 30px">
+                                <span class="btn btn-warning btn-xs edit-btn" v-on:click="editQuestion(question)" ><i class="fas fa-edit" ></i></span>
+                            </td>
+                        </tr>
+                    </table>
+                </a>
+            </div>
+        </div>
+        <div class="answer-right col-6">
+            <div v-if="!!selectedQuestion">
+                <div class="row">
+                    <div class="col"><h5>Ответы</h5></div>
+                    <div class="col"><span class="btn btn-sm btn-success float-right">Добавить ответ</span></div>
+                </div>
+                <div class="list-group">
+                    <a v-for="answer in selectedQuestion.CallAnswers" href="#" class="list-group-item list-group-item-action active">
+                        {{ answer.Text }}
+                    </a>
+                    
+                </div>
+                <div class="text-center" v-show="selectedQuestion.CallAnswers.length === 0" >
+                    <em>Не найдено ни одного ответа, пожалуйста добавьте хотя бы один</em>
+                </div>
+            </div>
+            <div v-else class="text-center">
+                <em>Пожалуйста выберите вопрос в секции слева</em>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div v-show="visible" class="edit-question-modal">
+    <div class="modal" style="display: inline-block !important; background-color: rgba(0, 0, 0, 0.29);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ ((!Id ? 'Создание' : 'Редактирование') + ' вопроса') }}</h5>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control question-text" v-model="Text" cols="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" v-on:click="save()" class="btn btn-primary">Сохранить</button>
+                    <button type="button" v-on:click="close()" class="btn btn-secondary">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -31,11 +31,26 @@ namespace ColdCallsTracker.Controllers
             return View("~/Pages/CallScripts/Edit.cshtml", item);
         }
 
+        [HttpGet]
+        public ActionResult Load(int id)
+        {
+            var item = Service.CallScript.Get(id);
+            return Json(item);
+        }
+
         [HttpPost]
-        public ActionResult Edit([FromForm] CallScriptItem item)
+        public ActionResult Save([FromForm] CallScriptItem item)
         {
             Service.CallScript.SetName(item.Id, item.Name);
             return RedirectToAction("Edit", new { id = item.Id });
         }
+
+        [HttpPost]
+        public ActionResult EditQuestion([FromBody] CallQuestionItem item)
+        {
+            this.Service.CallQuestion.Save(item);
+            return Json(item);
+        }
+
     }
 }

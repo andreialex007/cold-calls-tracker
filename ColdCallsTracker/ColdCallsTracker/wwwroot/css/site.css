@@ -494,3 +494,11 @@ tr:hover .remove-costing-item {
 tr:hover .org-search-link {
     visibility: visible;
 }
+
+.question-list-item .edit-btn {
+    visibility: hidden;
+}
+
+.question-list-item:hover .edit-btn {
+    visibility: visible;
+}

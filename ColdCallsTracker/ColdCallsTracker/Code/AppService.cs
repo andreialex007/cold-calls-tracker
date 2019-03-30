@@ -17,6 +17,8 @@ namespace ColdCallsTracker.Code
         public CostingTemplateService CostingTemplate { get; set; }
         public QuoteTemplateService QuoteTemplate { get; set; }
         public CallScriptService CallScript { get; set; }
+        public CallAnswerService CallAnswer { get; set; }
+        public CallQuestionService CallQuestion { get; set; }
         public QuoteService Quote { get; set; }
         public CostingService Costing { get; set; }
 
@@ -32,6 +34,8 @@ namespace ColdCallsTracker.Code
             Quote = new QuoteService(db, this);
             Costing = new CostingService(db, this);
             CallScript = new CallScriptService(db, this);
+            CallQuestion = new CallQuestionService(db, this);
+            CallAnswer = new CallAnswerService(db, this);
 
             _appDbContext = db;
         }
