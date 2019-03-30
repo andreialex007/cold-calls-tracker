@@ -1,0 +1,35 @@
+﻿@using ColdCallsTracker.Code.Extensions
+@using ColdCallsTracker.Code.Utils
+@model ColdCallsTracker.Code.Data.ViewModels.CallScriptItem
+
+@{
+    ViewBag.Title = "Просмотр и редактирование скрипта продаж";
+    Layout = "_Layout";
+}
+
+@section Styles {
+
+}
+
+@section Scripts {
+    <script src="~/js/call-scripts/edit-call-script.js"></script>
+}
+
+<div data-json="@Model.ToJson()" class="edit-script-page">
+
+    <div class="row">
+        <div class="col">
+            <h1>Редактирование скрипта</h1>
+        </div>
+    </div>
+
+    <form method="post">
+        @Html.HiddenFor(x => x.Id)
+        <div class="form-group">
+            <label>Название</label>
+            <input type="text" class="form-control template-name" name="@Html.NameFor(x => x.Name)" v-model="entity.Name" placeholder="Введите название (Обязательно)">
+        </div>
+        <span v-on:click="savePage()" v-bind:class="{ 'disabled-button': isEmptyName }" class="btn btn-primary mb-3">Сохранить</span>
+    </form>
+
+</div>

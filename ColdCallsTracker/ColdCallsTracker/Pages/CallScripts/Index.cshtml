@@ -1,0 +1,67 @@
+﻿@using System.Globalization
+@model List<ColdCallsTracker.Code.Data.ViewModels.CallScriptItem>
+
+@{
+    ViewBag.Title = "Скрипты звонков";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" />
+}
+
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(function () {
+            $('table').DataTable({
+                language: { "url": "https://cdn.datatables.net/plug-ins/1.10.19/i18n/Russian.json" },
+                paging: false
+            });
+        })
+    </script>
+}
+
+<div class="call-scripts-page">
+
+    <div class="row">
+        <div class="col">
+            <h1>Скрипты звонков</h1>
+        </div>
+        <div class="col">
+            <a href="/CallScripts/New" class="btn btn-success btn-sm float-right mt-3">
+                <i class="fas fa-plus"></i>
+                Добавить скрипт звонка
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered table-sm call-scripts-table">
+        <thead class="thead-dark">
+            <tr>
+                <th style="width: 100px" class="id">#</th>
+                <th>Название</th>
+                <th style="width: 100px" class="actions">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <a href="/CallScripts/Edit/@(item.Id)" class="btn btn-success btn-xs edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a onclick="window.utils.doIfConfirm(this);" href="/CallScripts/Delete/@(item.Id)" class="btn btn-danger btn-xs delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -46,6 +46,9 @@
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/quotetemplates") ? "active" : "")">
                         <a class="nav-link" href="/QuoteTemplates">Шаблоны предложений</a>
                     </li>
+                    <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/callscripts") ? "active" : "")">
+                        <a class="nav-link" href="/CallScripts">Скрипты</a>
+                    </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/script") ? "active" : "")">
                         <a class="nav-link" href="/Script">Скрипт</a>
                     </li>

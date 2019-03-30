@@ -1,5 +1,6 @@
 ﻿using System;
 using ColdCallsTracker.Code.Data;
+using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Services;
 
 namespace ColdCallsTracker.Code
@@ -15,6 +16,7 @@ namespace ColdCallsTracker.Code
         public SystemSettingService SystemSetting { get; set; }
         public CostingTemplateService CostingTemplate { get; set; }
         public QuoteTemplateService QuoteTemplate { get; set; }
+        public CallScriptService CallScript { get; set; }
         public QuoteService Quote { get; set; }
         public CostingService Costing { get; set; }
 
@@ -29,6 +31,7 @@ namespace ColdCallsTracker.Code
             QuoteTemplate = new QuoteTemplateService(db, this);
             Quote = new QuoteService(db, this);
             Costing = new CostingService(db, this);
+            CallScript = new CallScriptService(db, this);
 
             _appDbContext = db;
         }

@@ -30,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Pages\CallScripts\Edit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\CallScripts\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\Companies\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
