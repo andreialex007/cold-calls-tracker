@@ -37,6 +37,5 @@ namespace ColdCallsTracker.Code.Services
             uiAnswer.Id = dbAnswer.Id;
         }
 
-
     }
 }

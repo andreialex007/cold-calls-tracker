@@ -45,9 +45,12 @@
                 <a v-for="question in entity.CallQuestions" href="javascript:;" v-on:click="selectedQuestionId = question.Id" v-bind:class="{ 'active': question.Id === selectedQuestionId }" class="list-group-item list-group-item-action common-list-item">
                     <table style="table-layout: fixed; width: 100%;">
                         <tr>
-                            <td><span> {{ question.Text }}</span></td>
-                            <td style="width: 30px">
+                            <td style="white-space: pre-line; "><span> {{ question.Text }}</span></td>
+                            <td style="width: 40px">
                                 <span class="btn btn-warning btn-xs edit-btn" v-on:click="editQuestion(question)"><i class="fas fa-edit"></i></span>
+                            </td>
+                            <td style="width: 40px">
+                                <span class="btn btn-dark btn-xs " v-on:click="deleteQuestion(question.Id)"><i class="fas fa-times"></i></span>
                             </td>
                         </tr>
                     </table>
@@ -64,12 +67,15 @@
                     <div v-for="answer in selectedQuestion.CallAnswers" href="javascript:;" class="list-group-item list-group-item-action common-list-item">
                         <table style="table-layout: fixed; width: 100%;">
                             <tr>
-                                <td><span> {{ answer.Text }}</span></td>
+                                <td style="white-space: pre-line;"><span> {{ answer.Text }}</span></td>
                                 <td v-if="answer.ToQuestionId" style="width: 130px">
                                     <span class="btn btn-success btn-xs pt-1 pb-1 " v-on:click="selectedQuestionId = answer.ToQuestionId" style="line-height: 14px;">Перейти к ответу</span>
                                 </td>
-                                <td style="width: 30px">
+                                <td style="width: 40px">
                                     <span class="btn btn-warning btn-xs " v-on:click="editAnswer(answer)"><i class="fas fa-edit"></i></span>
+                                </td>
+                                <td style="width: 40px">
+                                    <span class="btn btn-dark btn-xs " v-on:click="deleteAnswer(answer.Id)"><i class="fas fa-times"></i></span>
                                 </td>
                             </tr>
                         </table>
@@ -90,13 +96,13 @@
 
 <div v-show="visible" class="edit-question-modal">
     <div class="modal" style="display: inline-block !important; background-color: rgba(0, 0, 0, 0.29);">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" style="min-width: 1500px;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ ((!Id ? 'Создание' : 'Редактирование') + ' вопроса') }}</h5>
                 </div>
                 <div class="modal-body">
-                    <textarea class="form-control question-text" v-model="Text" cols="10"></textarea>
+                    <textarea class="form-control question-text" v-model="Text" style="min-height: 500px;" cols="10"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-on:click="save()" class="btn btn-primary">Сохранить</button>
@@ -110,14 +116,14 @@
 
 <div v-show="visible" class="edit-answer-modal">
     <div class="modal" style="display: inline-block !important; background-color: rgba(0, 0, 0, 0.29);">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" style="min-width: 1500px;" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ ((!Id ? 'Создание' : 'Редактирование') + ' ответа') }}</h5>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <textarea class="form-control answer-text" placeholder="Текст вопроса" v-model="Text" cols="10"></textarea>
+                        <textarea class="form-control answer-text" placeholder="Текст вопроса" v-model="Text" style="min-height: 500px;" cols="10"></textarea>
                     </div>
                     <div>
                         <div>Следующий вопрос</div>

@@ -26,6 +26,7 @@
                 window.editAnswerModal.$data.Text = "Новый ответ";
                 window.editAnswerModal.$data.Id = 0;
                 window.editAnswerModal.$data.FromQuestionId = this.selectedQuestion.Id;
+                window.editAnswerModal.$data.ToQuestionId = null;
                 window.editAnswerModal.$data.questions = this.questionsExceptSelf(this.selectedQuestion.Id);
                 window.editAnswerModal.show();
             },
@@ -36,6 +37,36 @@
             },
             questionsExceptSelf(questionId) {
                 return this.entity.CallQuestions.filter(x => x.Id !== questionId);
+            },
+            async deleteQuestion(id) {
+                let isDelete = confirm("Хотите удалить?");
+                if (isDelete) {
+                    await $.ajax({
+                        method: "GET",
+                        contentType: "application/json",
+                        url: "/CallScripts/DeleteQuestion?id=" + id
+                    });
+                    this.load();
+                }
+            },
+            async deleteAnswer(id) {
+                let isDelete = confirm("Хотите удалить?");
+                if (isDelete) {
+                    await $.ajax({
+                        method: "GET",
+                        contentType: "application/json",
+                        url: "/CallScripts/DeleteAnswer?id=" + id
+                    });
+                    this.load();
+                }
+            },
+            async  load() {
+                let result = await $.ajax({
+                    method: "GET",
+                    url: "/CallScripts/Load?id=" + window.editScript.entity.Id,
+                    dataType: "JSON"
+                });
+                window.editScript.$data.entity = result;
             }
         },
         computed: {
@@ -54,12 +85,7 @@
             await utils.wait(300);
 
             let updateFunc = async function (item) {
-                let result = await $.ajax({
-                    method: "GET",
-                    url: "/CallScripts/Load?id=" + window.editScript.entity.Id,
-                    dataType: "JSON"
-                });
-                window.editScript.$data.entity = result;
+                window.editScript.load();
             };
             window.editAnswerModal.saveCompleted = updateFunc;
             window.editQuestionModal.saveCompleted = updateFunc;
@@ -123,6 +149,11 @@
         },
         methods: {
             async  save() {
+
+                if (this.$data.ToQuestionId === "null") {
+                    this.$data.ToQuestionId = null;
+                }
+
                 let result = await $.ajax({
                     method: "POST",
                     contentType: "application/json",

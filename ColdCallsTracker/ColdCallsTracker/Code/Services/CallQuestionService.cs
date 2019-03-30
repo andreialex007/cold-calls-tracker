@@ -34,5 +34,19 @@ namespace ColdCallsTracker.Code.Services
             uiQuestion.Id = dbQuestion.Id;
         }
 
+        public void Delete(int id)
+        {
+            var elements = this.Db.CallQuestions.Include(x => x.CallAnswers).Where(x => x.Id == id).ToList();
+            foreach (var callQuestion in elements)
+            {
+                Db.RemoveRange(callQuestion.CallAnswers.Union(callQuestion.FromCallAnswers));
+                Db.SaveChanges();
+            }
+
+            var question = Db.CallQuestions.Find(id);
+            Db.CallQuestions.Remove(question);
+            Db.SaveChanges();
+        }
+
     }
 }

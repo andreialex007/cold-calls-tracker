@@ -12,5 +12,12 @@ namespace ColdCallsTracker.Code.Services
             this.Db = db;
             this.App = appService;
         }
+
+        public void DeleteById<T>(int id) where T : class
+        {
+            var el = this.Db.Set<T>().Find(id);
+            this.Db.Set<T>().Remove(el);
+            Db.SaveChanges();
+        }
     }
 }

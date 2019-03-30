@@ -51,7 +51,7 @@ namespace ColdCallsTracker.Code.Services
                     Name = x.Name,
                     DateModify = x.DateModify,
                     DateCreate = x.DateCreate,
-                    CallQuestions = x.CallQuestions.Select(q => new CallQuestionItem
+                    CallQuestions = x.CallQuestions.OrderBy(e => e.Text).Select(q => new CallQuestionItem
                     {
                         Id = q.Id,
                         Text = q.Text,
@@ -62,7 +62,7 @@ namespace ColdCallsTracker.Code.Services
                             Text = a.Text,
                             FromQuestionId = a.FromQuestionId,
                             ToQuestionId = a.ToQuestionId
-                        }).ToList()
+                        }).OrderBy(f => f.Text).ToList()
                     }).ToList()
                 })
                 .FirstOrDefault(x => x.Id == id);
@@ -80,6 +80,14 @@ namespace ColdCallsTracker.Code.Services
             Db.SaveChanges();
         }
 
+        public void Delete(int id)
+        {
+            var scriptItem = this.App.CallScript.Get(id);
+            foreach (var question in scriptItem.CallQuestions)
+                this.App.CallQuestion.Delete(question.Id);
+
+            this.DeleteById<CallScript>(scriptItem.Id);
+        }
 
     }
 }
