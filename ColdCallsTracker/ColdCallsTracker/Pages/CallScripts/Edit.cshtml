@@ -42,12 +42,12 @@
                 <div class="col"><span v-on:click="addQuestion()" class="btn btn-sm btn-danger float-right">Добавить вопрос</span></div>
             </div>
             <div class="list-group">
-                <a v-for="question in entity.CallQuestions" href="javascript:;" v-on:click="selectedQuestionId = question.Id" v-bind:class="{ 'active': question.Id === selectedQuestionId }" class="list-group-item list-group-item-action question-list-item">
+                <a v-for="question in entity.CallQuestions" href="javascript:;" v-on:click="selectedQuestionId = question.Id" v-bind:class="{ 'active': question.Id === selectedQuestionId }" class="list-group-item list-group-item-action common-list-item">
                     <table style="table-layout: fixed; width: 100%;">
                         <tr>
                             <td><span> {{ question.Text }}</span></td>
                             <td style="width: 30px">
-                                <span class="btn btn-warning btn-xs edit-btn" v-on:click="editQuestion(question)" ><i class="fas fa-edit" ></i></span>
+                                <span class="btn btn-warning btn-xs edit-btn" v-on:click="editQuestion(question)"><i class="fas fa-edit"></i></span>
                             </td>
                         </tr>
                     </table>
@@ -58,15 +58,25 @@
             <div v-if="!!selectedQuestion">
                 <div class="row">
                     <div class="col"><h5>Ответы</h5></div>
-                    <div class="col"><span class="btn btn-sm btn-success float-right">Добавить ответ</span></div>
+                    <div class="col"><span v-on:click="addAnswer" class="btn btn-sm btn-success float-right">Добавить ответ</span></div>
                 </div>
                 <div class="list-group">
-                    <a v-for="answer in selectedQuestion.CallAnswers" href="#" class="list-group-item list-group-item-action active">
-                        {{ answer.Text }}
-                    </a>
-                    
+                    <div v-for="answer in selectedQuestion.CallAnswers" href="javascript:;" class="list-group-item list-group-item-action common-list-item">
+                        <table style="table-layout: fixed; width: 100%;">
+                            <tr>
+                                <td><span> {{ answer.Text }}</span></td>
+                                <td v-if="answer.ToQuestionId" style="width: 130px">
+                                    <span class="btn btn-success btn-xs pt-1 pb-1 " v-on:click="selectedQuestionId = answer.ToQuestionId" style="line-height: 14px;">Перейти к ответу</span>
+                                </td>
+                                <td style="width: 30px">
+                                    <span class="btn btn-warning btn-xs " v-on:click="editAnswer(answer)"><i class="fas fa-edit"></i></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
                 </div>
-                <div class="text-center" v-show="selectedQuestion.CallAnswers.length === 0" >
+                <div class="text-center" v-show="selectedQuestion.CallAnswers.length === 0">
                     <em>Не найдено ни одного ответа, пожалуйста добавьте хотя бы один</em>
                 </div>
             </div>
@@ -77,6 +87,7 @@
     </div>
 </div>
 
+
 <div v-show="visible" class="edit-question-modal">
     <div class="modal" style="display: inline-block !important; background-color: rgba(0, 0, 0, 0.29);">
         <div class="modal-dialog" role="document">
@@ -86,6 +97,38 @@
                 </div>
                 <div class="modal-body">
                     <textarea class="form-control question-text" v-model="Text" cols="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" v-on:click="save()" class="btn btn-primary">Сохранить</button>
+                    <button type="button" v-on:click="close()" class="btn btn-secondary">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div v-show="visible" class="edit-answer-modal">
+    <div class="modal" style="display: inline-block !important; background-color: rgba(0, 0, 0, 0.29);">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ ((!Id ? 'Создание' : 'Редактирование') + ' ответа') }}</h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <textarea class="form-control answer-text" placeholder="Текст вопроса" v-model="Text" cols="10"></textarea>
+                    </div>
+                    <div>
+                        <div>Следующий вопрос</div>
+                        <div>
+                            <select v-model="ToQuestionId" class="form-control">
+                                <option value="null">Следующий вопрос не указан</option>
+                                <option v-for="quest in questions" v-bind:value="quest.Id">{{ quest.Text }}</option>
+                            </select>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" v-on:click="save()" class="btn btn-primary">Сохранить</button>

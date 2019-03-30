@@ -495,10 +495,10 @@ tr:hover .org-search-link {
     visibility: visible;
 }
 
-.question-list-item .edit-btn {
+.common-list-item .edit-btn {
     visibility: hidden;
 }
 
-.question-list-item:hover .edit-btn {
+.common-list-item:hover .edit-btn {
     visibility: visible;
 }

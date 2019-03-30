@@ -52,5 +52,12 @@ namespace ColdCallsTracker.Controllers
             return Json(item);
         }
 
+        [HttpPost]
+        public ActionResult EditAnswer([FromBody] CallAnswerItem item)
+        {
+            this.Service.CallAnswer.Save(item);
+            return Json(item);
+        }
+
     }
 }
