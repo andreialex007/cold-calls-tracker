@@ -61,7 +61,7 @@ namespace ColdCallsTracker.Code.Services
                     .Select(x => new CompanyEditItem
                     {
                         Id = x.Id,
-                        State = x.State.Name,
+                       // State = x.State.Name,
                         Name = x.Name,
                         StateId = x.StateId,
                         Remarks = x.Remarks,
@@ -168,7 +168,7 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    State = x.State.Name,
+                   // State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,
@@ -262,7 +262,7 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    State = x.State.Name,
+                  //  State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,
@@ -284,6 +284,7 @@ namespace ColdCallsTracker.Code.Services
         {
             var company = Db.Companies.Single(x => x.Id == id);
             company.StateId = (int?)CompanyStateEnum.NotSuitable;
+            company.DateModify = DateTime.Now;
             Db.SaveChanges();
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ColdCallsTracker.Code.Extensions;
+using ColdCallsTracker.Code.Utils;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
@@ -45,7 +46,15 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public string Remarks { get; set; }
 
         public int? StateId { get; set; }
-        public string State { get; set; }
+        public string State
+        {
+            get
+            {
+                if (StateId == null)
+                    return null;
+                return ((CompanyStateEnum)StateId).DescriptionAttr();
+            }
+        }
 
         public string PhoneNumbers => string.Join(";", PhoneNumbersList);
         public List<string> PhoneNumbersList { get; set; } = new List<string>();

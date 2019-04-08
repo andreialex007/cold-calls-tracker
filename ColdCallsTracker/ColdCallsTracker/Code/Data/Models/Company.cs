@@ -15,9 +15,6 @@ namespace ColdCallsTracker.Code.Data.Models
         public List<Quote> Quotes { get; set; } = new List<Quote>();
 
         public int? StateId { get; set; }
-        public State State { get; set; }
-
-
-
+        
     }
 }

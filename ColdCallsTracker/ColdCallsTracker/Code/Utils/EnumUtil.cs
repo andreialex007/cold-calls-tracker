@@ -14,6 +14,8 @@ namespace ColdCallsTracker.Code.Utils
 
         public static string DescriptionAttr<T>(this T source)
         {
+            if (source == null)
+                return string.Empty;
             var fi = source.GetType().GetField(source.ToString());
             var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(
                 typeof(DescriptionAttribute), false);

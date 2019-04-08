@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using ColdCallsTracker.Code.Data.ViewModels._Common;
+using ColdCallsTracker.Code.Utils;
 
 namespace ColdCallsTracker.Code.Data.ViewModels
 {
@@ -16,7 +17,15 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         public List<QuoteItem> Quotes { get; set; } = new List<QuoteItem>();
 
         public int? StateId { get; set; }
-        public string State { get; set; }
+        public string State
+        {
+            get
+            {
+                if (StateId == null)
+                    return string.Empty;
+                return ((CompanyStateEnum)StateId).DescriptionAttr();
+            }
+        }
 
         public string SearchLink
         {

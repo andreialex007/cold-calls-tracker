@@ -68,7 +68,7 @@
                 <th v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">
                     <select v-model="config.columns.StateId.filter" class="form-control form-control-sm">
                         <option value="">Любой</option>
-                        @foreach (var el in EnumUtil.ToDictionary<CompanyStateEnum>())
+                        @foreach (var el in EnumUtil.ToDictionary<CompanyStateEnum>().OrderBy(x=>x.Key).ToList())
                         {
                             <option value="@el.Key">@el.Value</option>
                         }

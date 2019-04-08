@@ -48,10 +48,10 @@ namespace ColdCallsTracker
                 db.Database.Migrate();
                 if (!db.States.Any())
                 {
-                    db.States.Add(new State { Name = "В процессе" });
-                    db.States.Add(new State { Name = "Успех" });
-                    db.States.Add(new State { Name = "Отказ" });
-                    db.SaveChanges();
+                    // db.States.Add(new State { Name = "В процессе" });
+                    // db.States.Add(new State { Name = "Успех" });
+                    // db.States.Add(new State { Name = "Отказ" });
+                    // db.SaveChanges();
                 }
 
                 if (!db.Companies.Any())
