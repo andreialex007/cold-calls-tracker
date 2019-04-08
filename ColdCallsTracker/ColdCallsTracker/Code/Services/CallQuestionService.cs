@@ -37,6 +37,7 @@ namespace ColdCallsTracker.Code.Services
         public void Delete(int id)
         {
             var elements = this.Db.CallQuestions.Include(x => x.CallAnswers).Where(x => x.Id == id).ToList();
+            this.Db.CallAnswers.Where(x => x.ToQuestionId == id).ToList().ForEach(x => x.ToQuestionId = null);
             foreach (var callQuestion in elements)
             {
                 Db.RemoveRange(callQuestion.CallAnswers.Union(callQuestion.FromCallAnswers));

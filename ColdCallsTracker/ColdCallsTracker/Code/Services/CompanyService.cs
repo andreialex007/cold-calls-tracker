@@ -245,5 +245,46 @@ namespace ColdCallsTracker.Code.Services
             Db.Delete<Company>(x => x.Id == id);
             Db.SaveChanges();
         }
+
+        public List<CompanyListItem> GetRandomCompanies(int size)
+        {
+            var mainQuery = Db.Companies
+                .AsQueryable()
+                .Where(x => x.Phones.Any())
+                .Where(x => x.StateId == null);
+
+            var randomIds = mainQuery.OrderBy(x => Guid.NewGuid()).Select(x => x.Id).Take(size).ToList();
+
+
+            var query = mainQuery
+                .Where(x => randomIds.Contains(x.Id))
+                .Select(x => new CompanyListItem
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    State = x.State.Name,
+                    StateId = x.StateId,
+                    ActivityType = x.ActivityType,
+                    Address = x.Address,
+                    Remarks = x.Remarks,
+                    WebSites = x.WebSites,
+                    PhoneNumbersList = x.Phones
+                        .Select(n => n.Number)
+                        .ToList(),
+
+                });
+
+            var items = query.ToList();
+            return items;
+
+        }
+
+
+        public void MarkUnsuitable(int id)
+        {
+            var company = Db.Companies.Single(x => x.Id == id);
+            company.StateId = (int?)CompanyStateEnum.NotSuitable;
+            Db.SaveChanges();
+        }
     }
 }

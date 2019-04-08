@@ -39,6 +39,9 @@
     <Content Update="Pages\Companies\Edit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\Companies\Random.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\CostingTemplates\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

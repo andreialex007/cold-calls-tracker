@@ -1,0 +1,57 @@
+﻿@model System.Collections.Generic.List<ColdCallsTracker.Code.Data.ViewModels.CompanyListItem>
+
+@{
+    ViewBag.Title = "Случайные компании";
+    Layout = "_Layout";
+}
+
+@section Styles {
+}
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            window.markAsUnSuitable = function (id) {
+                window.event.preventDefault();
+                $.get("/Companies/MarkAsUnSuitable?id=" + id);
+                $(window.event.target).closest("tr").hide("fast");
+            }
+        });
+    </script>
+}
+
+<div class="random-companies-page">
+
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Название</th>
+                <th>Деятельность</th>
+                <th>Сайты</th>
+                <th>Примечание</th>
+                <th>Телефоны</th>
+                <th>Инфо</th>
+                <th>Убрать</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.ActivityType</td>
+                    <td>@Html.Raw(item.WebSitesLinks)</td>
+                    <td>@item.Remarks</td>
+                    <td>@item.PhoneNumbers</td>
+                    <td> <a href="@item.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link"><i class="fas fa-external-link-alt"></i></a></td>
+                    <td><a class="btn btn-danger btn-xs" onclick="markAsUnSuitable(@item.Id)" href="javascript:;">Убрать</a></td>
+                    <td><a target="_blank" href="/Companies/Edit/@(item.Id)">Открыть</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

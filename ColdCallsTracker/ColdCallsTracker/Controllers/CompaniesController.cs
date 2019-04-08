@@ -1,4 +1,5 @@
-﻿using ColdCallsTracker.Code.Data.ViewModels;
+﻿using System.Collections.Generic;
+using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,13 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
+        public ActionResult Random()
+        {
+            var companies = Service.Company.GetRandomCompanies(50);
+            return View("~/Pages/Companies/Random.cshtml", companies);
+        }
+
+        [HttpGet]
         public ActionResult Edit(int? id)
         {
             var quoteTemplates = this.Service.QuoteTemplate.All();
@@ -28,6 +36,13 @@ namespace ColdCallsTracker.Controllers
                 CostingTemplates = costingTemplates,
                 QuoteTemplates = quoteTemplates
             });
+        }
+
+        [HttpGet]
+        public ActionResult MarkAsUnSuitable(int id)
+        {
+            this.Service.Company.MarkUnsuitable(id);
+            return Content("Ok");
         }
 
         [HttpGet]

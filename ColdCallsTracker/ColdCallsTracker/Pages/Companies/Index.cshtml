@@ -1,4 +1,6 @@
-﻿@model object
+﻿@using ColdCallsTracker.Code.Data.ViewModels
+@using ColdCallsTracker.Code.Utils
+@model object
 
 @{
     ViewBag.Title = "Компании";
@@ -30,7 +32,10 @@
                     </span>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 text-right">
+                <a href="/Companies/Random" target="_blank" class="btn btn-secondary btn-sm mr-3">
+                    Случайные компании
+                </a>
                 <a href="/Companies/Edit/0" class="btn btn-primary btn-sm float-right">
                     <i class="fas fa-plus"></i>
                     Добавить
@@ -63,10 +68,10 @@
                 <th v-bind:class="{ 'order-column': !!config.columns.StateId.sorting }">
                     <select v-model="config.columns.StateId.filter" class="form-control form-control-sm">
                         <option value="">Любой</option>
-                        <option value="0">Черновик</option>
-                        <option value="1">В процессе</option>
-                        <option value="2">Успех</option>
-                        <option value="3">Отказ</option>
+                        @foreach (var el in EnumUtil.ToDictionary<CompanyStateEnum>())
+                        {
+                            <option value="@el.Key">@el.Value</option>
+                        }
                     </select>
                 </th>
                 <th v-bind:class="{ 'order-column': !!config.columns.LastCallRecordDate.sorting }">
