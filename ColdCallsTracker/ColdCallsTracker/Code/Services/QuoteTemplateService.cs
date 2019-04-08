@@ -28,6 +28,7 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Description = x.Description,
                     CustomDesign = x.CustomDesign
                 })
                 .OrderBy(x => x.Name)
@@ -72,6 +73,7 @@ namespace ColdCallsTracker.Code.Services
                   {
                       Id = x.Id,
                       Name = x.Name,
+                      Description = x.Description,
                       DateModify = x.DateModify,
                       DateCreate = x.DateCreate,
                       CustomDesign = x.CustomDesign
@@ -99,6 +101,7 @@ namespace ColdCallsTracker.Code.Services
             }
 
             dbItem.Name = item.Name;
+            dbItem.Description = item.Description;
             dbItem.CustomDesign = item.CustomDesign;
             dbItem.DateModify = DateTime.Now;
 

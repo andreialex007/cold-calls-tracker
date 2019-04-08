@@ -9,6 +9,8 @@ namespace ColdCallsTracker.Code.Data.Models
     {
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public bool CustomDesign { get; set; }
 
         public List<QuoteTemplateCostingTemplate> CostingTemplates { get; set; } = new List<QuoteTemplateCostingTemplate>();

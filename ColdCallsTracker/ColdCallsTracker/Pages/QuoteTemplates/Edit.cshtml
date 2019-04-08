@@ -12,6 +12,8 @@
 }
 
 @section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js" ></script>
     <script src="~/js/quote-templates/quote-templates.js" asp-append-version="true"></script>
 }
 
@@ -28,6 +30,10 @@
         <div class="form-group">
             <label>Название</label>
             <input type="text" class="form-control template-name" name="@Html.NameFor(x => x.Name)" v-model="Name" placeholder="Введите название (Обязательно)">
+        </div>
+        <div class="form-group">
+            <label>Описание</label>
+            <textarea class="form-control" name="@Html.NameFor(x => x.Description)" v-model="Description" placeholder="Введите описание"></textarea>
         </div>
         <span v-on:click="saveTemplate()" v-bind:class="{ 'disabled-button': isEmptyName }" class="btn btn-primary mb-3">Сохранить</span>
     </form>

@@ -9,7 +9,7 @@
             };
         },
         mounted() {
-
+            autosize($('textarea'));
         },
         watch: {
             CustomDesign: function (newVal) {

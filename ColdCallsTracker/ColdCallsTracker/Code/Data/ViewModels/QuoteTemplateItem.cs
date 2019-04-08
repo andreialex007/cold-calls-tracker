@@ -11,6 +11,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
     public class QuoteTemplateItem : ViewModelBase
     {
         public string Name { get; set; }
+        public string Description { get; set; }
 
         public List<CostingTemplateItem> AvaliableCostingTemplates { get; set; } = new List<CostingTemplateItem>();
         public List<QuoteTemplateCostingTemplate> QuoteCostingRelations { get; set; } = new List<QuoteTemplateCostingTemplate>();
