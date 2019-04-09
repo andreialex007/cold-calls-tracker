@@ -1,30 +1,30 @@
 ﻿function fallbackCopyTextToClipboard(text) {
-	var textArea = document.createElement("textarea");
-	textArea.value = text;
-	document.body.appendChild(textArea);
-	textArea.focus();
-	textArea.select();
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
 
-	try {
-		var successful = document.execCommand('copy');
-		var msg = successful ? 'successful' : 'unsuccessful';
-		console.log('Fallback: Copying text command was ' + msg);
-	} catch (err) {
-		console.error('Fallback: Oops, unable to copy', err);
-	}
+    try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
 
-	document.body.removeChild(textArea);
+    document.body.removeChild(textArea);
 }
 function copyTextToClipboard(text) {
-	if (!navigator.clipboard) {
-		fallbackCopyTextToClipboard(text);
-		return;
-	}
-	navigator.clipboard.writeText(text).then(function () {
-		console.log('Async: Copying to clipboard was successful!');
-	}, function (err) {
-		console.error('Async: Could not copy text: ', err);
-	});
+    if (!navigator.clipboard) {
+        fallbackCopyTextToClipboard(text);
+        return;
+    }
+    navigator.clipboard.writeText(text).then(function () {
+        console.log('Async: Copying to clipboard was successful!');
+    }, function (err) {
+        console.error('Async: Could not copy text: ', err);
+    });
 }
 
 
@@ -59,6 +59,15 @@ $(function () {
                 currentTab: "main"
             }
         },
+        computed: {
+            callToNumber() {
+                let object = this.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0];
+                if (!object)
+                    return "";
+                let number = object.Number;
+                return "callto:" + number.replace(/\D+/g, '');
+            }
+        },
         methods: {
             async save() {
                 let result = await $.ajax({
@@ -88,7 +97,7 @@ $(function () {
                 window.editPhoneModal.open();
                 window.editPhoneModal.isComplete = true;
             },
-            copyPhone(item) {
+            copyPhone() {
                 let number = this.entity.Phones.filter(x => x.Id == editCompany.selectedPhoneId)[0].Number;
                 copyTextToClipboard(number);
             },
