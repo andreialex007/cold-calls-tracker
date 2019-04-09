@@ -61,7 +61,7 @@ namespace ColdCallsTracker.Code.Services
                     .Select(x => new CompanyEditItem
                     {
                         Id = x.Id,
-                       // State = x.State.Name,
+                        // State = x.State.Name,
                         Name = x.Name,
                         StateId = x.StateId,
                         Remarks = x.Remarks,
@@ -163,19 +163,29 @@ namespace ColdCallsTracker.Code.Services
 
         public (List<CompanyListItem> items, int total, int filtered) Search(CompanySearchParameters parameters)
         {
-            var query = Db.Companies
+            var initialQuery = Db.Companies.AsQueryable();
+
+
+            if (parameters.PhoneNumbers.HasValue())
+            {
+                var numbers = parameters.PhoneNumbers.ToLower();
+                initialQuery = initialQuery.Where(x => x.Phones.Any(p => p.Number.Contains(numbers)));
+            }
+
+
+            var query = initialQuery
+
                 .Select(x => new CompanyListItem
                 {
                     Id = x.Id,
                     Name = x.Name,
-                   // State = x.State.Name,
+                    // State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,
                     Remarks = x.Remarks,
                     WebSites = x.WebSites,
                     LastCallRecordDate = x.Phones.Select(p => p.DateModify)
-                        .Union(x.Phones.Select(p => p.DateModify))
                         .Union(x.Quotes.Select(p => p.DateModify))
                         .Union(x.Quotes.SelectMany(w => w.Costings.Select(k => k.DateModify)))
                         .Union(new List<DateTime> { x.DateModify })
@@ -199,8 +209,6 @@ namespace ColdCallsTracker.Code.Services
             if (parameters.ActivityType.HasValue())
                 query = query.Where(x => x.ActivityType.ToLower().Contains(parameters.ActivityType.ToLower()));
 
-            if (parameters.PhoneNumbers.HasValue())
-                query = query.Where(x => x.PhoneNumbers.ToLower().Contains(parameters.PhoneNumbers.ToLower()));
 
             if (parameters.Remarks.HasValue())
                 query = query.Where(x => x.Remarks.ToLower().Contains(parameters.Remarks.ToLower()));
@@ -262,7 +270,7 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                  //  State = x.State.Name,
+                    //  State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,
