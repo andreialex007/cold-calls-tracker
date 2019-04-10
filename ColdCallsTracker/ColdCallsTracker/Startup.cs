@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
+using ColdCallsTracker.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,12 +25,24 @@ namespace ColdCallsTracker
 
         public void ConfigureServices(IServiceCollection services)
         {
+            AppControllerBase.AdminUserName = Configuration["AppSettings:AdminName"];
+            AppControllerBase.AdminPassword = Configuration["AppSettings:AdminPassword"];
+
+            //In-Memory
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -40,6 +54,7 @@ namespace ColdCallsTracker
                     options.SerializerSettings.Converters.Add(dateConverter);
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
 
             AppDbContext.ConnectionString = Configuration.GetConnectionString("MainConnnectionString");
 
@@ -164,7 +179,7 @@ namespace ColdCallsTracker
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

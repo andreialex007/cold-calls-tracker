@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
 {
-    public class QuotesController : AppControllerBase
+    public class QuotesController : AuthAppControllerBase
     {
         public QuotesController(IHostingEnvironment hostingEnvironment)
             : base(hostingEnvironment)

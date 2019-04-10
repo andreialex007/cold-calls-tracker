@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
 {
-    public class ParsersController : AppControllerBase
+    public class ParsersController : AuthAppControllerBase
     {
         public ParsersController(IHostingEnvironment hostingEnvironment) : base(hostingEnvironment)
         {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
 {
-    public class CostingTemplatesController : AppControllerBase
+    public class CostingTemplatesController : AuthAppControllerBase
     {
         public CostingTemplatesController(IHostingEnvironment hostingEnvironment) : base(hostingEnvironment)
         {

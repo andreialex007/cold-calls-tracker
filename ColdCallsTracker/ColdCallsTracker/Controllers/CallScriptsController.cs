@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ColdCallsTracker.Controllers
 {
-    public class CallScriptsController : AppControllerBase
+    public class CallScriptsController : AuthAppControllerBase
     {
         public CallScriptsController(IHostingEnvironment hostingEnvironment) : base(hostingEnvironment)
         {

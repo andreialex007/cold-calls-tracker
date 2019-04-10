@@ -41,16 +41,22 @@
                         <a class="nav-link" href="/Companies">Компании</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/costingtemplates") ? "active" : "")">
-                        <a class="nav-link" href="/CostingTemplates">Шаблоны затрат</a>
+                        <a class="nav-link" href="/CostingTemplates">Затраты</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/quotetemplates") ? "active" : "")">
-                        <a class="nav-link" href="/QuoteTemplates">Шаблоны предложений</a>
+                        <a class="nav-link" href="/QuoteTemplates">Предложения</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/callscripts") ? "active" : "")">
                         <a class="nav-link" href="/CallScripts">Скрипты</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower().StartsWith("/script") ? "active" : "")">
-                        <a class="nav-link" href="/Script">Скрипт</a>
+                        <a class="nav-link" href="/Script">Заметки</a>
+                    </li>
+                    <li class="nav-item pl-5">                        
+                        <a class="nav-link" href="/Login/Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Выход
+                        </a>
                     </li>
                 </ul>
             </div>

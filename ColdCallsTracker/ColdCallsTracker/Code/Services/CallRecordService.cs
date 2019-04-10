@@ -49,6 +49,7 @@ namespace ColdCallsTracker.Code.Services
                 Content = content,
                 PhoneId = phoneId
             };
+
             AddRecord(callRecordItem);
             callRecordItem.Phone = Db.Phones.Single(x => x.Id == phoneId).Number;
             return callRecordItem;
