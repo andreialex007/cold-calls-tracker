@@ -42,7 +42,6 @@ namespace ColdCallsTracker
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc()
                 .AddJsonOptions(options =>
                 {
@@ -56,7 +55,7 @@ namespace ColdCallsTracker
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
-            AppDbContext.ConnectionString = Configuration.GetConnectionString("MainConnnectionString");
+            AppDbContext.ConnectionString = Configuration["AppSettings:MainConnnectionString"];
 
             using (var db = new AppDbContext())
             {
