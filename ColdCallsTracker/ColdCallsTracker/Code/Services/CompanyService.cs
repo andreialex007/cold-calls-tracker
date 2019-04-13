@@ -185,13 +185,7 @@ namespace ColdCallsTracker.Code.Services
                     Address = x.Address,
                     Remarks = x.Remarks,
                     WebSites = x.WebSites,
-                    LastCallRecordDate = x.Phones.Select(p => p.DateModify)
-                        .Union(x.Quotes.Select(p => p.DateModify))
-                        .Union(x.Quotes.SelectMany(w => w.Costings.Select(k => k.DateModify)))
-                        .Union(new List<DateTime> { x.DateModify })
-                        .Union(x.Phones.SelectMany(r => r.CallRecords.Select(n => n.DateModify)))
-                        .OrderByDescending(s => s)
-                        .FirstOrDefault(),
+                    LastCallRecordDate = x.DateModify,
                     PhoneNumbersList = x.Phones
                         .Select(n => n.Number)
                         .ToList(),
@@ -239,6 +233,13 @@ namespace ColdCallsTracker.Code.Services
                 .ToList();
 
             return (items, total, filtered);
+        }
+
+        public void RefreshDateModify(int id)
+        {
+            var company = Db.Companies.Single(x => x.Id == id);
+            company.DateModify = DateTime.Now;
+            Db.SaveChanges();
         }
 
         public void Delete(int id)

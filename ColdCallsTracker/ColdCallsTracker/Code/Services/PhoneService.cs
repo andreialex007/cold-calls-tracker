@@ -39,6 +39,8 @@ namespace ColdCallsTracker.Code.Services
 
             Db.SaveChanges();
 
+            this.App.Company.RefreshDateModify(dbItem.CompanyId);
+
             item.Id = dbItem.Id;
         }
 
@@ -60,6 +62,7 @@ namespace ColdCallsTracker.Code.Services
                 .Include(x => x.CallRecords)
                 .First();
 
+            this.App.Company.RefreshDateModify(phone.CompanyId);
 
             Db.CallRecords.RemoveRange(phone.CallRecords);
             Db.Phones.Remove(phone);

@@ -37,6 +37,9 @@ namespace ColdCallsTracker.Code.Services
 
             Db.SaveChanges();
 
+            var companyId = Db.Companies.Single(x => x.Phones.Any(p => p.Id == item.PhoneId)).Id;
+            this.App.Company.RefreshDateModify(companyId);
+
             item.Id = dbItem.Id;
         }
 

@@ -19,8 +19,10 @@ namespace ColdCallsTracker.Controllers
 
         public ActionResult Yandex()
         {
-            return null;
-            var sourceFolder = @"C:\yandex-organizations\е";
+            var b = 10;
+            if (b == 10)
+                return null;
+            var sourceFolder = @"C:\yandex-organizations\к";
             var htmlFiles = Directory.GetFiles(sourceFolder, "*.html");
 
             var allCompanies = new List<Company>();

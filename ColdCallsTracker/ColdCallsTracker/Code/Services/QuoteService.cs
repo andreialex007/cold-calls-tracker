@@ -7,7 +7,6 @@ using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Exceptions;
 using ColdCallsTracker.Code.Extensions;
 using ColdCallsTracker.Code.Utils;
-using Microsoft.EntityFrameworkCore;
 
 namespace ColdCallsTracker.Code.Services
 {
@@ -40,6 +39,8 @@ namespace ColdCallsTracker.Code.Services
 
             Db.SaveChanges();
 
+            this.App.Company.RefreshDateModify(dbItem.CompanyId.Value);
+
             item.Id = dbItem.Id;
         }
 
@@ -63,6 +64,9 @@ namespace ColdCallsTracker.Code.Services
             quote.DateCreate = DateTime.Now;
             Db.Quotes.Add(quote);
             Db.SaveChanges();
+
+            this.App.Company.RefreshDateModify(companyId);
+
             return Edit(quote.Id);
         }
 
@@ -166,14 +170,22 @@ namespace ColdCallsTracker.Code.Services
             }
 
             Db.SaveChanges();
+
+            this.App.Company.RefreshDateModify(companyId);
+
             return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == newQuote.Id);
         }
 
 
         public void Delete(int id)
         {
-            Db.Delete<Quote>(x => x.Id == id);
+            var quote = Db.Quotes.Single(x => x.Id == id);
+            var companyId = quote.CompanyId.Value;
+
+            Db.Quotes.Remove(quote);
             Db.SaveChanges();
+
+            this.App.Company.RefreshDateModify(companyId);
         }
     }
 }

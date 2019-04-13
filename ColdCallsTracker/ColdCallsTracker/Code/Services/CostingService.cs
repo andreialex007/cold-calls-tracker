@@ -5,6 +5,7 @@ using ColdCallsTracker.Code.Data;
 using ColdCallsTracker.Code.Data.Models;
 using ColdCallsTracker.Code.Data.ViewModels;
 using ColdCallsTracker.Code.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ColdCallsTracker.Code.Services
 {
@@ -63,6 +64,10 @@ namespace ColdCallsTracker.Code.Services
 
             Db.SaveChanges();
 
+            var companyId = Db.Companies.Single(x => x.Quotes.Any(p => p.Id == uiItem.QuoteId)).Id;
+            this.App.Company.RefreshDateModify(companyId);
+
+
             uiItem.Id = dbItem.Id;
             uiItem.DateModify = dbItem.DateModify;
             uiItem.DateCreate = dbItem.DateCreate;
@@ -70,8 +75,11 @@ namespace ColdCallsTracker.Code.Services
 
         public void Delete(int id)
         {
-            Db.Delete<Costing>(x => x.Id == id);
+            var costing = Db.Costings.Include(x => x.Quote).Single(x => x.Id == id);
+            var companyId = costing.Quote.CompanyId;
+            Db.Costings.Remove(costing);
             Db.SaveChanges();
+            this.App.Company.RefreshDateModify(companyId.Value);
         }
 
         public int GetQuoteIdByCosting(int id)
