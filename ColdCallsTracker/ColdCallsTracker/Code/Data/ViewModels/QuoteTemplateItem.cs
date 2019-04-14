@@ -20,6 +20,8 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         public double CustomDesignTotal { get; set; }
 
+        public double TotalHoursWithFixes => TotalHours + (TotalHours * (GlobalVariables.FixesPercentage / 100));
+
         public double TotalHours
         {
             get
@@ -32,7 +34,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                 {
                     var uiHours = this.QuoteCostingRelations
                         .Where(x => x.CostingTemplate.Unit == (int)UnitEnum.Hours)
-                        .Where(x => x.CostingTemplate.CategoryId == (int) CostingCategoryEnum.Ui)
+                        .Where(x => x.CostingTemplate.CategoryId == (int)CostingCategoryEnum.Ui)
                         .Sum(x => x.Multiplier * x.CostingTemplate.Qty);
 
 

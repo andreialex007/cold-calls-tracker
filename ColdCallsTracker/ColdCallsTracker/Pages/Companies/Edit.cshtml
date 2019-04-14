@@ -32,7 +32,7 @@
         <li class="nav-item">
             <a v-bind:class="{ 'active': currentTab === 'main' }" v-on:click="currentTab = 'main'" class="nav-link" href="javascript:;">
                 <strong>{{ entity.Name || 'Данные о компании' }}</strong>
-                
+
             </a>
         </li>
         <li class="nav-item">
@@ -40,7 +40,7 @@
                 <strong>Сметы</strong>
             </a>
         </li>
-        <li class="mt-2" >
+        <li class="mt-2">
             <span><a v-bind:href="entity.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link"><i class="fas fa-external-link-alt"></i></a></span>
         </li>
     </ul>
@@ -163,10 +163,10 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var item in Model.QuoteTemplates)
                     {
-                        <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">
-                            @item.Name - @(Math.Round(item.Total).ToString("N0")) р.
-                            (дн: @Math.Round(item.TotalHours / GlobalVariables.WorkingHoursPerDay, 1) недель: @Math.Round((item.TotalHours / GlobalVariables.WorkingHoursPerDay) / 5, 1))
-                        </a>
+                    <a class="dropdown-item" v-on:click="addQuoteFromTemplate(@item.Id)" href="javascript:;">
+                        @item.Name - @(Math.Round(item.Total).ToString("N0")) р.
+                        (дн: @Math.Round(item.TotalHoursWithFixes / GlobalVariables.WorkingHoursPerDay, 1) недель: @Math.Round((item.TotalHoursWithFixes / GlobalVariables.WorkingHoursPerDay) / 5, 1))
+                    </a>
                     }
                 </div>
             </div>
@@ -194,21 +194,21 @@
                                             <option value=""></option>
                                             @foreach (var costingTemplate in Model.CostingTemplates.OrderBy(x => x.CategoryName).ThenBy(x => x.Name))
                                             {
-                                                <option value="@costingTemplate.Id">
-                                                    [@costingTemplate.CategoryName] @costingTemplate.Name
-                                                    @if (costingTemplate.Qty > 0)
+                                            <option value="@costingTemplate.Id">
+                                                [@costingTemplate.CategoryName] @costingTemplate.Name
+                                                @if (costingTemplate.Qty > 0)
                                                     {
-                                                        <text>| @costingTemplate.Qty @costingTemplate.UnitName</text>
+                                                <text>| @costingTemplate.Qty @costingTemplate.UnitName</text>
                                                     }
-                                                    @if (costingTemplate.Cost > 0)
+                                                @if (costingTemplate.Cost > 0)
                                                     {
-                                                        <text>| Кол: @costingTemplate.Cost</text>
+                                                <text>| Кол: @costingTemplate.Cost</text>
                                                     }
-                                                    @if (costingTemplate.Total > 0)
+                                                @if (costingTemplate.Total > 0)
                                                     {
-                                                        <text>| Цена: @((costingTemplate.Total ?? 0).ToString("N0"))</text>
+                                                <text>| Цена: @((costingTemplate.Total ?? 0).ToString("N0"))</text>
                                                     }
-                                                </option>
+                                            </option>
                                             }
                                         </select>
                                     </th>
@@ -245,7 +245,7 @@
                                         <select v-model="newCosting.CategoryId" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
                                             {
-                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            <option value="@(el.Key)">@(el.Value)</option>
                                             }
                                         </select>
                                     </td>
@@ -259,7 +259,7 @@
                                         <select v-on:change="costingChanged(costing,quote)" v-model="newCosting.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
-                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            <option value="@(el.Key)">@(el.Value)</option>
                                             }
                                         </select>
                                     </td>
@@ -289,7 +289,7 @@
                                         <select v-on:change="costingChanged(costing, quote)" v-model="costing.CategoryId" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<CostingCategoryEnum>())
                                             {
-                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            <option value="@(el.Key)">@(el.Value)</option>
                                             }
                                         </select>
                                     </td>
@@ -303,7 +303,7 @@
                                         <select v-on:change="costingChanged(costing,quote)" v-model="costing.Unit" class="form-control form-control-xs">
                                             @foreach (var el in EnumUtil.ToDictionary<UnitEnum>())
                                             {
-                                                <option value="@(el.Key)">@(el.Value)</option>
+                                            <option value="@(el.Key)">@(el.Value)</option>
                                             }
                                         </select>
                                     </td>
@@ -352,9 +352,22 @@
                                         <strong>Итого сроки-стоимость</strong>
                                     </td>
                                     <td colspan="6">
-                                        Общее время работ в часах: <strong>{{ quote.TotalHours }}</strong>,
-                                        дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
-                                        раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                                        <div>
+                                            <div><em>Чистое время</em></div>
+                                            <div>
+                                                Общее время работ в часах: <strong>{{ quote.TotalHours }}</strong>,
+                                                дней: <strong>{{ (quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                                                раб. недель: <strong>{{ ((quote.TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div><em>Время с учетом поправок и доделок</em></div>
+                                            <div>
+                                                Общее время работ в часах: <strong>{{ quote.TotalHoursWithFixes }}</strong>,
+                                                дней: <strong>{{ (quote.TotalHoursWithFixes / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                                                раб. недель: <strong>{{ ((quote.TotalHoursWithFixes / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td><strong>{{ quote.Total.toFixed(0) | toNumber }} р.</strong></td>
                                     <td></td>

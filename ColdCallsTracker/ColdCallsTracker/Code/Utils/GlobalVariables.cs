@@ -43,5 +43,10 @@ namespace ColdCallsTracker.Code.Utils
         /// Доплата за кастомный дизайн
         /// </summary>
         public const double CustomDesignMarkup = 0.3;
+
+        /// <summary>
+        /// Процент времени на согласование с заказчиком
+        /// </summary>
+        public const double FixesPercentage = 150;
     }
 }

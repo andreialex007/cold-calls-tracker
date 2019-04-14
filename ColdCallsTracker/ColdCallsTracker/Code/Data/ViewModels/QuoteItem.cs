@@ -61,6 +61,8 @@ namespace ColdCallsTracker.Code.Data.ViewModels
             }
         }
 
+        public double TotalHoursWithFixes => TotalHours + (TotalHours * (GlobalVariables.FixesPercentage / 100));
+
 
         public double Total => Costings.Sum(x => x.MultiplierTotal) + CustomDesignTotal;
     }

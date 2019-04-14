@@ -13,7 +13,7 @@
 
 @section Scripts {
 
-    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
     <script src="~/js/quote-templates/quote-templates.js" asp-append-version="true"></script>
 }
 
@@ -121,9 +121,22 @@
                 <tr>
                     <td colspan="3"><strong>Итого сроки-стоимость</strong></td>
                     <td colspan="5">
-                        Общее время работ в часах: <strong>{{ TotalHours }}</strong>,
-                        дней: <strong>{{ (TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
-                        раб. недель: <strong>{{ ((TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                        <div>
+                            <div><em>Чистое время</em></div>
+                            <div>
+                                Общее время работ в часах: <strong>{{ TotalHours }}</strong>,
+                                дней: <strong>{{ (TotalHours / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                                раб. недель: <strong>{{ ((TotalHours / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                            </div>
+                        </div>
+                        <div>
+                            <div><em>Время с учетом поправок и доделок</em></div>
+                            <div>
+                                Общее время работ в часах: <strong>{{ TotalHoursWithFixes }}</strong>,
+                                дней: <strong>{{ (TotalHoursWithFixes / @(GlobalVariables.WorkingHoursPerDay)).toFixed(1) }}</strong>
+                                раб. недель: <strong>{{ ((TotalHoursWithFixes / @(GlobalVariables.WorkingHoursPerDay))/5).toFixed(2) }}</strong>
+                            </div>
+                        </div>
                     </td>
                     <td>
                         <strong>{{ Total.toFixed(0) }} р.</strong>
