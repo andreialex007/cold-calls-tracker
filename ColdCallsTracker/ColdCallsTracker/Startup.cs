@@ -99,59 +99,53 @@ namespace ColdCallsTracker
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Лента с детальным просмотром и постраничностью",
+                        Name = "Costing template 1",
                         Qty = 3,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Лента с детальным просмотром и постраничностью + сложный фильтр",
+                        Name = "Costing template 2",
                         Qty = 4.5,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Форма из 5-ти инпутов",
+                        Name = "Costing template 3",
                         Qty = 2,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Полнотекстовый поиск по сайту",
+                        Name = "Costing template 4",
                         Qty = 1.5,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Страница со статической информацией",
+                        Name = "Costing template 5",
                         Qty = 1.5,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Лента без детального просмотра",
+                        Name = "Costing template 6",
                         Qty = 1.5,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
                     db.CostingTemplates.Add(new CostingTemplate
                     {
                         Unit = (int)UnitEnum.Hours,
-                        Name = "Лента без детального просмотра с постраничностью",
+                        Name = "Costing template 7",
                         Qty = 2,
-                        CategoryId = (int)CostingCategoryEnum.Ui
+                        CategoryId = (int)CostingCategoryEnum.Category1
                     });
-                    db.CostingTemplates.Add(new CostingTemplate
-                    {
-                        Unit = (int)UnitEnum.Hours,
-                        Name = "Интеграция с 1с базовая",
-                        Qty = 5,
-                        CategoryId = (int)CostingCategoryEnum.Integration
-                    });
+                   
                     db.SaveChanges();
                 }
 

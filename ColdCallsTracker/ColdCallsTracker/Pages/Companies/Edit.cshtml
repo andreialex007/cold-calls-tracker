@@ -1,4 +1,5 @@
 ﻿@using ColdCallsTracker.Code.Data.Models
+@using ColdCallsTracker.Code.Data.ViewModels
 @using ColdCallsTracker.Code.Utils
 @model ColdCallsTracker.Code.Data.ViewModels.EditCompanyPageModel
 
@@ -66,11 +67,10 @@
                     <label class="col-sm-1 text-right">Статус</label>
                     <div class="col-sm-3">
                         <select v-model="entity.StateId" class="form-control  form-control-sm">
-                            <option value="0">Черновик</option>
-                            <option value="1">В процессе</option>
-                            <option value="2">Успех</option>
-                            <option value="3">Отказ</option>
-                            <option value="4">Не подходит</option>
+                            @foreach (var el in EnumUtil.ToDictionary<CompanyStateEnum>().OrderBy(x=>x.Key).ToList())
+                            {
+                                <option value="@el.Key">@el.Value</option>
+                            }
                         </select>
                     </div>
 
@@ -333,7 +333,7 @@
                                     <td colspan="3">
                                         <label class="form-check-label ml-4">
                                             <input type="checkbox" v-model="quote.CustomDesign" v-on:change="designChanged(quote)" class="form-check-input">
-                                            Индивидуальный дизайн
+                                            дизайн
                                         </label>
                                     </td>
                                     <td colspan="5">

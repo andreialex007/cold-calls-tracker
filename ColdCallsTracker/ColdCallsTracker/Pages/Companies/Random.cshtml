@@ -12,13 +12,14 @@
 @section Scripts {
     <script>
         $(function () {
-            window.markAsUnSuitable = function (id) {
+            window.setState = function (id, stateId) {
                 window.event.preventDefault();
-                $.get("/Companies/MarkAsUnSuitable?id=" + id);
+                $.get("/Companies/SetState?id=" + id + "&stateId=" + stateId);
                 $(window.event.target).closest("tr").hide("fast");
             }
         });
-    </script>
+
+/**/</script>
 }
 
 <div class="random-companies-page">
@@ -34,23 +35,25 @@
                 <th>Телефоны</th>
                 <th>Инфо</th>
                 <th>Убрать</th>
+                <th>Позвонить</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Name</td>
-                    <td>@item.ActivityType</td>
-                    <td>@Html.Raw(item.WebSitesLinks)</td>
-                    <td>@item.Remarks</td>
-                    <td>@item.PhoneNumbers</td>
-                    <td> <a href="@item.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link"><i class="fas fa-external-link-alt"></i></a></td>
-                    <td><a class="btn btn-danger btn-xs" onclick="markAsUnSuitable(@item.Id)" href="javascript:;">Убрать</a></td>
-                    <td><a target="_blank" href="/Companies/Edit/@(item.Id)">Открыть</a></td>
-                </tr>
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.ActivityType</td>
+                <td>@Html.Raw(item.WebSitesLinks)</td>
+                <td>@item.Remarks</td>
+                <td>@item.PhoneNumbers</td>
+                <td> <a href="@item.SearchLink" target="_blank" class="btn btn-xs btn-primary org-search-link"><i class="fas fa-external-link-alt"></i></a></td>
+                <td><a class="btn btn-danger btn-xs" onclick="setState(@item.Id, 4)" href="javascript:;">Убрать</a></td>
+                <td><a class="btn btn-success btn-xs" onclick="setState(@item.Id, 5)" href="javascript:;">Позвонить</a></td>
+                <td><a class="btn btn-primary btn-xs" target="_blank" href="/Companies/Edit/@(item.Id)">  Открыть</a></td>
+            </tr>
             }
         </tbody>
     </table>

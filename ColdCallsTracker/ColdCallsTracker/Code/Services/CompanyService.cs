@@ -288,11 +288,10 @@ namespace ColdCallsTracker.Code.Services
 
         }
 
-
-        public void MarkUnsuitable(int id)
+        public void SetState(int id, int stateId)
         {
             var company = Db.Companies.Single(x => x.Id == id);
-            company.StateId = (int?)CompanyStateEnum.NotSuitable;
+            company.StateId = stateId;
             company.DateModify = DateTime.Now;
             Db.SaveChanges();
         }

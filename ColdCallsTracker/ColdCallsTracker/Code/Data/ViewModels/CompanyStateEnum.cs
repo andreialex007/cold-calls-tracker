@@ -22,5 +22,8 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
         [Description("Неподходит")]
         NotSuitable = 4,
+
+        [Description("Нужно позвонить")]
+        ForCall = 5,
     }
 }

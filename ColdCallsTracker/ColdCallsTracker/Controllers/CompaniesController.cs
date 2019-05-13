@@ -39,9 +39,9 @@ namespace ColdCallsTracker.Controllers
         }
 
         [HttpGet]
-        public ActionResult MarkAsUnSuitable(int id)
+        public ActionResult SetState(int id, int stateId)
         {
-            this.Service.Company.MarkUnsuitable(id);
+            this.Service.Company.SetState(id, stateId);
             return Content("Ok");
         }
 

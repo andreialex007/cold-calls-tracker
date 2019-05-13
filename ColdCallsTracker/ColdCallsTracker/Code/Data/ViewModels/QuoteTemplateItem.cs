@@ -34,7 +34,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                 {
                     var uiHours = this.QuoteCostingRelations
                         .Where(x => x.CostingTemplate.Unit == (int)UnitEnum.Hours)
-                        .Where(x => x.CostingTemplate.CategoryId == (int)CostingCategoryEnum.Ui)
+                        .Where(x => x.CostingTemplate.CategoryId == (int)CostingCategoryEnum.Category1)
                         .Sum(x => x.Multiplier * x.CostingTemplate.Qty);
 
 
@@ -68,7 +68,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                     });
                 var totalPrice = withMultiplier.Sum(x => (x.item.Total ?? 0) * x.Multiplier);
 
-                var uiTotal = withMultiplier.Where(x => x.item.CategoryId == (int)CostingCategoryEnum.Ui).Sum(x => (x.item.Total ?? 0) * x.Multiplier);
+                var uiTotal = withMultiplier.Where(x => x.item.CategoryId == (int)CostingCategoryEnum.Category1).Sum(x => (x.item.Total ?? 0) * x.Multiplier);
 
                 if (this.CustomDesign)
                 {

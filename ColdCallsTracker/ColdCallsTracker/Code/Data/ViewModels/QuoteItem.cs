@@ -27,7 +27,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         {
             get
             {
-                var uiTotal = Costings.Where(x => x.CategoryId == (int)CostingCategoryEnum.Ui).Sum(x => x.MultiplierTotal);
+                var uiTotal = Costings.Where(x => x.CategoryId == (int)CostingCategoryEnum.Category1).Sum(x => x.MultiplierTotal);
                 if (this.CustomDesign)
                 {
                     var customDesignTotal = ((GlobalVariables.CustomDesignMarkup) * uiTotal);
@@ -41,7 +41,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
         {
             get
             {
-                var uiTotal = Costings.Where(x => x.CategoryId == (int)CostingCategoryEnum.Ui).Sum(x => x.Qty * x.Multiplier);
+                var uiTotal = Costings.Where(x => x.CategoryId == (int)CostingCategoryEnum.Category1).Sum(x => x.Qty * x.Multiplier);
                 if (this.CustomDesign)
                 {
                     var customDesignTotal = ((GlobalVariables.CustomDesignMarkup) * uiTotal);
