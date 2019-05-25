@@ -48,7 +48,7 @@ namespace ColdCallsTracker.Controllers
         [HttpGet]
         public ActionResult Load(int id)
         {
-            var company = Service.Company.Edit(id);
+            var company = Service.Company.Get(id);
             return Json(company);
         }
 

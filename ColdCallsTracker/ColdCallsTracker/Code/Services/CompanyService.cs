@@ -45,13 +45,14 @@ namespace ColdCallsTracker.Code.Services
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                //todo ex logging
                 return false;
             }
         }
 
-        public CompanyEditItem Edit(int? id)
+        public CompanyEditItem Get(int? id)
         {
             var editItem = new CompanyEditItem();
 
@@ -61,7 +62,6 @@ namespace ColdCallsTracker.Code.Services
                     .Select(x => new CompanyEditItem
                     {
                         Id = x.Id,
-                        // State = x.State.Name,
                         Name = x.Name,
                         StateId = x.StateId,
                         Remarks = x.Remarks,
@@ -123,7 +123,11 @@ namespace ColdCallsTracker.Code.Services
                     .FirstOrDefault(x => x.Id == id);
 
 
-                company.Quotes.ForEach(x => x.Costings = x.Costings.OrderBy(c => c.CategoryName).ThenBy(c => c.Name).ToList());
+                company.Quotes
+                    .ForEach(x => x.Costings = x.Costings
+                        .OrderBy(c => c.CategoryName)
+                        .ThenBy(c => c.Name)
+                        .ToList());
 
                 return company;
             }
@@ -179,7 +183,6 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    // State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,
@@ -244,7 +247,7 @@ namespace ColdCallsTracker.Code.Services
 
         public void Delete(int id)
         {
-            var companyEditItem = this.App.Company.Edit(id);
+            var companyEditItem = this.App.Company.Get(id);
             foreach (var quoteItem in companyEditItem.Quotes)
                 this.App.Quote.Delete(quoteItem.Id);
 
@@ -262,8 +265,11 @@ namespace ColdCallsTracker.Code.Services
                 .Where(x => x.Phones.Any())
                 .Where(x => x.StateId == null);
 
-            var randomIds = mainQuery.OrderBy(x => Guid.NewGuid()).Select(x => x.Id).Take(size).ToList();
-
+            var randomIds = mainQuery
+                .OrderBy(x => Guid.NewGuid())
+                .Select(x => x.Id)
+                .Take(size)
+                .ToList();
 
             var query = mainQuery
                 .Where(x => randomIds.Contains(x.Id))
@@ -271,7 +277,6 @@ namespace ColdCallsTracker.Code.Services
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    //  State = x.State.Name,
                     StateId = x.StateId,
                     ActivityType = x.ActivityType,
                     Address = x.Address,

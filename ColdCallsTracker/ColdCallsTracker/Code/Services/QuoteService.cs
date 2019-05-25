@@ -95,7 +95,7 @@ namespace ColdCallsTracker.Code.Services
         public QuoteItem Get(int? id)
         {
             var companyId = this.Db.Quotes.Single(x => x.Id == id).CompanyId;
-            return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == id);
+            return this.App.Company.Get(companyId).Quotes.Single(x => x.Id == id);
         }
 
         public void SetDesign(int id, bool customDesign)
@@ -173,7 +173,7 @@ namespace ColdCallsTracker.Code.Services
 
             this.App.Company.RefreshDateModify(companyId);
 
-            return this.App.Company.Edit(companyId).Quotes.Single(x => x.Id == newQuote.Id);
+            return this.App.Company.Get(companyId).Quotes.Single(x => x.Id == newQuote.Id);
         }
 
 
