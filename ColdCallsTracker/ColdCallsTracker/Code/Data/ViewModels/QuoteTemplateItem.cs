@@ -38,7 +38,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
                         .Sum(x => x.Multiplier * x.CostingTemplate.Qty);
 
 
-                    var designHours = (uiHours * GlobalVariables.CustomDesignMarkup);
+                    var designHours = (uiHours * GlobalVariables.ExtraMarkup);
                     totalHours += designHours;
                 }
 
@@ -72,7 +72,7 @@ namespace ColdCallsTracker.Code.Data.ViewModels
 
                 if (this.CustomDesign)
                 {
-                    var customDesignTotal = ((GlobalVariables.CustomDesignMarkup) * uiTotal);
+                    var customDesignTotal = ((GlobalVariables.ExtraMarkup) * uiTotal);
                     this.CustomDesignTotal = customDesignTotal;
                     totalPrice += customDesignTotal;
                 };
