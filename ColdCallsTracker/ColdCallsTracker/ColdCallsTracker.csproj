@@ -21,7 +21,7 @@
     <PackageReference Include="Fizzler" Version="1.2.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="73.0.3683.68" />
 	<Reference Include="Microsoft.EntityFrameworkCore">
